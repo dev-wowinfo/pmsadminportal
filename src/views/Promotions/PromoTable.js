@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import {
-    UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem,Card, Col, Modal, ModalHeader, ModalBody, Row, Button
+    UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem, Card, Col, Modal, ModalHeader, ModalBody, Row, Button
 } from 'reactstrap'
 import { ChevronDown, MoreVertical, Edit, FileText, Archive, Trash, Eye, EyeOff } from 'react-feather'
 
@@ -11,6 +11,8 @@ import axios from '../../API/axios'
 import { useSelector } from 'react-redux'
 import moment from 'moment'
 import PromoUpdate from './PromoUpdate'
+import classNames from 'classnames'
+import { Style } from '@mui/icons-material'
 
 const PromoTable = () => {
     const getUserData = useSelector(state => state.userManageSlice.userData)
@@ -111,49 +113,62 @@ const PromoTable = () => {
         )
     }
 
-    
+
     const basicColumns = [
         {
-            name: 'Promotion Id',
+            // name: 'Promotion Id',
+            name: 'Hotel',
             sortable: true,
             minWidth: '250px',
-            selector: row => row.promotionId
+            cell: () => <span>Grand Plaza Hotel</span>
         },
         {
-            name: 'Promotion Name',
+            // name: 'Promotion Date',
+            name: 'Plan',
             sortable: true,
-            minWidth: '250px',
-            selector: row => row.promoName
+            // minWidth: '225px',             
+            // selector: row => moment(row.promoDate).format('YYYY-MM-DD')
+            cell: () => <span>Enterprises</span>
         },
         {
-            name: 'Promotion Date',
+            // name: 'Promotion Name',
+            name: 'Status',
             sortable: true,
-            // minWidth: '225px',
-            selector: row => moment(row.promoDate).format('YYYY-MM-DD')
+            // minWidth: '250px',
+            cell: () => <span class="border rounded bg-success text-light px-1">Active</span>
         },
         {
-            name: 'Discount Type',
+            // name: 'Discount Type',
+            name: 'Start Date',
             sortable: true,
             // minWidth: '310px',
-            selector: row => row.discountType === 'P' ? 'Percentage' : 'Flat'
+            // selector: row => row.discountType === 'P' ? 'Percentage' : 'Flat'
+            cell: () => <span>Jun 23, 2025</span>
+
         },
         {
-            name: 'Discount Percentage',
+            // name: 'Discount Percentage',
+            name: 'End Date',
             sortable: true,
             // minWidth: '250px',
-            selector: row => row.discPercentage
+            // selector: row => row.discPercentage
+            cell: () => <span>Jun 23, 2026</span>
         },
         {
-            name: 'Discount Amount',
+            // name: 'Discount Amount',
+            name: 'Rooms',
             sortable: true,
             // minWidth: '250px',
-            selector: row => row.discAmount
+            // selector: row => row.discAmount
+            cell: () => <span>500</span>
         },
         {
-            name: 'Guest Type',
+            // name: 'Guest Type',
+            name: 'Users',
             sortable: true,
             // minWidth: '250px',
-            selector: row => row.guestType
+            // selector: row => row.guestType
+            cell: () => <span>50</span>
         },
         {
             name: 'Actions',
@@ -166,10 +181,7 @@ const PromoTable = () => {
                                 handleUpdateOpen()
                                 setPromoId(row.promotionId)
                             }} />
-                            <Trash className='me-50' size={15} onClick={() => {
-                                setDel(true)
-                                setPromoId(row.promotionId)
-                            }} />
+
                         </Col>
                     </>
                 )
@@ -184,22 +196,33 @@ const PromoTable = () => {
 
     return (
         <>
-        <Card>
-        <input type="text" placeholder="search" className="form-control input-default w-50 m-2" onChange={e => setQuery(e.target.value)} />
-        <div className='react-dataTable'>
-                <DataTable
-                    noHeader
-                    pagination
-                    data={search(promoData)}
-                    columns={basicColumns}
-                    className='react-dataTable ms-3'
-                    sortIcon={<ChevronDown size={10} />}
-                    paginationRowsPerPageOptions={[10, 25, 50, 100]}
+            <Card>
+                {/* Search box */}
+                <div class="d-flex justify-content-between py-1">
+                    <input type="text" placeholder="search" className="form-control input-default w-50 m-2" onChange={e => setQuery(e.target.value)} />
+                    <select class="px-2 py-1 h-50 mt-2 rounded">
+                        <option>All Status</option>
+                        <option>Trial</option>
+                        <option>Active</option>
+                        <option>Grace Period</option>
+                        <option>Suspended</option>
+                    </select>
+                </div>
+                <div className='react-dataTable'>
+                    <DataTable
+                        noHeader
+                        pagination
+                        // data={search(promoData)}
+                         data={data}
+                        columns={basicColumns}
+                        className='react-dataTable ms-3'
+                        sortIcon={<ChevronDown size={10} />}
+                        paginationRowsPerPageOptions={[10, 25, 50, 100]}
 
-                />
-            </div>
-        </Card>
-          
+                    />
+                </div>
+            </Card>
+
             {updateOpen && <PromoUpdate updateOpen={updateOpen} handleUpdateOpen={handleUpdateOpen} promoId={promoId} getPromoData={getPromoData} />}
             <DeletePackageModal promoId={promoId} />
         </>

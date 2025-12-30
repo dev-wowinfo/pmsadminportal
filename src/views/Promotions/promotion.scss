@@ -29,6 +29,17 @@
 
 .rdt_TableHeadRow .rdt_TableCol:last-child,
 .rdt_TableRow .rdt_TableCell:last-child{
-    justify-content: space-evenly !important;
-    max-width: 125px !important;
+    justify-content: center !important;
+    max-width: 12px !important;
+}
+
+.hotel-name {
+  font-size: 13px;
+  font-weight: 500;
+  color: #2c2c2c;
+
+  &:hover {
+    color: #007bff;
+    cursor: pointer;
+  }
 }
