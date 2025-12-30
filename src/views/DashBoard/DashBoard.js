@@ -533,13 +533,14 @@ const DashBoard = () => {
 							id="1"
 							title="Active Subscriptions"
 							dataArr={dailyNumData[0]}
-							icon={<UserCheck size={25} />}
+							icon={<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" viewBox="0 0 256 256"><path d="M136,32V216H40V85.35a8,8,0,0,1,3.56-6.66l80-53.33A8,8,0,0,1,136,32Z" opacity="0.2"></path><path d="M240,208H224V96a16,16,0,0,0-16-16H144V32a16,16,0,0,0-24.88-13.32L39.12,72A16,16,0,0,0,32,85.34V208H16a8,8,0,0,0,0,16H240a8,8,0,0,0,0-16ZM208,96V208H144V96ZM48,85.34,128,32V208H48ZM112,112v16a8,8,0,0,1-16,0V112a8,8,0,1,1,16,0Zm-32,0v16a8,8,0,0,1-16,0V112a8,8,0,1,1,16,0Zm0,56v16a8,8,0,0,1-16,0V168a8,8,0,0,1,16,0Zm32,0v16a8,8,0,0,1-16,0V168a8,8,0,0,1,16,0Z"></path></svg>}
 							amount={
 								cardData && cardData[0]?.todaysBookings
 									? cardData[0]?.todaysBookings
 									: ""
 							}
 						/>
+						
 					</div>
 				</Col>
 				<Col lg="4" xs="12" sm="4" md="6" xl="3">
@@ -548,7 +549,7 @@ const DashBoard = () => {
 							id="2"
 							title="Trial Users"
 							dataArr={dailyNumData[1]}
-							icon={<UserCheck size={25} />}
+							icon={<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" viewBox="0 0 256 256"><path d="M216,136a88,88,0,1,1-88-88A88,88,0,0,1,216,136Z" opacity="0.2"></path><path d="M128,40a96,96,0,1,0,96,96A96.11,96.11,0,0,0,128,40Zm0,176a80,80,0,1,1,80-80A80.09,80.09,0,0,1,128,216ZM173.66,90.34a8,8,0,0,1,0,11.32l-40,40a8,8,0,0,1-11.32-11.32l40-40A8,8,0,0,1,173.66,90.34ZM96,16a8,8,0,0,1,8-8h48a8,8,0,0,1,0,16H104A8,8,0,0,1,96,16Z"></path></svg>}
 							amount={
 								cardData && cardData[0]?.monthlyBookings
 									? cardData[0]?.monthlyBookings
@@ -570,7 +571,7 @@ const DashBoard = () => {
 									</div>
 
 									<div className="avatar avatar-stats p-50 m-0 bg-light-primary">
-										<UserCheck size={25} />
+										<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" viewBox="0 0 256 256"><path d="M224,128a96,96,0,1,1-96-96A96,96,0,0,1,224,128Z" opacity="0.2"></path><path d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm0,192a88,88,0,1,1,88-88A88.1,88.1,0,0,1,128,216Zm64-88a8,8,0,0,1-8,8H128a8,8,0,0,1-8-8V72a8,8,0,0,1,16,0v48h48A8,8,0,0,1,192,128Z"></path></svg>
 									</div>
 								</div>
 							</div>
@@ -585,7 +586,7 @@ const DashBoard = () => {
 							id="6"
 							title="Failed Renewals"
 							dataArr={dailyNumData[5]}
-							icon={<UserCheck size={25} />}
+							icon={<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" viewBox="0 0 256 256"><path d="M215.46,216H40.54C27.92,216,20,202.79,26.13,192.09L113.59,40.22c6.3-11,22.52-11,28.82,0l87.46,151.87C236,202.79,228.08,216,215.46,216Z" opacity="0.2"></path><path d="M236.8,188.09,149.35,36.22h0a24.76,24.76,0,0,0-42.7,0L19.2,188.09a23.51,23.51,0,0,0,0,23.72A24.35,24.35,0,0,0,40.55,224h174.9a24.35,24.35,0,0,0,21.33-12.19A23.51,23.51,0,0,0,236.8,188.09ZM222.93,203.8a8.5,8.5,0,0,1-7.48,4.2H40.55a8.5,8.5,0,0,1-7.48-4.2,7.59,7.59,0,0,1,0-7.72L120.52,44.21a8.75,8.75,0,0,1,15,0l87.45,151.87A7.59,7.59,0,0,1,222.93,203.8ZM120,144V104a8,8,0,0,1,16,0v40a8,8,0,0,1-16,0Zm20,36a12,12,0,1,1-12-12A12,12,0,0,1,140,180Z"></path></svg>}
 							amount={
 								cardData && cardData[0]?.todaysDepartures
 									? cardData[0]?.todaysDepartures
@@ -600,7 +601,7 @@ const DashBoard = () => {
 							id="5"
 							title="Monthly Recurring Revenue"
 							dataArr={dailyNumData[4]}
-							icon={<UserCheck size={25} />}
+							icon={<svg class="text-success" xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" viewBox="0 0 256 256"><path d="M232,96v96a8,8,0,0,1-8,8H32a8,8,0,0,1-8-8V96Z" opacity="0.2"></path><path d="M224,48H32A16,16,0,0,0,16,64V192a16,16,0,0,0,16,16H224a16,16,0,0,0,16-16V64A16,16,0,0,0,224,48Zm0,16V88H32V64Zm0,128H32V104H224v88Zm-16-24a8,8,0,0,1-8,8H168a8,8,0,0,1,0-16h32A8,8,0,0,1,208,168Zm-64,0a8,8,0,0,1-8,8H120a8,8,0,0,1,0-16h16A8,8,0,0,1,144,168Z"></path></svg>}
 							amount={
 								cardData && cardData[0]?.monthlyEarninngs
 									? cardData[0]?.monthlyEarninngs
@@ -615,7 +616,7 @@ const DashBoard = () => {
 							id="7"
 							title="Annual Recurring Revenue"
 							dataArr={dailyNumData[8]}
-							icon={<UserCheck size={25} />}
+							icon={<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" viewBox="0 0 256 256"><path d="M224,64V208H32V48H208A16,16,0,0,1,224,64Z" opacity="0.2"></path><path d="M232,208a8,8,0,0,1-8,8H32a8,8,0,0,1-8-8V48a8,8,0,0,1,16,0v94.37L90.73,98a8,8,0,0,1,10.07-.38l58.81,44.11L218.73,90a8,8,0,1,1,10.54,12l-64,56a8,8,0,0,1-10.07.38L96.39,114.29,40,163.63V200H224A8,8,0,0,1,232,208Z"></path></svg>}
 						// amount={
 						//   cardData && cardData[0]?.CreditPendingAmount
 						//     ? cardData[0]?.CreditPendingAmount
@@ -631,7 +632,7 @@ const DashBoard = () => {
 							id="4"
 							title="Conversion Rate"
 							dataArr={dailyNumData[3]}
-							icon={<UserCheck size={25} />}
+							icon={<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" viewBox="0 0 256 256"><path d="M224,64V208H32V48H208A16,16,0,0,1,224,64Z" opacity="0.2"></path><path d="M232,208a8,8,0,0,1-8,8H32a8,8,0,0,1-8-8V48a8,8,0,0,1,16,0v94.37L90.73,98a8,8,0,0,1,10.07-.38l58.81,44.11L218.73,90a8,8,0,1,1,10.54,12l-64,56a8,8,0,0,1-10.07.38L96.39,114.29,40,163.63V200H224A8,8,0,0,1,232,208Z"></path></svg>}
 							amount={
 								dailyNumData && dailyNumData[0]?.todaysEarnings
 									? dailyNumData[0]?.todaysEarnings

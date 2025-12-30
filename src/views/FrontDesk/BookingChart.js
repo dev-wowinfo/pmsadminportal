@@ -32,6 +32,7 @@ const BookingChart = () => {
   const [guestId, setGuestId] = useState("");
   const [refresh, setRefresh] = useState(false);
   const handelRefresh = () => setRefresh(!refresh);
+  const [activeTab, setActiveTab] = useState("active");
 
   const statusOptions = [
     { value: "Active", label: "Active" },
@@ -53,30 +54,43 @@ const BookingChart = () => {
   }
 
   const Columns = [
+    // {
+    //   name: "Guest ID",
+    //   sortable: true,
+    //   width: '17rem',
+    //   selector: (row) => row.id,
+    // },
     {
-      name: "Guest ID",
+      name: "Hotel Name",
       sortable: true,
       width: '17rem',
-      selector: (row) => row.guestID,
+      selector: (row) => row.hotel,
     },
     {
-      name: "Guest Name",
+      name: "Location",
       sortable: true,
-      selector: (row) => row.guestName,
+      selector: (row) => row.city,
     },
     {
-      name: "Guest Address",
+      name: "Contact",
       sortable: true,
-      selector: (row) => row.guestAddress,
+      width: '12rem',
+      selector: (row) => row.phone,
     },
     {
-      name: "Guest phoneNumber",
+      name: "Rooms",
       sortable: true,
-      selector: (row) => row.guestMobileNumber,
+      width: '7rem',
+      selector: (row) => row.rooms,
+    },
+    {
+      name: "Active Users",
+      sortable: true,
+      selector: (row) => row.phone,
     },
 
     {
-      name: "Status",
+      name: "License Status",
       sortable: true,
       selector: (row) => row.status,
       cell: (row) => {
@@ -90,6 +104,11 @@ const BookingChart = () => {
           </>
         );
       },
+    },
+    {
+      name: "Registered",
+      sortable: true,
+      selector: (row) => row.date,
     },
     {
       name: "Action",
@@ -147,33 +166,82 @@ const BookingChart = () => {
     setRefresh();
   }, [refresh, newGuest, showEdit]);
 
+  const staticData = [
+    {
+      // id: 12222000372122,
+      hotel: 'Grand Plaza Hotel',
+      city: 'Mumbai',
+      phone: '+919677734223',
+      rooms: '150',
+      status: 'Active',
+      date: 'Jun 02,2025',
+    },
+    {
+      // id: 12222000372111,
+      hotel: 'Royal Inn',
+      city: 'Delhi',
+      phone: '+918222245634',
+      rooms: '75',
+      status: 'Inactive',
+      date: 'Sep 30,2025',
+    }
+  ];
   return (
     <>
       {console.log("guest", guestOptions)}
       <Card>
         <CardHeader>
-          <CardTitle>Guest</CardTitle>
-          <input type="text" placeholder="search" className="form-control input-default w-50" onChange={e => setQuery(e.target.value)} />
+          <CardTitle><h1 class="text-3xl fw-bolder tracking-tight">Hotel Management</h1>
+            <p class="fs-5">Manage customer properties and their licenses</p>
+          </CardTitle>
           <Button color="primary" onClick={() => { setNewGuest(true); }}>
-            Add Guest
+            Add Hotels
           </Button>
+
         </CardHeader>
+      </Card>
+      <Card>
+
+        <div className="p-2">
+          <h4 class="text-3xl fw-bolder tracking-tight">Active Hotels</h4>
+          <p class="fs-5">Manage customer licenses and subscriptions</p>
+        </div>
+        <div className="rounded d-flex ms-2">
+          <button
+            className={`btn rounded-pill px-1 ${activeTab === "active" ? "btn-white shadow-sm fw-medium" : "btn-light"
+              }`}
+            onClick={() => setActiveTab("active")}>
+            Active Hotels (1)
+          </button>
+
+          <button
+            className={`btn rounded-pill px-1 ${activeTab === "archived" ? "btn-white shadow-sm fw-medium" : "btn-light"
+              }`}
+            onClick={() => setActiveTab("archived")}>
+            Archived Hotels (0)
+          </button>
+        </div>
+        <input type="text" placeholder="search" className="ms-3 mt-2 form-control input-default w-50" onChange={e => setQuery(e.target.value)} />
+
         <CardBody>
+
           <div className="react-dataTable">
             <DataTable
               noHeader
               pagination
-              data={search(guestOptions)}
+              // data={search(guestOptions)}
+              data={staticData}
               columns={Columns}
               className="react-dataTable ms-3"
               sortIcon={<ChevronDown size={10} />}
               paginationRowsPerPageOptions={[10, 25, 50, 100]}
             />
           </div>
+
         </CardBody>
       </Card>
       {newGuest ? (
-        <NewGuest open={newGuest} handleOpen={handleNewGuest} getOption={handleGuestOptions}/>
+        <NewGuest open={newGuest} handleOpen={handleNewGuest} getOption={handleGuestOptions} />
       ) : (
         <></>
       )}

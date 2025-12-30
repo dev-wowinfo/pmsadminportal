@@ -52,68 +52,183 @@ const GuestTable = () => {
     )
   }
 
+  // const Columns = [
+  //   // {
+  //   //   name: "Guest ID",
+  //   //   sortable: true,
+  //   //   width: '17rem',
+  //   //   selector: (row) => row.guestID,
+  //   // },
+  //   // {
+  //   //   name: "Guest Name",
+  //   //   sortable: true,
+  //   //   selector: (row) => row.guestName,
+  //   // },
+  //   // {
+  //   //   name: "Guest Address",
+  //   //   sortable: true,
+  //   //   selector: (row) => row.guestAddress,
+  //   // },
+  //   // {
+  //   //   name: "Guest phoneNumber",
+  //   //   sortable: true,
+  //   //   selector: (row) => row.guestMobileNumber,
+  //   // },
+  //   {
+  //     // name: 'Promotion Id',
+  //     name: 'Hotel',
+  //     sortable: true,
+  //     minWidth: '250px',
+  //     className: "hotel-name",
+  //     cell: () => <span>Grand Plaza Hotel</span>
+  //   },
+  //   {
+  //     // name: 'Promotion Date',
+  //     name: 'Plan',
+  //     sortable: true,
+  //     // minWidth: '225px',             
+  //     // selector: row => moment(row.promoDate).format('YYYY-MM-DD')
+  //     cell: () => <span>Enterprises</span>
+  //   },
+  //   {
+  //     // name: 'Promotion Name',
+  //     name: 'Status',
+  //     sortable: true,
+  //     // minWidth: '250px',
+  //     cell: () => <span class="border rounded bg-success text-light px-1">Active</span>
+  //   },
+  //   {
+  //     // name: 'Discount Type',
+  //     name: 'Start Date',
+  //     sortable: true,
+  //     // minWidth: '310px',
+  //     // selector: row => row.discountType === 'P' ? 'Percentage' : 'Flat'
+  //     cell: () => <span>Jun 23, 2025</span>
+
+  //   },
+  //   {
+  //     // name: 'Discount Percentage',
+  //     name: 'End Date',
+  //     sortable: true,
+  //     // minWidth: '250px',
+  //     // selector: row => row.discPercentage
+  //     cell: () => <span>Jun 23, 2026</span>
+  //   },
+  //   {
+  //     // name: 'Discount Amount',
+  //     name: 'Rooms',
+  //     sortable: true,
+  //     // minWidth: '250px',
+  //     // selector: row => row.discAmount
+  //     cell: () => <span>500</span>
+  //   },
+  //   {
+  //     // name: 'Guest Type',
+  //     name: 'Users',
+  //     sortable: true,
+  //     // minWidth: '250px',
+  //     // selector: row => row.guestType
+  //     cell: () => <span>50</span>
+  //   },
+
+  //   {
+  //     name: "Status",
+  //     sortable: true,
+  //     selector: (row) => row.status,
+  //     cell: (row) => {
+  //       return (
+  //         <>
+  //           {row.status === "Active" ? (
+  //             <Badge color="light-success"> {row.status}</Badge>
+  //           ) : (
+  //             <Badge color="light-danger"> {row.status}</Badge>
+  //           )}
+  //         </>
+  //       );
+  //     },
+  //   },
+  //   {
+  //     name: "Action",
+  //     sortable: true,
+  //     center: true,
+  //     selector: (row) => (
+  //       <>
+  //         {/* <Col> */}
+  //         <Edit
+  //           className="me-50 pe-auto"
+  //           onClick={() => {
+  //             setShowEdit(true);
+  //             setGuestId(row.guestID);
+  //           }}
+  //           size={15}
+  //         />
+  //         {/* <Trash className='me-50' size={15} onClick={() => {
+  //                       setDel(true)
+  //                       // setSelected_roomView(row.RoomViewID)
+  //                   }} /> */}
+  //         {/* </Col> */}
+  //       </>
+  //     ),
+  //   },
+  // ];
+
   const Columns = [
     {
-      name: "Guest ID",
+      name: 'Hotel',
       sortable: true,
-      width: '17rem',
-      selector: (row) => row.guestID,
+      minWidth: '250px',
+      className: 'hotel-name',
+      cell: () => <span>Grand Plaza Hotel</span>
     },
     {
-      name: "Guest Name",
+      name: 'Plan',
       sortable: true,
-      selector: (row) => row.guestName,
+      cell: () => <span>Enterprise</span>
     },
     {
-      name: "Guest Address",
+      name: 'Status',
       sortable: true,
-      selector: (row) => row.guestAddress,
+      cell: () => (
+        <span className="border rounded bg-success text-light px-1">
+          Active
+        </span>
+      )
     },
     {
-      name: "Guest phoneNumber",
+      name: 'Start Date',
       sortable: true,
-      selector: (row) => row.guestMobileNumber,
-    },
-
-    {
-      name: "Status",
-      sortable: true,
-      selector: (row) => row.status,
-      cell: (row) => {
-        return (
-          <>
-            {row.status === "Active" ? (
-              <Badge color="light-success"> {row.status}</Badge>
-            ) : (
-              <Badge color="light-danger"> {row.status}</Badge>
-            )}
-          </>
-        );
-      },
+      cell: () => <span>Jun 23, 2025</span>
     },
     {
-      name: "Action",
+      name: 'End Date',
       sortable: true,
+      cell: () => <span>Jun 23, 2026</span>
+    },
+    {
+      name: 'Rooms',
+      sortable: true,
+      cell: () => <span>500</span>
+    },
+    {
+      name: 'Users',
+      sortable: true,
+      cell: () => <span>50</span>
+    },
+    
+    {
+      name: 'Action',
       center: true,
-      selector: (row) => (
-        <>
-          {/* <Col> */}
-          <Edit
-            className="me-50 pe-auto"
-            onClick={() => {
-              setShowEdit(true);
-              setGuestId(row.guestID);
-            }}
-            size={15}
-          />
-          {/* <Trash className='me-50' size={15} onClick={() => {
-                        setDel(true)
-                        // setSelected_roomView(row.RoomViewID)
-                    }} /> */}
-          {/* </Col> */}
-        </>
-      ),
-    },
+      cell: row => (
+        <Edit
+          className="me-50 cursor-pointer"
+          size={15}
+          onClick={() => {
+            setShowEdit(true);
+            setGuestId(row.guestID);
+          }}
+        />
+      )
+    }
   ];
 
   const handleGuestOptions = async () => {
@@ -147,9 +262,24 @@ const GuestTable = () => {
     setRefresh();
   }, [refresh, newGuest, showEdit]);
 
+  const staticData = [
+    {
+      id: 1,
+      hotel: 'Grand Plaza Hotel',
+      city: 'Mumbai',
+      price: '₹2500'
+    },
+    {
+      id: 2,
+      hotel: 'Royal Inn',
+      city: 'Delhi',
+      price: '₹1800'
+    }
+  ];
+
   return (
     <>
-      {console.log("guest", guestOptions)}
+      {/* {console.log("guest", guestOptions)} */}
       <Card>
         <CardHeader>
           <CardTitle>Guest</CardTitle>
@@ -159,21 +289,23 @@ const GuestTable = () => {
           </Button>
         </CardHeader>
         <CardBody>
-          <div className="react-dataTable">
-            <DataTable
-              noHeader
-              pagination
-              data={search(guestOptions)}
-              columns={Columns}
-              className="react-dataTable ms-3"
-              sortIcon={<ChevronDown size={10} />}
-              paginationRowsPerPageOptions={[10, 25, 50, 100]}
-            />
-          </div>
+          <DataTable
+            noHeader
+            pagination
+            // data={search(guestOptions)}
+            data={staticData}
+            columns={Columns}
+            className="react-dataTable ms-3"
+            sortIcon={<ChevronDown size={10} />}
+            paginationRowsPerPageOptions={[10, 25, 50, 100]}
+          />
         </CardBody>
       </Card>
+
+
+
       {newGuest ? (
-        <NewGuest open={newGuest} handleOpen={handleNewGuest} getOption={handleGuestOptions}/>
+        <NewGuest open={newGuest} handleOpen={handleNewGuest} getOption={handleGuestOptions} />
       ) : (
         <></>
       )}
