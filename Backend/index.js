@@ -822,3 +822,170 @@ app.delete("/api/deleteHotels/:id", (req, res) => {
     });
   });
 });
+
+
+app.get("/api/getAllNotification", (req, res) => {
+  return res.json({
+    success: true,
+    data: [
+      {
+        id: 1,
+        type: "license_expiry",
+        title: "License Expiring Soon",
+        message:
+          "The license for Grand Plaza Hotel will expire in 25 days. Consider reaching out to discuss renewal options.",
+        hotel_name: "Grand Plaza Hotel",
+        tag: "Expiry",
+        severity: "warning",
+        is_new: true,
+        event_date: "2024-06-20 14:30",
+        days_left: 25,
+        actions: {
+          mark_as_read: true,
+          delete: true
+        }
+      },
+      {
+        id: 2,
+        type: "trial_ending",
+        title: "Trial Period Ending",
+        message:
+          "Mountain View Lodge's trial period will end in 7 days. This is a good opportunity to convert them to a paid subscription.",
+        hotel_name: "Mountain View Lodge",
+        tag: "Trial Ending",
+        severity: "info",
+        is_new: true,
+        event_date: "2024-03-24 15:30",
+        days_left: 7,
+        actions: {
+          mark_as_read: true,
+          delete: true
+        }
+      },
+      {
+        id: 3,
+        type: "payment_failed",
+        title: "Payment Failed",
+        message:
+          "Automatic renewal payment for City Center Suites has failed. The license is now in grace period. Please contact the customer immediately.",
+        hotel_name: "City Center Suites",
+        tag: "Payment Failed",
+        severity: "error",
+        is_new: true,
+        event_date: "2024-05-04 10:00",
+        days_left: 0,
+        actions: {
+          mark_as_read: true,
+          delete: true
+        }
+      }
+    ]
+  });
+});
+
+
+app.put("/api/notification/:id/readUnread", (req, res) => {
+  const { id } = req.params;
+  const { is_read } = req.body;
+
+  // Abhi mock response
+  return res.json({
+    success: true,
+    message: is_read
+      ? "Alert marked as read"
+      : "Alert marked as unread",
+    alert_id: id,
+    is_read
+  });
+});
+
+
+app.delete("/api/deleteNotification/:id", (req, res) => {
+  const { id } = req.params;
+
+  // Abhi mock delete
+  return res.json({
+    success: true,
+    message: "Alert deleted successfully",
+    alert_id: id
+  });
+});
+
+
+app.post("/api/auth/register", (req, res) => {
+  const { name, email, password, user_type, login_type } = req.body;
+
+  if (!name || !email || !password) {
+    return res.status(400).json({
+      success: false,
+      message: "Name, email and password are required"
+    });
+  }
+
+  // Check if user already exists
+  const checkSql = `SELECT id FROM UsersTB WHERE email = ?`;
+
+  db.query(checkSql, [email], (err, rows) => {
+    if (err) {
+      return res.status(500).json({
+        success: false,
+        message: "DB error",
+        error: err.message
+      });
+    }
+
+    if (rows.length > 0) {
+      return res.status(409).json({
+        success: false,
+        message: "User already registered"
+      });
+    }
+
+    const insertSql = `
+      INSERT INTO UsersTB
+      (
+        user_uid,
+        name,
+        email,
+        password,
+        user_type,
+        login_type,
+        is_verified,
+        status,
+        created_at
+      )
+      VALUES (?, ?, ?, ?, ?, ?, 0, 1, NOW())
+    `;
+
+    const user_uid = "USR_" + Date.now();
+
+    db.query(
+      insertSql,
+      [
+        user_uid,
+        name,
+        email,
+        password,
+        user_type || "user",
+        login_type || "email"
+      ],
+      (err, result) => {
+        if (err) {
+          return res.status(500).json({
+            success: false,
+            message: "Registration failed",
+            error: err.message
+          });
+        }
+
+        return res.status(201).json({
+          success: true,
+          message: "User registered successfully",
+          user_id: result.insertId,
+          user_uid
+        });
+      }
+    );
+  });
+});
+
