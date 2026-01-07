@@ -38,7 +38,7 @@ const defaultValues = {
   city: "",
 };
 
-const NewGuest = ({ open, handleOpen,getOption }) => {
+const NewGuest = ({ open, handleOpen, getOption }) => {
   const getUserData = useSelector((state) => state.userManageSlice.userData);
 
   const { LoginID, Token } = getUserData;
@@ -73,7 +73,7 @@ const NewGuest = ({ open, handleOpen,getOption }) => {
         Event: "select",
       };
       const res = await axios.post(
-        `/getdata/regiondata/countrydetails`,
+        `https://restcountries.com/v3.1/all?fields=name,flags`,
         countryListBody
       );
       console.log("res-country", res);
@@ -309,178 +309,53 @@ const NewGuest = ({ open, handleOpen,getOption }) => {
       <Modal
         isOpen={open}
         toggle={() => handleOpen()}
-        className="modal-dialog-centered modal-xl"
+        className="modal-dialog-centered modal-md"
         backdrop={false}
       >
-        <ModalHeader className="bg-transparent" toggle={() => handleOpen()}>New Guest Details</ModalHeader>
+        <ModalHeader className="bg-transparent" toggle={() => handleOpen()}><h3 className="fw-bolder">Create New Plan</h3>
+          <p>Configure a new subscription plan</p></ModalHeader>
         <Form>
           <ModalBody>
             <Row className="d-flex flex-column justify-content-center align-items-center">
-              <Col className="mt-1 d-flex flex-md-row flex-column">
-                <Col md="4" sm="12" className="mx-1">
+              <Col className="mt-1 d-flex flex-column">
+                <Col className="mx-1">
                   <Label className="form-label" for="name">
-                    Guest <span className="text-danger">*</span>
+                    Plan Name <span className="text-danger">*</span>
                   </Label>
-                  <Input
-                    placeholder="Enter name here"
-                    id="name"
-                    type="text"
-                    value={guestName}
-                    onChange={e => {
-                      const value = e.target.value;
-                      const regex = /^[a-zA-Z\s]*$/; // allows only alphabets and spaces
-                      if (regex.test(value)) {
-                          setGuestName(value);
-                      }
-                  }}
-                    invalid={display && guestName.trim() === ""}
-                  />
-                  {display === true && !guestName.trim() ? (
-                    <span className="error_msg_lbl">
-                      Guest Name is required{" "}
-                    </span>
-                  ) : null}
+                  <input type="text" placeholder="e.g.,Professional Plan" className="form-control input-default w-100" />
+                  
                 </Col>
                 <Col className="mx-1">
                   <Label className="form-label" for="last_name">
                     Guest Last Name<span className="text-danger">*</span>
                   </Label>
-                  <Input
-                    placeholder="Enter last name here"
-                    type="text"
-                    id="last_name"
-                    value={guestLastName}
-                    onChange={e => {
-                      const value = e.target.value;
-                      const regex = /^[a-zA-Z\s]*$/; // allows only alphabets and spaces
-                      if (regex.test(value)) {
-                        setGuestLastName(value);
-                      }
-                  }}
-                    invalid={display && guestLastName.trim() === ""}
-                  />
-                  {display === true && !guestLastName.trim() ? (
-                    <span className="error_msg_lbl">
-                      Last Name is required{" "}
-                    </span>
-                  ) : null}
+                  <input type="textarea" placeholder="Brief Description..." className="form-control input-default w-100" />
                 </Col>
-                <Col className="mx-1 d-flex flex-row">
-                  <Col className="me-1">
-                    <Label className="form-label" for="prefix">
-                      Prefix<span className="text-danger">*</span>
-                    </Label>
-                    <Input
-                      placeholder="91"
-                      id="prefix"
-                      type="phone"
-                      maxLength={3}
-                      value={mobPrefix}
-                      onChange={(e) => setMobPrefix(e.target.value.replace(/\D/g,""))}
-                      invalid={display && mobPrefix.trim() === ""}
-                    />
-                    {display === true && !mobPrefix.trim() ? (
-                      <span className="error_msg_lbl">Enter Prefix </span>
-                    ) : null}
-                  </Col>
-                  <Col>
-                    <Label className="form-label" for="mobile_number">
-                      Mobile Number<span className="text-danger">*</span>
-                    </Label>
-                    <Input
-                      placeholder="XXXXX-XXXXX"
-                      id="mobile_number"
-                      type="phone"
-                      maxLength={10}
-                      value={mobNumber}
-                      onChange={(e) => setMobNumber(e.target.value.replace(/\D/g,""))}
-                      invalid={display && mobNumber.trim() === ""}
-                    />
-                    {display === true && !mobNumber.trim() ? (
-                      <span className="error_msg_lbl">Mob required </span>
-                    ) : null}
-                  </Col>
-                </Col>
+                
               </Col>
               <Col className="mt-1 d-flex flex-md-row flex-column">
-                <Col md="4" sm="12" className="mx-1">
+                <Col className="mx-1">
                   <Label className="form-label" for="email">
-                    Email
+                    Subscription Type
                   </Label>
-                  <Input
-                    placeholder="Enter email here"
-                    id="email"
-                    type="email"
-                    value={guestEmail}
-                    onChange={(e) => setGuestEmail(e.target.value)}
-                  // invalid={display && guestEmail.trim() === ""}
-                  />
-                  {/* {display === true && !guestEmail.trim() ? (
-                    <span className="error_msg_lbl">Email is required </span>
-                  ) : null} */}
+                  {/* <input type="text" placeholder="search" className="form-control input-default w-100" /> */}
+                  <Select>
+                    <option>Demo/Trial</option>
+                    <option>Monthly</option>
+                    <option>6 Month</option>
+                    <option>1 Year</option>
+                    <option>2 Year</option>
+                  </Select>
                 </Col>
                 <Col className="mx-1">
                   <Label className="form-label" for="dob">
-                    Date of Birth
+                    Duration (days)
                   </Label>
-                  <Input
-                    type="date"
-                    placeholder="Select Date of Birth"
-                    onChange={(e) => setGuestDob(e.target.value)}
-                  // invalid={display && guestDob === ""}
-                  />
-                  {/* {display === true && !guestDob ? (
-                    <span className="error_msg_lbl">DOB is required </span>
-                  ) : null} */}
-                </Col>
-                <Col className="mx-1">
-                  <Label className="form-label" for="country">
-                    Country<span className="text-danger">*</span>
-                  </Label>
-                  <Select
-                    placeholder="Select Country"
-                    menuPlacement="auto"
-                    theme={selectThemeColors}
-                    className="react-select"
-                    classNamePrefix="select"
-                    options={countryOptions}
-                    value={countryOptions?.filter((c) => c.value === countryId)}
-                    onChange={(val) => {
-                      handleCountryDetailsList(val.value);
-                      stateDetailsList(val.value);
-                    }}
-                    invalid={display && countryId === ""}
-                  />
-                  {display === true && !countryId ? (
-                    <span className="error_msg_lbl">Country is required </span>
-                  ) : null}
+                  <input type="number" placeholder="30" className="form-control w-100" />
                 </Col>
               </Col>
               <Col className="mt-1 d-flex flex-md-row flex-column">
-                <Col md="3" sm="12" className="mx-1">
-                  <Label className="form-label" for="state">
-                    State<span className="text-danger">*</span>
-                  </Label>
-                  <Select
-                    isDisabled={countryId === ""}
-                    placeholder="Select State"
-                    menuPlacement="auto"
-                    theme={selectThemeColors}
-                    className="react-select"
-                    classNamePrefix="select"
-                    options={stateOptions}
-                    value={stateOptions?.filter((c) => c.value === stateId)}
-                    onChange={(val) => {
-                      handleStateDetailsList(val.value);
-                      cityDetailsList(val.value);
-                      // districtDetailsList(val.value)
-                    }}
-                    invalid={display && stateId === ""}
-                  />
-                  {display === true && !stateId ? (
-                    <span className="error_msg_lbl">State is required </span>
-                  ) : null}
-                </Col>
+                
                 {/* <Col className='mx-1'>
                                     <Label className='form-label' for='city'>
                                         District<span className='text-danger'>*</span>
@@ -504,61 +379,36 @@ const NewGuest = ({ open, handleOpen,getOption }) => {
                                 </Col> */}
                 <Col className="mx-1">
                   <Label className="form-label" for="city">
-                    City<span className="text-danger">*</span>
+                    Price<span className="text-danger">*</span>
                   </Label>
-                  <Select
-                    isDisabled={stateId === ""}
-                    placeholder="Select City"
-                    menuPlacement="auto"
-                    theme={selectThemeColors}
-                    className="react-select"
-                    classNamePrefix="select"
-                    options={cityOptions}
-                    value={cityOptions?.filter((c) => c.value === cityId)}
-                    onChange={(val) => {
-                      handleCityDetailsList(val.value);
-                    }}
-                    invalid={display && cityId === ""}
-                  />
-                  {display === true && !cityId ? (
-                    <span className="error_msg_lbl">City is required </span>
-                  ) : null}
+                   <input type="number" placeholder="0" className="form-control w-100" />
                 </Col>
 
                 <Col className="mx-1">
                   <Label className="form-label" for="pincode">
-                    Pincode<span className="text-danger">*</span>
+                    Currency<span className="text-danger">*</span>
                   </Label>
-                  <Input
-                    placeholder="Enter Pincode here"
-                    id="pincode"
-                    type="phone"
-                    maxLength={6}
-                    value={pinCode}
-                    onChange={(e) => setPinCode(e.target.value.replace(/\D/g,""))}
-                    invalid={display && pinCode.trim() === ""}
-                  />
-                  {display === true && !pinCode.trim() ? (
-                    <span className="error_msg_lbl">Pincode is required </span>
-                  ) : null}
+                  <Select>
+                    <option>Demo/Trial</option>
+                    <option>Monthly</option>
+                    <option>6 Month</option>
+                    <option>1 Year</option>
+                    <option>2 Year</option>
+                  </Select>
                 </Col>
               </Col>
               <Col className="mt-1 d-flex flex-md-row flex-column">
                 <Col className="mx-1">
                   <Label className="form-label" for="address">
-                    Address<span className="text-danger">*</span>
+                    Max Rooms<span className="text-danger">*</span>
                   </Label>
-                  <Input
-                    placeholder="Enter address here"
-                    type="textarea"
-                    id="address"
-                    value={address}
-                    onChange={(e) => setAddress(e.target.value)}
-                    invalid={display && address.trim() === ""}
-                  />
-                  {display === true && !address.trim() ? (
-                    <span className="error_msg_lbl">Address is required </span>
-                  ) : null}
+                  <input type="number" placeholder="30" className="form-control w-100" />
+                </Col>
+                <Col className="mx-1">
+                  <Label className="form-label" for="address">
+                    Max Users<span className="text-danger">*</span>
+                  </Label>
+                  <input type="number" placeholder="30" className="form-control w-100" />
                 </Col>
               </Col>
             </Row>
