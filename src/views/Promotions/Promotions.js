@@ -16,7 +16,7 @@ import { useSelector } from 'react-redux'
 import axios from '../../API/axios'
 import toast from 'react-hot-toast'
 import { Trash } from 'react-feather'
-
+import PromoModal from "./PromoModal"
 
 
 let discountType = [
@@ -61,6 +61,10 @@ const Promotions = () => {
   const [roomNo, setRoomNo] = useState('')
   const [blDate, setBlDate] = useState('')
   const [showErrors, setShowErrors] = useState(false);
+  const [guestId, setGuestId] = useState("");
+
+  const [newGuest, setNewGuest] = useState(false);
+  const handleNewGuest = () => setNewGuest(!newGuest);
 
   console.log(roomTypes);
   const toggle = tab => {
@@ -68,6 +72,10 @@ const Promotions = () => {
       setActive(tab)
     }
   }
+
+
+
+
 
   // const tabArray = [
   //   {
@@ -121,6 +129,7 @@ const Promotions = () => {
     }
   ]
 
+
   const [open, setOpen] = useState(false)
   const handleOpen = () => setOpen(!open)
 
@@ -128,113 +137,6 @@ const Promotions = () => {
   const toggleAcc = id => {
     accopen === id ? setAccopen() : setAccopen(id)
   }
-
-  const [promoHead, setPromoHead] = useState('')
-
-  const [all, setAll] = useState(false)
-  const [mobileUser, setMobileUser] = useState(false)
-  const [loggedIn, setLoggedIn] = useState(false)
-  const [percent, setPercent] = useState(false)
-  const [fixed, setFixed] = useState(false)
-
-  const PromoAcc = () => {
-    return (
-      <Col>
-        <Accordion className='accordion-margin' open={accopen} toggle={toggleAcc}>
-          <AccordionItem>
-            <AccordionHeader targetId='1'>
-              <div>Step 1: Select Promotion | {promoHead}</div>
-            </AccordionHeader>
-            <AccordionBody accordionId='1'>
-              What to put here?
-            </AccordionBody>
-          </AccordionItem>
-          <AccordionItem>
-            <AccordionHeader targetId='2'>
-              <div>Step 2: Select Segment |</div>
-            </AccordionHeader>
-            <AccordionBody accordionId='2'>
-              <h5>Multiple Customer segments can be selected here: </h5>
-              <Col className='d-flex flex-md-row flex-column justify-content-between align-items-center'>
-                <Button.Ripple
-                  className='m-1'
-                  color='primary'
-                  outline={!all}
-                  primary={all}
-                  onClick={() => {
-                    setAll(!all)
-                    setMobileUser(!mobileUser)
-                    setLoggedIn(!loggedIn)
-                  }}
-                >
-                  <HiUserGroup className='m-1' size={25} />
-                  All Customers
-                </Button.Ripple>
-                <Button.Ripple
-                  className='m-1'
-                  color='primary'
-                  outline={!all && !mobileUser}
-                  primary={all || mobileUser}
-                  onClick={() => {
-                    if (all === false) {
-                      setMobileUser(!mobileUser)
-                    }
-                  }}
-                >
-                  <FaMobileAlt className='m-1' size={25} />
-                  Mobile Customers
-                </Button.Ripple>
-                <Button.Ripple
-                  className='m-1'
-                  color='primary'
-                  outline={!all && !loggedIn}
-                  primary={all || loggedIn}
-                  onClick={() => {
-                    if (all === false) {
-                      setLoggedIn(!loggedIn)
-                    }
-                  }}
-                >
-                  <IoIosLaptop className='m-1' size={25} />
-                  Logged-In Members
-                </Button.Ripple>
-              </Col>
-              <Col>
-                <h5>Select Discount type:</h5>
-                <Col>
-                  <Col className='m-2'>
-                    <Input
-                      type='checkbox'
-                      id='percentage'
-                      checked={percent}
-                      disabled={fixed}
-                      onChange={() => setPercent(!percent)}
-                    />
-                    <Label for='percentage' className=' ms-1 form-check-label'>
-                      Percentage
-                    </Label>
-                  </Col>
-                  <Col className='m-2'>
-                    <Input
-                      type='checkbox'
-                      id='Fixed'
-                      checked={fixed}
-                      disabled={percent}
-                      onChange={() => setFixed(!fixed)}
-                    />
-                    <Label for='Fixed' className=' ms-1 form-check-label'>
-                      Fixed
-                    </Label>
-                  </Col>
-                </Col>
-              </Col>
-            </AccordionBody>
-          </AccordionItem>
-        </Accordion>
-      </Col>
-    )
-  }
-
 
   const roomTypeList = () => {
     console.log('acs');
@@ -292,6 +194,7 @@ const Promotions = () => {
   let BlackoutData = []
   const [bDate, setbDate] = useState([]);
   const [blackDate, setBlackDate] = useState([])
+  
   const handleAddDate = () => {
     const values = [...bDate];
     values.push({
@@ -378,16 +281,21 @@ const Promotions = () => {
               <p class="text-muted-foreground">Manage customer licenses and subscriptions</p>
             </div>
           </CardTitle>
-         
+
           <div class="d-flex items-center justify-between">
-            <Button color="primary" onClick={() => { setNewGuest(true); }}>
+            {/* <Button color="primary" onClick={() => { setNewGuest(true); }}> */}
+            <Button color="primary" onClick={handleNewGuest}>
+
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 256 256" class="me-1"><path d="M228,128a12,12,0,0,1-12,12H140v76a12,12,0,0,1-24,0V140H40a12,12,0,0,1,0-24h76V40a12,12,0,0,1,24,0v76h76A12,12,0,0,1,228,128Z"></path>
               </svg>Create License
             </Button>
+            {/* <Button color="primary" onClick={handleNewGuest}>
+              Create License
+            </Button> */}
           </div>
         </CardHeader>
       </Card>
-      
+
       <Card>
         <CardBody>
           <Form>
@@ -901,8 +809,20 @@ const Promotions = () => {
         </CardBody>
       </Card>
 
+      {
+        newGuest && (
+          <PromoModal
+            open={newGuest}
+            handleOpen={handleNewGuest}
+            guestData={guestId}
+          />
+        )
+      }
+
     </>
   )
 }
+
+
 
 export default Promotions

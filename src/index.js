@@ -39,6 +39,7 @@ import "@styles/react/libs/react-hot-toasts/react-hot-toasts.scss"
 import "./@core/assets/fonts/feather/iconfont.css"
 import "./@core/scss/core.scss"
 import "./assets/scss/style.scss"
+// import 'bootstrap/dist/css/bootstrap.min.css';
 
 // ** Service Worker
 // import * as serviceWorker from "./serviceWorker"
