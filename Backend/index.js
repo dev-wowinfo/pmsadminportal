@@ -4,6 +4,9 @@ import cors from "cors";
 import db from "./config/db.js";
 import session from "express-session";
 import authRoutes from "./routes/authRoutes.js";
+import jwt from "jsonwebtoken";
+import bcrypt from "bcrypt";
+// import jwt from "jsonwebtoken";
 
 dotenv.config();
 
@@ -33,49 +36,214 @@ app.use(
   })
 );
 
-// Login
-
-app.post("/api/login", (req, res) => {
-  const { email, password } = req.body;
-
-  if (!email || !password) {
-    return res.status(400).json({
-      success: false,
-      message: "Email and password required",
-    });
+// JWT authentication middleware
+function authenticateToken(req, res, next) {
+  const authHeader = req.headers.authorization || req.headers.Authorization;
+  if (!authHeader) {
+    return res.status(401).json({ success: false, message: "Access token required" });
   }
 
+  // Support 'Bearer <token>' or raw token in header
+  const token = authHeader.startsWith("Bearer ") ? authHeader.slice(7) : authHeader;
+
+  jwt.verify(token, process.env.JWT_SECRET || "my_secret_key", (err, decoded) => {
+    if (err) {
+      return res.status(403).json({ success: false, message: "Invalid or expired token" });
+    }
+    req.user = decoded; // attach decoded payload
+    next();
+  });
+}
+
+// Login
+
+// app.post("/api/login", (req, res) => {
+//   const { email, password } = req.body;
+
+//   if (!email || !password) {
+//     return res.status(400).json({
+//       success: false,
+//       message: "Email and password required",
+//     });
+//   }
+
+//   const sql = `
+//     SELECT id, email, name
+//     FROM users
+//     WHERE email = ? AND password = ? AND is_active = 1
+//   `;
+
+//   db.query(sql, [email, password], (err, result) => {
+//     if (err) {
+//       return res.status(500).json({
+//         success: false,
+//         error: err.message,
+//       });
+//     }
+
+//     if (result.length === 0) {
+//       return res.status(401).json({
+//         success: false,
+//         message: "Invalid credentials",
+//       });
+//     }
+
+//     // session create
+//     req.session.user = result[0];
+
+//     res.json({
+//       success: true,
+//       message: "Login successful",
+//       user: result[0],
+//     });
+//   });
+// });
+
+
+// app.post("/api/login", (req, res) => {
+
+//   const { email, password } = req.body;
+
+//   if (!email || !password) {
+//     return res.status(400).json({
+//       success: false,
+//       message: "Email and password required",
+//     });
+//   }
+
+//   const sql = `
+//     SELECT id, email, name, password, is_active
+//     FROM users
+//     WHERE email = ?
+//     LIMIT 1
+//   `;
+
+//   db.query(sql, [email], (err, result) => {
+//     if (err) {
+//       return res.status(500).json({
+//         success: false,
+//         error: err.message,
+//       });
+//     }
+
+//     if (result.length === 0) {
+//       return res.status(401).json({
+//         success: false,
+//         message: "Invalid credentials (email)",
+//       });
+//     }
+
+//     const user = result[0];
+
+//     // ❌ inactive user
+//     if (user.is_active !== 1) {
+//       return res.status(403).json({
+//         success: false,
+//         message: "User is inactive",
+//       });
+//     }
+
+//     // ❌ password mismatch
+//     if (user.password !== password) {
+//       return res.status(401).json({
+//         success: false,
+//         message: "Invalid credentials (password)",
+//       });
+//     }
+
+//     // ✅ JWT generate
+//     const token = jwt.sign(
+//       {
+//         user_id: user.id,
+//         email: user.email,
+//         name: user.name,
+//       },
+//       process.env.JWT_SECRET || "my_secret_key",
+//       { expiresIn: "1d" }
+//     );
+
+//     return res.json({
+//       success: true,
+//       message: "Login successful",
+//       token,
+//       user: {
+//         id: user.id,
+//         email: user.email,
+//         name: user.name,
+//       },
+//     });
+//   });
+// });
+
+
+
+// import bcrypt from "bcrypt";
+// import jwt from "jsonwebtoken";
+
+app.post("/api/login", async (req, res) => {
+  const { email, password } = req.body;
+
   const sql = `
-    SELECT id, email, name
+    SELECT id, email, name, password, is_active
     FROM users
-    WHERE email = ? AND password = ? AND is_active = 1
+    WHERE email = ?
+    LIMIT 1
   `;
 
-  db.query(sql, [email, password], (err, result) => {
+  db.query(sql, [email], async (err, result) => {
     if (err) {
-      return res.status(500).json({
-        success: false,
-        error: err.message,
-      });
+      return res.status(500).json({ error: err.message });
     }
 
     if (result.length === 0) {
       return res.status(401).json({
         success: false,
-        message: "Invalid credentials",
+        message: "Invalid credentials (email)",
       });
     }
 
-    // session create
-    req.session.user = result[0];
+    const user = result[0];
 
-    res.json({
+    if (user.is_active !== 1) {
+      return res.status(403).json({
+        success: false,
+        message: "User inactive",
+      });
+    }
+
+    // 🔐 bcrypt password compare (KEY FIX)
+    const isMatch = await bcrypt.compare(password, user.password);
+
+    if (!isMatch) {
+      return res.status(401).json({
+        success: false,
+        message: "Invalid credentials (password)",
+      });
+    }
+
+    // 🔑 JWT token
+    const token = jwt.sign(
+      { user_id: user.id, email: user.email },
+      process.env.JWT_SECRET || "my_secret_key",
+      { expiresIn: "1d" }
+    );
+
+    return res.json({
       success: true,
       message: "Login successful",
-      user: result[0],
+      token,
+      user: {
+        id: user.id,
+        email: user.email,
+        name: user.name,
+      },
     });
   });
 });
+
+
+
+
 
 // Logout
 
@@ -94,7 +262,7 @@ app.post("/api/logout", (req, res) => {
 
 // Create license
 
-app.post("/api/addLicenses", (req, res) => {
+app.post("/api/addLicenses", authenticateToken, (req, res) => {
   const { hotel_id, plan_id, start_date, end_date } = req.body;
 
   if (!hotel_id || !plan_id || !start_date) {
@@ -472,7 +640,7 @@ app.post("/api/plans/clone/:id", (req, res) => {
         success: true,
         message: "Plan cloned successfully",
         new_plan_id: result.insertId,
-		statusCode:200
+        statusCode: 200
       });
     });
   });

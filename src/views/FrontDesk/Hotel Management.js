@@ -11,10 +11,12 @@ import {
 import { ChevronDown, Edit, Trash } from "react-feather";
 import { useSelector } from "react-redux";
 import axios from "../../API/axios";
+import NewGuest from "../GuestMaster/NewGuest";
+import BookingModal from "./BookingModal";
 // import NewGuest from "./NewGuest";
 // import GuestEdit from "./GuestEdit";
 
-const BookingChart = () => {
+const HotelManagement = () => {
   useEffect(() => {
     const prevTitle = document.title
     document.title = "PMS-Guest Master"
@@ -242,7 +244,7 @@ const BookingChart = () => {
         </CardBody>
       </Card>
       {newGuest ? (
-        <NewGuest open={newGuest} handleOpen={handleNewGuest} getOption={handleGuestOptions} />
+        <BookingModal open={newGuest} handleOpen={handleNewGuest} getOption={handleGuestOptions} />
       ) : (
         <></>
       )}
@@ -260,4 +262,4 @@ const BookingChart = () => {
   );
 };
 
-export default BookingChart;
+export default HotelManagement;

@@ -17,16 +17,17 @@ import axios from '../../API/axios'
 import toast from 'react-hot-toast'
 import { Trash } from 'react-feather'
 import PromoModal from "./PromoModal"
+import NewGuest from '../GuestMaster/NewGuest'
 
 
 let discountType = [
   { value: 'P', label: 'Percentage' },
   { value: 'F', label: 'Flat' }
 ]
-const Promotions = () => {
+const LicenseManagement = () => {
   useEffect(() => {
     const prevTitle = document.title
-    document.title = "PMS-Promotions"
+    document.title = "PMS-Licences"
 
     return () => {
       document.title = prevTitle
@@ -194,7 +195,7 @@ const Promotions = () => {
   let BlackoutData = []
   const [bDate, setbDate] = useState([]);
   const [blackDate, setBlackDate] = useState([])
-  
+
   const handleAddDate = () => {
     const values = [...bDate];
     values.push({
@@ -284,11 +285,17 @@ const Promotions = () => {
 
           <div class="d-flex items-center justify-between">
             {/* <Button color="primary" onClick={() => { setNewGuest(true); }}> */}
-            <Button color="primary" onClick={handleNewGuest}>
+
+            <Button color="primary" onClick={() => { setNewGuest(true); }}>
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 256 256" class="me-1"><path d="M228,128a12,12,0,0,1-12,12H140v76a12,12,0,0,1-24,0V140H40a12,12,0,0,1,0-24h76V40a12,12,0,0,1,24,0v76h76A12,12,0,0,1,228,128Z"></path></svg>
+              Create License
+            </Button>
+
+            {/* <Button color="primary" onClick={handleNewGuest}>
 
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 256 256" class="me-1"><path d="M228,128a12,12,0,0,1-12,12H140v76a12,12,0,0,1-24,0V140H40a12,12,0,0,1,0-24h76V40a12,12,0,0,1,24,0v76h76A12,12,0,0,1,228,128Z"></path>
               </svg>Create License
-            </Button>
+            </Button> */}
             {/* <Button color="primary" onClick={handleNewGuest}>
               Create License
             </Button> */}
@@ -816,6 +823,7 @@ const Promotions = () => {
             handleOpen={handleNewGuest}
             guestData={guestId}
           />
+          // <NewGuest open={newGuest} handleOpen={handleNewGuest} />
         )
       }
 
@@ -825,4 +833,4 @@ const Promotions = () => {
 
 
 
-export default Promotions
+export default LicenseManagement

@@ -2,10 +2,10 @@ import { FaUncharted } from "react-icons/fa"
 
 export default [
     {
-        id: 'bookinChart',
+        id: 'hotelManagement',
         title: 'Hotels',
         icon: <FaUncharted size={20} />,
-        navLink: '/booking-chart'
+        navLink: '/hotelManagement'
         // children: [
         //     {
         //       id: 'roomCategory',

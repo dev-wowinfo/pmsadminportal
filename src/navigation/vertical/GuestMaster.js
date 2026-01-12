@@ -8,6 +8,6 @@ export default [
         id: 'guestMaster',
         title: 'Plan',
         icon: <FaUserTie size={20} />,
-        navLink: '/guestMaster',
+        navLink: '/subscriptionPlan',
     }
 ]

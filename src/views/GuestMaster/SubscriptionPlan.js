@@ -17,7 +17,7 @@ import NewGuest from "./NewGuest";
 import GuestEdit from "./GuestEdit";
 import { padding } from "@mui/system";
 
-const GuestTable = () => {
+const SubscriptionPlan = () => {
   useEffect(() => {
     const prevTitle = document.title
     document.title = "PMS-Guest Master"
@@ -295,20 +295,9 @@ const GuestTable = () => {
         </CardHeader>
       </Card>
 
-      {/* <CardBody>
-          <DataTable
-            noHeader
-            pagination
-            // data={search(guestOptions)}
-            data={staticData}
-            columns={Columns}
-            className="react-dataTable ms-3"
-            sortIcon={<ChevronDown size={10} />}
-            paginationRowsPerPageOptions={[10, 25, 50, 100]}
-          />
-        </CardBody> */}
+      
       <div className="d-flex justify-content-between">
-        <Card style={{ width: '26rem', paddingTop: '20px' }}>
+        <Card style={{ width: '24rem', paddingTop: '20px' , marginRight:'5px' }}>
           <div className="p-1">
             <div className="d-flex justify-content-between">
               <div>
@@ -358,7 +347,7 @@ const GuestTable = () => {
           </div>
         </Card>
 
-        <Card style={{ width: '26rem', paddingTop: '20px' }}>
+        <Card style={{ width: '24rem', paddingTop: '20px' , marginRight:'5px' }}>
           <div className="p-1">
             <div className="d-flex justify-content-between">
               <div>
@@ -405,7 +394,7 @@ const GuestTable = () => {
             </div>
           </div>
         </Card>
-        <Card style={{ width: '26rem', paddingTop: '20px' }}>
+        <Card style={{ width: '24rem', paddingTop: '20px' }}>
           <div className="p-1">
             <div className="d-flex justify-content-between">
               <div>
@@ -462,6 +451,7 @@ const GuestTable = () => {
       ) : (
         <></>
       )}
+      
       {showEdit ? (
         <GuestEdit
           open={showEdit}
@@ -476,4 +466,4 @@ const GuestTable = () => {
   );
 };
 
-export default GuestTable;
+export default SubscriptionPlan;

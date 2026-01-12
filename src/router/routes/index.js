@@ -19,7 +19,7 @@ import IBEBooking from "../../views/Service/IBEBooking";
 // import RoomCategory from "../../views/FrontDesk/RoomCategory"
 // import RoomNumber from "../../views/FrontDesk/RoomNumber"
 import RateInventory from "../../views/RateInventory/RateInventory";
-import Promotions from "../../views/Promotions/Promotions";
+import Promotions from "../../views/Promotions/LicenseManagement.js";
 import NightAudit from "../../views/NightAudit/NightAudit";
 import PaymentMethod from "../../views/MasterSetting/PaymentMethod";
 // import DebtorAccount from "../../views/MasterSetting/DebtorAccount"
@@ -87,6 +87,9 @@ import Notifications from "../../views/Reports/Notifications";
 import BookingEngine from "../../views/bookingengine";
 import NewPage from "../../views/newpage";
 import ManageProfile from '../../views/PropertyMaster/AccountSetup/ProfileModal'
+import LicenseManagement from "../../views/Promotions/LicenseManagement.js";
+import SubscriptionPlan from "../../views/GuestMaster/SubscriptionPlan.js";
+import HotelManagement from "../../views/FrontDesk/Hotel Management.js";
 // import ManageProfile from '../../../../ layouts/components/menu/vertical-menu/EditProfileModal.js'
 // import PaymentGateWay from "../../views/FrontDesk/PaymentsFolioAcc/PaymentGateWay";
 // import pos2 from "../../views/POS2/POS2"
@@ -136,7 +139,7 @@ const POS = lazy(() => import("../../views/POS2/POS2"));
 const RateAndInventory = lazy(() =>
   import("../../views/RateInventory/RateInventory")
 );
-const Promotion = lazy(() => import("../../views/Promotions/Promotions"));
+const Promotion = lazy(() => import("../../views/Promotions/LicenseManagement.js"));
 const RatingReviews = lazy(() =>
   import("../../views/RatingsReviews/RatingReviews")
 );
@@ -247,14 +250,14 @@ const InvoiceListing = lazy(() =>
 );
 const Help = lazy(() => import("../../views/Help/Help"));
 const POSOrders = lazy(() => import("../../views/POS2/Order/POSOrders"));
-const BookingChart = lazy(() => import("../../views/FrontDesk/BookingChart"));
+const BookingChart = lazy(() => import("../../views/FrontDesk/Hotel Management.js"));
 const PurchaseOrderInvoice = lazy(() =>
   import("../../apps/Templates/PurchaseOrderInvoice")
 );
 const PurchaseReceiveInvoice = lazy(() =>
   import("../../apps/Templates/PurchaseReceiveInvoice")
 );
-const GuestMaster = lazy(() => import("../../views/GuestMaster/GuestTable"));
+const GuestMaster = lazy(() => import("../../views/GuestMaster/SubscriptionPlan.js"));
 const OtaVoucher = lazy(() => import("../../apps/Templates/OtaVoucher"));
 
 // ** Merge Routes
@@ -445,8 +448,8 @@ const Routes = [
     element: <FrontDesk />,
   },
   {
-    path: "/booking-chart",
-    element: <BookingChart />,
+    path: "/hotelManagement",
+    element: <HotelManagement/>,
   },
   // {
   //   path: '/roomCategory',
@@ -501,8 +504,8 @@ const Routes = [
     element: <RateInventory />,
   },
   {
-    path: "/promotions",
-    element: <Promotions />,
+    path: "/licenseManagement",
+    element: <LicenseManagement />,
   },
   {
     path: "/ratingsReviews",
@@ -806,8 +809,8 @@ const Routes = [
     element: <POSOrders />,
   },
   {
-    path: "/guestMaster",
-    element: <GuestMaster />,
+    path: "/subscriptionPlan",
+    element: <SubscriptionPlan />,
   },
   {
     path: "/help",
