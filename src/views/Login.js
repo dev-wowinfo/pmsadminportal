@@ -3,15 +3,15 @@ import { Link, useNavigate } from "react-router-dom"
 import { Facebook, Twitter, Mail, GitHub } from "react-feather"
 import InputPasswordToggle from "@components/input-password-toggle"
 import {
-  Row,
-  Col,
-  CardTitle,
-  CardText,
-  Form,
-  Label,
-  Input,
-  Button,
-  Toast
+	Row,
+	Col,
+	CardTitle,
+	CardText,
+	Form,
+	Label,
+	Input,
+	Button,
+	Toast
 } from "reactstrap"
 import "@styles/react/pages/page-authentication.scss"
 import { useState } from "react"
@@ -26,122 +26,157 @@ import { cipherPasswordFunc } from "../common/commonMethods"
 
 
 const Login = () => {
-  const [userName, setUserName] = useState("")
-  const [password, setPassword] = useState("")
-  const [display, setDisplay] = useState(false)
-  const navigate = useNavigate()
-  const dispatch = useDispatch()
+	const [userName, setUserName] = useState("")
+	const [email, setEmail] = useState("")
+	const [password, setPassword] = useState("")
+	const [display, setDisplay] = useState(false)
+	const navigate = useNavigate()
+	const dispatch = useDispatch()
 
-  async function loginButton() {
-    try {
-      console.log(userName)
-      let cipherPassword = cipherPasswordFunc(password);
+	//   async function loginButton() {
+	//     try {
+	//       console.log(userName)
+	//       let cipherPassword = cipherPasswordFunc(password);
 
-      const loginBody = {
-        Username: userName,
-        Password: password,
-        Event: "selectone",
-      }
-      setDisplay(true)
-      console.log(loginBody);
-      if (userName && password !== '') {
-        // const result = await axios.post(`/authentication/userauthentication/loginauthentication`, loginBody)
-           const result = await axios.post(`/authentication/userauthentication/loginauthentication`,loginBody); 
-           console.log("login api result",result)
-          const resultData = result.data[0];
-          console.log("login api result",resultData[0].username)
-        dispatch(userDataStorage({
-          "UserName": resultData[0].username,
-          "LoginID": resultData[0].loginID,
-          "Token": resultData[0].token,
-          "UserID": resultData[0].userID,
-          "SecretKey": "123",
-          "UserRoleType": resultData[0].userRoleType,
-          "UserRole": resultData[0].userRole,
-          "Status": resultData[0].status,
-          "PropertyID": resultData[0].propertyID,
-          "HotelName": resultData[0].hotelName,
-          "CompanyID": resultData[0].companyID,
-          "CompanyName": resultData[0].companyName,
+	//       const loginBody = {
+	//         Username: userName,
+	//         Password: password,
+	//         Event: "selectone",
+	//       }
+	//       setDisplay(true)
+	//       console.log(loginBody);
+	//       if (userName && password !== '') {
+	//         // const result = await axios.post(`/authentication/userauthentication/loginauthentication`, loginBody)
+	//            const result = await axios.post(`/authentication/userauthentication/loginauthentication`,loginBody); 
+	//            console.log("login api result",result)
+	//           const resultData = result.data[0];
+	//           console.log("login api result",resultData[0].username)
+	//         dispatch(userDataStorage({
+	//           "UserName": resultData[0].username,
+	//           "LoginID": resultData[0].loginID,
+	//           "Token": resultData[0].token,
+	//           "UserID": resultData[0].userID,
+	//           "SecretKey": "123",
+	//           "UserRoleType": resultData[0].userRoleType,
+	//           "UserRole": resultData[0].userRole,
+	//           "Status": resultData[0].status,
+	//           "PropertyID": resultData[0].propertyID,
+	//           "HotelName": resultData[0].hotelName,
+	//           "CompanyID": resultData[0].companyID,
+	//           "CompanyName": resultData[0].companyName,
 
-        }))
-        console.log('result data', resultData)
-        if (!resultData[0]) {
-          toast.error('Please Enter Valid User Name And Password', {
-            style: {
-              minWidth: '250px'
-            },
-            duration: 3000
-          })
+	//         }))
+	//         console.log('result data', resultData)
+	//         if (!resultData[0]) {
+	//           toast.error('Please Enter Valid User Name And Password', {
+	//             style: {
+	//               minWidth: '250px'
+	//             },
+	//             duration: 3000
+	//           })
 
-          return
-        }
+	//           return
+	//         }
 
-        //----commented on 6/2/23---------
-        // const loginID = resultData[0].LoginID
-        // localStorage.setItem("user-id", loginID)
-        // const token = resultData[0].Token
-        // localStorage.setItem("user-token", token)
-        // const UserRoleID = resultData[0].UserRoleID // TODO need use role name
-        // localStorage.setItem("user-role", UserRoleID)
+	//         //----commented on 6/2/23---------
+	//         // const loginID = resultData[0].LoginID
+	//         // localStorage.setItem("user-id", loginID)
+	//         // const token = resultData[0].Token
+	//         // localStorage.setItem("user-token", token)
+	//         // const UserRoleID = resultData[0].UserRoleID // TODO need use role name
+	//         // localStorage.setItem("user-role", UserRoleID)
 
 
 
-        // console.log(resultData[0].Token)
-        //   console.log(jwtDefaultConfig.setToken({"Token":resultData[0].Token,
-        //   "LoginID":resultData[0].LoginID,"SecretKey":"123"
-        // }))
-        // store.dispatch(setUser(resultData))
-        // api.jwt.setToken(resultData[0].token)
-        localStorage.setItem('userData', JSON.stringify(resultData))
-        // navigate(getHomeRouteForLoggedInUser(resultData[0].token))
+	//         // console.log(resultData[0].Token)
+	//         //   console.log(jwtDefaultConfig.setToken({"Token":resultData[0].Token,
+	//         //   "LoginID":resultData[0].LoginID,"SecretKey":"123"
+	//         // }))
+	//         // store.dispatch(setUser(resultData))
+	//         // api.jwt.setToken(resultData[0].token)
+	//         localStorage.setItem('userData', JSON.stringify(resultData))
+	//         // navigate(getHomeRouteForLoggedInUser(resultData[0].token))
 
-        if (userName === resultData[0].username && resultData[0].token) {
-          toast.success(`Hello ${resultData[0].username} You Login successfully`, {
-            style: {
-              minWidth: '250px'
-            },
-            duration: 3000
-          })
-          navigate("/dashboard")
-        }
-      } else {
-        toast.error('Fill All Fields!', {
-          style: {
-            minWidth: '250px'
-          },
-          duration: 3000
-        })
-      }
-    } catch (error) {
-      console.log("Login Page Error", error)
-      toast.error("Username or Password is incorrect")
-    }
-  }
+	//         if (userName === resultData[0].username && resultData[0].token) {
+	//           toast.success(`Hello ${resultData[0].username} You Login successfully`, {
+	//             style: {
+	//               minWidth: '250px'
+	//             },
+	//             duration: 3000
+	//           })
+	//           navigate("/dashboard")
+	//         }
+	//       } else {
+	//         toast.error('Fill All Fields!', {
+	//           style: {
+	//             minWidth: '250px'
+	//           },
+	//           duration: 3000
+	//         })
+	//       }
+	//     } catch (error) {
+	//       console.log("Login Page Error", error)
+	//       toast.error("Username or Password is incorrect")
+	//     }
+	//   }
 
-  const handleKeyPress = () => {
-    loginButton()
-  }
 
-  function handleEnter(event) {
-    if (event.keyCode === 13) {
-      const form = event.target.form
-      const index = Array.prototype.indexOf.call(form, event.target)
-      form.elements[index + 1].focus()
-      event.preventDefault()
-    }
-  }
+	const loginButton = async () => {
+		setDisplay(true);
 
-  const { skin } = useSkin()
+		if (!email || !password) return;
 
-  const illustration = skin === "dark" ? "login-v2-dark.svg" : "login-v2.svg",
-    source = require(`@src/assets/images/pages/${illustration}`)
+		try {
+			const response = await axios.post(
+				'http://localhost:8080/api/userLogin',
+				{
+					email: email,
+					password: password
+				}
+			);
 
-  return (
-    <div className="auth-wrapper auth-cover">
-      <Row className="auth-inner m-0">
-        <Link className="brand-logo" to="/" onClick={(e) => e.preventDefault()}>
-          {/* <svg viewBox="0 0 139 95" version="1.1" height="28">
+			console.log('Login Success:', response.data);
+
+			// example: token save
+			// localStorage.setItem('token', response.data.token);
+
+			// redirect
+			// navigate('/dashboard');
+
+		} catch (error) {
+			console.error(
+				'Login Error:',
+				error.response?.data || error.message
+			);
+			alert(error.response?.data?.message || 'Invalid credentials');
+		}
+	};
+
+
+
+	const handleKeyPress = () => {
+		loginButton()
+	}
+
+	function handleEnter(event) {
+		if (event.keyCode === 13) {
+			const form = event.target.form
+			const index = Array.prototype.indexOf.call(form, event.target)
+			form.elements[index + 1].focus()
+			event.preventDefault()
+		}
+	}
+
+	const { skin } = useSkin()
+
+	const illustration = skin === "dark" ? "login-v2-dark.svg" : "login-v2.svg",
+		source = require(`@src/assets/images/pages/${illustration}`)
+
+	return (
+		<div className="auth-wrapper auth-cover">
+			<Row className="auth-inner m-0">
+				<Link className="brand-logo" to="/" onClick={(e) => e.preventDefault()}>
+					{/* <svg viewBox="0 0 139 95" version="1.1" height="28">
             <defs>
               <linearGradient
                 x1="100%"
@@ -207,77 +242,77 @@ const Login = () => {
               </g>
             </g>
           </svg> */}
-          <h2 className="brand-text" style={{ color: '#7B68EE' }}>Hostynnist</h2>
-        </Link>
-        <Col className="d-none d-lg-flex align-items-center p-5" lg="8" sm="12">
-          <div className="w-100 d-lg-flex align-items-center justify-content-center px-5">
-            <img className="img-fluid" src={source} alt="Login Cover" />
-          </div>
-        </Col>
-        <Col
-          className="d-flex align-items-center auth-bg px-2 p-lg-5"
-          lg="4"
-          sm="12"
-        >
+					<h2 className="brand-text" style={{ color: '#7B68EE' }}>Hostynnist</h2>
+				</Link>
+				<Col className="d-none d-lg-flex align-items-center p-5" lg="8" sm="12">
+					<div className="w-100 d-lg-flex align-items-center justify-content-center px-5">
+						<img className="img-fluid" src={source} alt="Login Cover" />
+					</div>
+				</Col>
+				<Col
+					className="d-flex align-items-center auth-bg px-2 p-lg-5"
+					lg="4"
+					sm="12"
+				>
 
-          <Col className="px-xl-2 mx-auto" sm="8" md="6" lg="12">
-            <CardTitle tag="h2" className="fw-bold mb-1">
-              <img className="fallback-logo" height={28} width={30} src={logo} alt="logo" /> Welcome to Hostynnist! 👋
-            </CardTitle>
-            {/* <CardText className="mb-2">
+					<Col className="px-xl-2 mx-auto" sm="8" md="6" lg="12">
+						<CardTitle tag="h2" className="fw-bold mb-1">
+							<img className="fallback-logo" height={28} width={30} src={logo} alt="logo" /> Welcome to Hostynnist! 👋
+						</CardTitle>
+						{/* <CardText className="mb-2">
               Please sign-in to your account & start the adventure
             </CardText> */}
-            <Form
-              className="auth-login-form mt-2"
-              onSubmit={(e) => e.preventDefault()}
-            >
-              <div className="mb-1">
-                <Label className="form-label" for="login-email">
-                  Username
-                </Label>
-                <Input
-                  type="text"
-                  id="login-email"
-                  className="form-control"
-                  onChange={(e) => setUserName(e.target.value)}
-                  autoFocus
-                  invalid={display && userName === ''}
-                  onKeyDown={handleEnter}
-                />
-                {display && !userName ? <span className='error_msg_lbl'>Username is required </span> : null}
-              </div>
-              <div className="mb-1">
-                <Label className="form-label" for="login-password">
-                  Password
-                </Label>
-                {/* <InputPasswordToggle
+						<Form
+							className="auth-login-form mt-2"
+							onSubmit={(e) => e.preventDefault()}
+						>
+							<div className="mb-1">
+								<Label className="form-label" for="login-email">
+									Email
+								</Label>
+								<Input
+									type="email"
+									id="login-email"
+									className="form-control"
+									onChange={(e) => setEmail(e.target.value)}
+									autoFocus
+									invalid={display && email === ''}
+									onKeyDown={handleEnter}
+								/>
+								{display && !email ? <span className='error_msg_lbl'>Email is required </span> : null}
+							</div>
+							<div className="mb-1">
+								<Label className="form-label" for="login-password">
+									Password
+								</Label>
+								{/* <InputPasswordToggle
                   className="input-group-merge"
                   id="login-password"
                 /> */}
-                <Input
-                  type="password"
-                  className="form-control"
-                  onChange={(e) => setPassword(e.target.value)}
-                  invalid={display && password === ''}
-                  onKeyPress={(e) => e.key === 'Enter' && handleKeyPress()} />
-                {display && !password ? <span className='error_msg_lbl'>Password is required </span> : null}
-              </div>
-              {/* <div className="form-check mb-1">
+								<Input
+									type="password"
+									className="form-control"
+									onChange={(e) => setPassword(e.target.value)}
+									invalid={display && password === ''}
+									onKeyPress={(e) => e.key === 'Enter' && handleKeyPress()} />
+								{display && !password ? <span className='error_msg_lbl'>Password is required </span> : null}
+							</div>
+							{/* <div className="form-check mb-1">
                 <Input type="checkbox" id="remember-me" />
                 <Label className="form-check-label" for="remember-me">
                   Remember Me
                 </Label>
               </div> */}
-              <div className="float-end">
-                <Link to="/forgot-password">
-                  <small>Forgot Password?</small>
-                </Link>
-              </div>
-              <Button onClick={loginButton} color="primary" block>
-                Sign in
-              </Button>
-            </Form>
-            {/* <p className="text-center mt-2">
+							<div className="float-end">
+								<Link to="/forgot-password">
+									<small>Forgot Password?</small>
+								</Link>
+							</div>
+							<Button onClick={loginButton} color="primary" block>
+								Sign in
+							</Button>
+						</Form>
+						{/* <p className="text-center mt-2">
               <span className="me-25">New on our platform?</span>
               <Link to="/register">
                 <span>Create an account</span>
@@ -300,11 +335,11 @@ const Login = () => {
                 <GitHub size={14} />
               </Button>
             </div> */}
-          </Col>
-        </Col>
-      </Row>
-    </div>
-  )
+					</Col>
+				</Col>
+			</Row>
+		</div>
+	)
 }
 
 export default Login
