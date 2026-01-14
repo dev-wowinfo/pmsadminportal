@@ -2,6 +2,7 @@ import express from "express";
 import bcrypt from "bcryptjs";
 import crypto from "crypto";
 import db from "../config/db.js";
+import jwt from "jsonwebtoken";
 
 const router = express.Router();
 
@@ -87,7 +88,57 @@ router.post("/register", async (req, res) => {
 /* ===============================
    LOGIN USER
    =============================== */
-router.post("/login", (req, res) => {
+// router.post("/login", (req, res) => {
+//   const { email, password } = req.body;
+
+//   if (!email || !password) {
+//     return res.status(400).json({
+//       success: false,
+//       message: "Email and password are required",
+//     });
+//   }
+
+//   const normalizedEmail = email.trim().toLowerCase();
+
+//   const sql = "SELECT id, name, email, password FROM users WHERE email = ?";
+//   db.query(sql, [normalizedEmail], async (err, users) => {
+//     if (err) {
+//       return res.status(500).json({
+//         success: false,
+//         message: "Database error",
+//       });
+//     }
+
+//     if (users.length === 0) {
+//       return res.status(401).json({
+//         success: false,
+//         message: "Invalid email or password",
+//       });
+//     }
+
+//     const user = users[0];
+//     const isMatch = await bcrypt.compare(password, user.password);
+
+//     if (!isMatch) {
+//       return res.status(401).json({
+//         success: false,
+//         message: "Invalid email or password",
+//       });
+//     }
+
+//     return res.json({
+//       success: true,
+//       message: "Login successful",
+//       user: {
+//         id: user.id,
+//         name: user.name,
+//         email: user.email,
+//       },
+//     });
+//   });
+// });
+
+router.post("/login", async (req, res) => {
   const { email, password } = req.body;
 
   if (!email || !password) {
@@ -125,9 +176,20 @@ router.post("/login", (req, res) => {
       });
     }
 
+    // 🔑 JWT TOKEN GENERATE (MAIN ADDITION)
+    const token = jwt.sign(
+      {
+        user_id: user.id
+        // role: user.role (later add kar sakte ho)
+      },
+      process.env.JWT_SECRET || "my_secret_key",
+      { expiresIn: "1d" }
+    );
+
     return res.json({
       success: true,
       message: "Login successful",
+      token, // 👈 IMPORTANT
       user: {
         id: user.id,
         name: user.name,
@@ -136,6 +198,7 @@ router.post("/login", (req, res) => {
     });
   });
 });
+
 
 /* ===============================
    FORGOT PASSWORD
