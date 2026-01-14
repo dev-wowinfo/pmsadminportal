@@ -280,7 +280,7 @@ const LicenseManagement = () => {
           <CardTitle>
             <div>
               <h1 class="text-3xl fw-bolder tracking-tight">License Management</h1>
-              <p class="text-muted-foreground">Manage customer licenses and subscriptions</p>
+              <p class="fs-6">Manage customer licenses and subscriptions</p>
             </div>
           </CardTitle>
 
@@ -308,11 +308,12 @@ const LicenseManagement = () => {
         <CardBody>
           <Form>
             <div>
-              <div data-slot="card-header" class="items-start px-6 pb-6">
-                <div data-slot="card-title" class="fw-bolder"><h4>All Licenses</h4>
+              <div data-slot="card-header" className="items-start px-6 pb-6">
+                <div data-slot="card-title">
+                  <h4 className='text-3xl fw-bolder tracking-tight'>All Licenses</h4>
                 </div>
-                <div data-slot="card-description" class="text-muted-foreground text-sm">
-                  <p>View and manage all customer licenses</p>
+                <div data-slot="card-description">
+                  <p className='fs-5'>View and manage all customer licenses</p>
                 </div>
               </div>
               {/* <div class=''>

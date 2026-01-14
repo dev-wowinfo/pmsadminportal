@@ -313,7 +313,7 @@ const AddHotel = ({ open, handleOpen, getOption }) => {
         className="modal-dialog-centered modal-md"
         backdrop={false}
       >
-        <ModalHeader className="bg-transparent" toggle={() => handleOpen()}><h3 className="fw-bolder">Add New Hotel</h3>
+        <ModalHeader className="bg-transparent" toggle={() => handleOpen()}><h3 className="fw-bolder"> New Hotel</h3>
           <p>Register a new hotel property</p></ModalHeader>
         <Form>
           <ModalBody>
@@ -393,7 +393,7 @@ const AddHotel = ({ open, handleOpen, getOption }) => {
 
               </Col>
               <Col className="mt-1 d-flex flex-md-row flex-column">
-                <Col className="mx-1">
+                <Col className="mx-1">Add
                   <Label className="form-label" for="address">
                     Max Rooms<span className="text-danger">*</span>
                   </Label>
@@ -436,10 +436,10 @@ const AddHotel = ({ open, handleOpen, getOption }) => {
         <ModalHeader toggle={handleOpen}>
           <div>
             <h3 className="fw-bolder mb-0">Add New Hotel</h3>
-            <p className="text-muted mb-0">Register a new hotel property</p>
+            <p className="mb-0">Register a new hotel property</p>
           </div>
         </ModalHeader>
-
+          
         <Form onSubmit={onSubmit}>
           <ModalBody>
             {/* ---------- HOTEL NAME ---------- */}
