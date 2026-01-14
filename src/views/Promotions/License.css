@@ -1,0 +1,11 @@
+.custom-modal-header {
+  position: relative;
+}
+
+.custom-modal-header .btn-close,
+.custom-modal-header .close {
+  position: absolute;
+  top: -20px;
+  right: 5px;
+ 
+}

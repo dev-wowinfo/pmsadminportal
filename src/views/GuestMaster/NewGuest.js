@@ -13,6 +13,7 @@ import {
 } from "reactstrap";
 import Select from "react-select";
 import { toast } from "react-hot-toast";
+import Plan from "../GuestMaster/Plan.css"
 
 // ** Third Party Components
 import * as yup from "yup";
@@ -309,7 +310,7 @@ const NewGuest = ({ open, handleOpen, getOption }) => {
       <Modal
         isOpen={open}
         toggle={() => handleOpen()}
-        className="modal-dialog-centered modal-md"
+        className="modal-dialog-centered  custom-modal-header modal-lg"
         backdrop={false}
       >
         <ModalHeader className="bg-transparent" toggle={() => handleOpen()}><h3 className="fw-bolder">Create New Plan</h3>
@@ -323,7 +324,7 @@ const NewGuest = ({ open, handleOpen, getOption }) => {
                     Plan Name <span className="text-danger">*</span>
                   </Label>
                   <input type="text" placeholder="e.g.,Professional Plan" className="form-control input-default w-100" />
-                  
+
                 </Col>
                 <Col className="mx-1">
                   <Label className="form-label" for="last_name">
@@ -331,7 +332,7 @@ const NewGuest = ({ open, handleOpen, getOption }) => {
                   </Label>
                   <input type="textarea" placeholder="Brief Description..." className="form-control input-default w-100" />
                 </Col>
-                
+
               </Col>
               <Col className="mt-1 d-flex flex-md-row flex-column">
                 <Col className="mx-1">
@@ -355,7 +356,7 @@ const NewGuest = ({ open, handleOpen, getOption }) => {
                 </Col>
               </Col>
               <Col className="mt-1 d-flex flex-md-row flex-column">
-                
+
                 {/* <Col className='mx-1'>
                                     <Label className='form-label' for='city'>
                                         District<span className='text-danger'>*</span>
@@ -381,7 +382,7 @@ const NewGuest = ({ open, handleOpen, getOption }) => {
                   <Label className="form-label" for="city">
                     Price<span className="text-danger">*</span>
                   </Label>
-                   <input type="number" placeholder="0" className="form-control w-100" />
+                  <input type="number" placeholder="0" className="form-control w-100" />
                 </Col>
 
                 <Col className="mx-1">
@@ -408,15 +409,69 @@ const NewGuest = ({ open, handleOpen, getOption }) => {
                   <Label className="form-label" for="address">
                     Max Users<span className="text-danger">*</span>
                   </Label>
-                  <input type="number" placeholder="30" className="form-control w-100" />
+                  <input type="number" placeholder="10" className="form-control w-100" />
                 </Col>
               </Col>
             </Row>
+            <div className="included-module pt-1"> 
+              <label className="form-label fw-semibold">
+                Included Module<span className="text-danger">*</span>
+              </label>
+
+              <div className="row">
+                <div className="col-3">
+                  <div className="form-check mb-2">
+                    <input className="form-check-input" type="checkbox" id="frontOffice" />
+                    <label className="form-check-label">
+                      Front Office
+                    </label>
+                  </div>
+
+                  <div className="form-check mb-2">
+                    <input className="form-check-input" type="checkbox" id="pos" />
+                    <label className="form-check-label" >
+                      Point of Sale
+                    </label>
+                  </div>
+
+                  <div className="form-check">
+                    <input className="form-check-input" type="checkbox" id="reports" />
+                    <label className="form-check-label">
+                      Reports
+                    </label>
+                  </div>
+                </div>
+
+                <div className="col-6">
+                  <div className="form-check mb-2">
+                    <input className="form-check-input" type="checkbox" id="housekeeping" />
+                    <label className="form-check-label" htmlFor="housekeeping">
+                      Housekeeping
+                    </label>
+                  </div>
+
+                  <div className="form-check mb-2">
+                    <input className="form-check-input" type="checkbox" id="accounting" />
+                    <label className="form-check-label" htmlFor="accounting">
+                      Accounting
+                    </label>
+                  </div>
+
+                  <div className="form-check">
+                    <input className="form-check-input" type="checkbox" id="integrations" />
+                    <label className="form-check-label" htmlFor="integrations">
+                      Integrations
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+
           </ModalBody>
           <ModalFooter>
             <Col xs={12} className="text-center">
               <Button className="me-1" color="primary" onClick={onSubmit}>
-                Submit
+                Create Plan
               </Button>
               <Button
                 type="reset"

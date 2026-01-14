@@ -23,6 +23,7 @@ import { selectThemeColors } from "@utils";
 
 import axios from "../../API/axios";
 import { useSelector } from "react-redux";
+import License from "../Promotions/License.css"
 
 const defaultValues = {
   name: "",
@@ -309,7 +310,7 @@ const PromoModal = ({ open, handleOpen, getOption }) => {
       <Modal
         isOpen={open}
         toggle={() => handleOpen()}
-        className="modal-dialog-centered modal-md"
+        className="modal-dialog-centered modal-md custom-modal-header"
         backdrop={false}
       >
         <ModalHeader className="bg-transparent" toggle={() => handleOpen()}><h3 className="fw-bolder">Create New License</h3>
