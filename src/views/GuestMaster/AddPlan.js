@@ -324,7 +324,7 @@ const AddPlan = ({ open, handleOpen, getOption }) => {
         className="modal-dialog-centered  custom-modal-header modal-lg"
         backdrop={false}
       >
-        <ModalHeader className="bg-transparent" toggle={() => handleOpen()}><h3 className="fw-bolder">Create New Plan</h3>
+        <ModalHeader className="bg-transparent" toggle={() => handleOpen()}><h3 className="fw-bolder">Create New Plan- hamza</h3>
           <p>Configure a new subscription plan</p></ModalHeader>
         <Form>
           <ModalBody>
