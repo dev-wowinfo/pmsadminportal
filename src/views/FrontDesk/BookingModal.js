@@ -23,6 +23,7 @@ import { selectThemeColors } from "@utils";
 
 import axios from "../../API/axios";
 import { useSelector } from "react-redux";
+import Hotel from "../FrontDesk/Hotel.css"
 
 const defaultValues = {
   name: "",
@@ -428,7 +429,7 @@ const BookingModal = ({ open, handleOpen, getOption }) => {
       <Modal
         isOpen={open}
         toggle={handleOpen}
-        className="modal-dialog-centered modal-md"
+        className="modal-dialog-centered modal-md hotel-modal-header"
         backdrop={false}
       >
         {/* ---------- HEADER ---------- */}
