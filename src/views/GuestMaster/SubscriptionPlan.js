@@ -13,9 +13,10 @@ import {
 import { ChevronDown, Edit, Trash } from "react-feather";
 import { useSelector } from "react-redux";
 import axios from "../../API/axios";
-import NewGuest from "./NewGuest";
+// import NewGuest from "./AddPlan";
 import GuestEdit from "./GuestEdit";
 import { padding } from "@mui/system";
+import AddPlan from "./AddPlan";
 
 const SubscriptionPlan = () => {
   useEffect(() => {
@@ -447,7 +448,7 @@ const SubscriptionPlan = () => {
 
 
       {newGuest ? (
-        <NewGuest open={newGuest} handleOpen={handleNewGuest} getOption={handleGuestOptions} />
+        <AddPlan open={newGuest} handleOpen={handleNewGuest} getOption={handleGuestOptions} />
       ) : (
         <></>
       )}

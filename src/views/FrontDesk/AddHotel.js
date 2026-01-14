@@ -13,7 +13,6 @@ import {
 } from "reactstrap";
 import Select from "react-select";
 import { toast } from "react-hot-toast";
-import Plan from "../GuestMaster/Plan.css"
 
 // ** Third Party Components
 import * as yup from "yup";
@@ -24,6 +23,7 @@ import { selectThemeColors } from "@utils";
 
 import axios from "../../API/axios";
 import { useSelector } from "react-redux";
+import Hotel from "../FrontDesk/Hotel.css"
 
 const defaultValues = {
   name: "",
@@ -39,7 +39,7 @@ const defaultValues = {
   city: "",
 };
 
-const NewGuest = ({ open, handleOpen, getOption }) => {
+const AddHotel = ({ open, handleOpen, getOption }) => {
   const getUserData = useSelector((state) => state.userManageSlice.userData);
 
   const { LoginID, Token } = getUserData;
@@ -307,96 +307,90 @@ const NewGuest = ({ open, handleOpen, getOption }) => {
 
   return (
     <>
-      <Modal
+      {/* <Modal
         isOpen={open}
         toggle={() => handleOpen()}
-        className="modal-dialog-centered  custom-modal-header modal-lg"
+        className="modal-dialog-centered modal-md"
         backdrop={false}
       >
-        <ModalHeader className="bg-transparent" toggle={() => handleOpen()}><h3 className="fw-bolder">Create New Plan</h3>
-          <p>Configure a new subscription plan</p></ModalHeader>
+        <ModalHeader className="bg-transparent" toggle={() => handleOpen()}><h3 className="fw-bolder">Add New Hotel</h3>
+          <p>Register a new hotel property</p></ModalHeader>
         <Form>
           <ModalBody>
             <Row className="d-flex flex-column justify-content-center align-items-center">
               <Col className="mt-1 d-flex flex-column">
                 <Col className="mx-1">
                   <Label className="form-label" for="name">
-                    Plan Name <span className="text-danger">*</span>
+                    Hotel Name <span className="text-danger">*</span>
                   </Label>
-                  <input type="text" placeholder="e.g.,Professional Plan" className="form-control input-default w-100" />
+                  <input type="text" placeholder="e.g.,Grand plaza hotel" className="form-control input-default w-100" />
 
                 </Col>
+
+              </Col>
+
+              <Col className="mt-1 d-flex flex-md-row flex-column">
                 <Col className="mx-1">
                   <Label className="form-label" for="last_name">
-                    Guest Last Name<span className="text-danger">*</span>
+                    Email<span className="text-danger">*</span>
+                  </Label>
+                  <input type="textarea" placeholder="Brief Description..." className="form-control input-default w-100" />
+                </Col>
+
+                <Col className="mx-1">
+                  <Label className="form-label" for="last_name">
+                    Phone<span className="text-danger">*</span>
                   </Label>
                   <input type="textarea" placeholder="Brief Description..." className="form-control input-default w-100" />
                 </Col>
 
               </Col>
-              <Col className="mt-1 d-flex flex-md-row flex-column">
-                <Col className="mx-1">
-                  <Label className="form-label" for="email">
-                    Subscription Type
-                  </Label>
-                  {/* <input type="text" placeholder="search" className="form-control input-default w-100" /> */}
-                  <Select>
-                    <option>Demo/Trial</option>
-                    <option>Monthly</option>
-                    <option>6 Month</option>
-                    <option>1 Year</option>
-                    <option>2 Year</option>
-                  </Select>
-                </Col>
+              <Row>
                 <Col className="mx-1">
                   <Label className="form-label" for="dob">
-                    Duration (days)
+                    Address
                   </Label>
                   <input type="number" placeholder="30" className="form-control w-100" />
                 </Col>
-              </Col>
+              </Row>
+
+
               <Col className="mt-1 d-flex flex-md-row flex-column">
 
-                {/* <Col className='mx-1'>
-                                    <Label className='form-label' for='city'>
-                                        District<span className='text-danger'>*</span>
-                                    </Label>
-                                    <Select
-                                        isDisabled={stateId === ''}
-                                        placeholder='Select Dist'
-                                        menuPlacement='auto'
-                                        theme={selectThemeColors}
-                                        className='react-select'
-                                        classNamePrefix='select'
-                                        options={districtOptions}
-                                        value={districtOptions?.filter(c => c.value === districtId)}
-                                        onChange={val => {
-                                            handelDistrictDetailsList(val.value)
-                                            cityDetailsList(val.value)
-                                        }}
-                                        invalid={display && districtId === ''}
-                                    />
-                                    {display === true && !districtId ? <span className='error_msg_lbl'>District is required </span> : null}
-                                </Col> */}
-                <Col className="mx-1">
-                  <Label className="form-label" for="city">
-                    Price<span className="text-danger">*</span>
-                  </Label>
-                  <input type="number" placeholder="0" className="form-control w-100" />
-                </Col>
+                <Row>
+                  <Col className="mx-1" md={6}>
+                    <Label className="form-label" for="city">
+                      CIty<span className="text-danger">*</span>
+                    </Label>
+                    <input type="number" placeholder="0" className="form-control w-100" />
+                  </Col>
 
-                <Col className="mx-1">
-                  <Label className="form-label" for="pincode">
-                    Currency<span className="text-danger">*</span>
-                  </Label>
-                  <Select>
-                    <option>Demo/Trial</option>
-                    <option>Monthly</option>
-                    <option>6 Month</option>
-                    <option>1 Year</option>
-                    <option>2 Year</option>
-                  </Select>
-                </Col>
+                  <Col className="mx-1" md={6}>
+                    <Label className="form-label" for="city">
+                      Country<span className="text-danger">*</span>
+                    </Label>
+                    <input type="number" placeholder="0" className="form-control w-100" />
+                  </Col>
+                </Row>
+                <Row>
+
+                  <Col className="mx-1" md={6}>
+                    <Label className="form-label" for="city">
+                      Room Count<span className="text-danger">*</span>
+                    </Label>
+                    <input type="number" placeholder="0" className="form-control w-100" />
+                  </Col>
+
+                  <Col className="mx-1" md={6}>
+                    <Label className="form-label" for="city">
+                      Active users<span className="text-danger">*</span>
+                    </Label>
+                    <input type="number" placeholder="0" className="form-control w-100" />
+                  </Col>
+                </Row>
+
+
+
               </Col>
               <Col className="mt-1 d-flex flex-md-row flex-column">
                 <Col className="mx-1">
@@ -409,69 +403,15 @@ const NewGuest = ({ open, handleOpen, getOption }) => {
                   <Label className="form-label" for="address">
                     Max Users<span className="text-danger">*</span>
                   </Label>
-                  <input type="number" placeholder="10" className="form-control w-100" />
+                  <input type="number" placeholder="30" className="form-control w-100" />
                 </Col>
               </Col>
             </Row>
-            <div className="included-module pt-1"> 
-              <label className="form-label fw-semibold">
-                Included Module<span className="text-danger">*</span>
-              </label>
-
-              <div className="row">
-                <div className="col-3">
-                  <div className="form-check mb-2">
-                    <input className="form-check-input" type="checkbox" id="frontOffice" />
-                    <label className="form-check-label">
-                      Front Office
-                    </label>
-                  </div>
-
-                  <div className="form-check mb-2">
-                    <input className="form-check-input" type="checkbox" id="pos" />
-                    <label className="form-check-label" >
-                      Point of Sale
-                    </label>
-                  </div>
-
-                  <div className="form-check">
-                    <input className="form-check-input" type="checkbox" id="reports" />
-                    <label className="form-check-label">
-                      Reports
-                    </label>
-                  </div>
-                </div>
-
-                <div className="col-6">
-                  <div className="form-check mb-2">
-                    <input className="form-check-input" type="checkbox" id="housekeeping" />
-                    <label className="form-check-label" htmlFor="housekeeping">
-                      Housekeeping
-                    </label>
-                  </div>
-
-                  <div className="form-check mb-2">
-                    <input className="form-check-input" type="checkbox" id="accounting" />
-                    <label className="form-check-label" htmlFor="accounting">
-                      Accounting
-                    </label>
-                  </div>
-
-                  <div className="form-check">
-                    <input className="form-check-input" type="checkbox" id="integrations" />
-                    <label className="form-check-label" htmlFor="integrations">
-                      Integrations
-                    </label>
-                  </div>
-                </div>
-              </div>
-            </div>
-
           </ModalBody>
           <ModalFooter>
             <Col xs={12} className="text-center">
               <Button className="me-1" color="primary" onClick={onSubmit}>
-                Create Plan
+                Submit
               </Button>
               <Button
                 type="reset"
@@ -484,10 +424,138 @@ const NewGuest = ({ open, handleOpen, getOption }) => {
             </Col>
           </ModalFooter>
         </Form>
+      </Modal> */}
+
+      <Modal
+        isOpen={open}
+        toggle={handleOpen}
+        className="modal-dialog-centered modal-md hotel-modal-header"
+        backdrop={false}
+      >
+        {/* ---------- HEADER ---------- */}
+        <ModalHeader toggle={handleOpen}>
+          <div>
+            <h3 className="fw-bolder mb-0">Add New Hotel</h3>
+            <p className="text-muted mb-0">Register a new hotel property</p>
+          </div>
+        </ModalHeader>
+
+        <Form onSubmit={onSubmit}>
+          <ModalBody>
+            {/* ---------- HOTEL NAME ---------- */}
+            <Row className="mb-1">
+              <Col md={12}>
+                <Label className="form-label">
+                  Hotel Name <span className="text-danger">*</span>
+                </Label>
+                <input
+                  type="text"
+                  placeholder="e.g., Grand Plaza Hotel"
+                  className="form-control"
+                />
+              </Col>
+            </Row>
+
+            {/* ---------- EMAIL & PHONE ---------- */}
+            <Row className="mb-1">
+              <Col md={6}>
+                <Label className="form-label">
+                  Email <span className="text-danger">*</span>
+                </Label>
+                <input
+                  type="email"
+                  placeholder="contact@hotel.com"
+                  className="form-control"
+                />
+              </Col>
+
+              <Col md={6}>
+                <Label className="form-label">
+                  Phone <span className="text-danger">*</span>
+                </Label>
+                <input
+                  type="tel"
+                  placeholder="+1 234 567 8900"
+                  className="form-control"
+                />
+              </Col>
+            </Row>
+
+            {/* ---------- ADDRESS ---------- */}
+            <Row className="mb-1">
+              <Col md={12}>
+                <Label className="form-label">Address</Label>
+                <input
+                  type="text"
+                  placeholder="Street address"
+                  className="form-control"
+                />
+              </Col>
+            </Row>
+
+            {/* ---------- CITY & COUNTRY ---------- */}
+            <Row className="mb-1">
+              <Col md={6}>
+                <Label className="form-label">
+                  City <span className="text-danger">*</span>
+                </Label>
+                <input
+                  type="text"
+                  placeholder="City name"
+                  className="form-control"
+                />
+              </Col>
+
+              <Col md={6}>
+                <Label className="form-label">
+                  Country <span className="text-danger">*</span>
+                </Label>
+                <input
+                  type="text"
+                  placeholder="Country name"
+                  className="form-control"
+                />
+              </Col>
+            </Row>
+
+            {/* ---------- ROOM COUNT & ACTIVE USERS ---------- */}
+            <Row className="mb-1">
+              <Col md={6}>
+                <Label className="form-label">Room Count</Label>
+                <input
+                  type="number"
+                  placeholder="0"
+                  className="form-control"
+                />
+              </Col>
+
+              <Col md={6}>
+                <Label className="form-label">Active Users</Label>
+                <input
+                  type="number"
+                  placeholder="0"
+                  className="form-control"
+                />
+              </Col>
+            </Row>
+          </ModalBody>
+
+          {/* ---------- FOOTER ---------- */}
+          <ModalFooter className="justify-content-end">
+            <Button color="secondary" outline onClick={handleReset}>
+              Cancel
+            </Button>
+            <Button color="primary" type="submit">
+              Add Hotel
+            </Button>
+          </ModalFooter>
+        </Form>
       </Modal>
+
+
       {open ? <div className="modal-backdrop fade show"></div> : null}
     </>
   );
 };
 
-export default NewGuest;
+export default AddHotel;

@@ -16,8 +16,9 @@ import { useSelector } from 'react-redux'
 import axios from '../../API/axios'
 import toast from 'react-hot-toast'
 import { Trash } from 'react-feather'
-import PromoModal from "./PromoModal"
-import NewGuest from '../GuestMaster/NewGuest'
+// import PromoModal from "./PromoModal"
+import AddLicense from './AddLicense'
+// import NewGuest from '../GuestMaster/NewGuest'
 
 
 let discountType = [
@@ -818,7 +819,7 @@ const LicenseManagement = () => {
 
       {
         newGuest && (
-          <PromoModal
+          <AddLicense
             open={newGuest}
             handleOpen={handleNewGuest}
             guestData={guestId}

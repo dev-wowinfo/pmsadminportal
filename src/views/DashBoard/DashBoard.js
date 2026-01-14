@@ -13,7 +13,7 @@ import { storeBookingDetails } from "../../redux/voucherSlice";
 import axios from "../../API/axios";
 import { ChevronDown } from "react-feather";
 import DataTable from "react-data-table-component";
-import BookingModal from "../FrontDesk/BookingModal";
+// import BookingModal from "../FrontDesk/BookingModal";
 import OnHoldQuickBookingModal from '../FrontDesk/OnHoldQuickBookingModal'
 import toast from "react-hot-toast";
 import moment from "moment";
@@ -692,7 +692,7 @@ const DashBoard = () => {
 			<HotelSelectModal
 				open1={hotelSelectOpen}
 				handleOpen1={handleHotelSelectOpen} />
-			{open && <BookingModal open={open} handleOpen={handleOpen} bookingID={sel_bookingID} bookingStatus={bookingStatus} />}
+			{open && <AddHotel open={open} handleOpen={handleOpen} bookingID={sel_bookingID} bookingStatus={bookingStatus} />}
 			{onHoldOpen && <OnHoldQuickBookingModal open={onHoldOpen} handleOnHoldOpen={handleOnHoldOpne} bookingID={sel_bookingID} />}
 		</div>
 

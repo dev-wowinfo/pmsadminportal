@@ -8,7 +8,7 @@ import axios from '../../API/axios'
 // ** Third Party Components
 import ReactPaginate from 'react-paginate'
 import DataTable from 'react-data-table-component'
-import BookingModal from '../FrontDesk/BookingModal'
+// import BookingModal from '../FrontDesk/BookingModal'
 import toast from 'react-hot-toast'
 import moment from 'moment'
 import { useDispatch, useSelector } from 'react-redux'
@@ -17,6 +17,7 @@ import OnHoldQuickBookingModal from '../FrontDesk/OnHoldQuickBookingModal'
 import Select from 'react-select'
 import { saveAs } from 'file-saver'
 import Papa from 'papaparse'
+import AddHotel from '../FrontDesk/AddHotel'
 
 
 const states = ['success', 'danger', 'warning', 'info', 'dark', 'primary', 'secondary']
@@ -885,7 +886,7 @@ const Express = () => {
           </div>
         </Card>
       </div>
-      {open && <BookingModal open={open} handleOpen={handleOpen} bookingID={sel_bookingID} bookingStatus={bookingStatus} />}
+      {open && <AddHotel open={open} handleOpen={handleOpen} bookingID={sel_bookingID} bookingStatus={bookingStatus} />}
       {onHoldOpen && <OnHoldQuickBookingModal open={onHoldOpen} handleOnHoldOpen={handleOnHoldOpne} bookingID={sel_bookingID} />}
       <Modal
         isOpen={cancelOpen}

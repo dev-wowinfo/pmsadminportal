@@ -37,7 +37,7 @@ import ReactSlider from "react-slider";
 import toast from 'react-hot-toast'
 import RegisterGuest from '../SingleReservation/RegisterGuest'
 import RegisterAgency from '../SingleReservation/RegisterAgency'
-import BookingModal from './BookingModal'
+// import BookingModal from './BookingModal'
 import QuickBookingDetailPreview from './QuickBookingDetailPreview'
 import EditGuest from '../SingleReservation/EditGuest'
 

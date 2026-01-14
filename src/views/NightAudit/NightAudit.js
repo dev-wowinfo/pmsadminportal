@@ -7,9 +7,10 @@ import { useDispatch, useSelector } from 'react-redux'
 import Avatar from '@components/avatar'
 import DataTable from 'react-data-table-component'
 import { storeBookingDetails } from '../../redux/voucherSlice'
-import BookingModal from '../FrontDesk/BookingModal'
+// import BookingModal from '../FrontDesk/BookingModal'
 import { ChevronDown, User, RefreshCcw } from 'react-feather'
 import toast from 'react-hot-toast'
+import AddHotel from '../FrontDesk/AddHotel'
 
 const border = {
   borderBottom: '2px solid #5D3FD3'
@@ -356,7 +357,7 @@ const NightAudit = () => {
         </CardBody>
       </Card>
       {revModal && <RevModal open={revModal} handleOpen={handleRevModal} data={revenue} />}
-      {openModal && <BookingModal open={open} handleOpen={handleOpen} bookingID={bid} />}
+      {openModal && <AddHotel open={open} handleOpen={handleOpen} bookingID={bid} />}
     </>
   )
 }

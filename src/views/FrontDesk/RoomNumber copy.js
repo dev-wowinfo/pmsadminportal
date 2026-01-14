@@ -6,12 +6,13 @@ import moment from 'moment'
 // ** Styles
 import './table.scss'
 import '@styles/react/libs/flatpickr/flatpickr.scss'
-import BookingModal from './BookingModal'
+// import BookingModal from './BookingModal'
 import { useNavigate } from 'react-router-dom'
 import axios from '../../API/axios'
 import { FaUserTie } from 'react-icons/fa'
 import RoomData from './RoomData'
 import { useSelector } from 'react-redux'
+import AddHotel from './AddHotel'
 
 const RoomNumber = () => {
   const getUserData = useSelector(state => state.userManageSlice.userData)
@@ -266,7 +267,7 @@ const RoomNumber = () => {
           </Row>
         </CardBody>
       </Card>
-      <BookingModal  open={open} handleOpen={handleOpen} roomData={roomData} />
+      <AddHotel  open={open} handleOpen={handleOpen} roomData={roomData} />
     </>
   )
 }

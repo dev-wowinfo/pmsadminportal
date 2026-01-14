@@ -5,11 +5,12 @@ import StatsHorizontal from '@components/widgets/stats/StatsHorizontal'
 import DataTable from 'react-data-table-component'
 import moment from 'moment'
 import Avatar from '@components/avatar'
-import BookingModal from './../FrontDesk/BookingModal'
+// import BookingModal from './../FrontDesk/BookingModal'
 import { useDispatch, useSelector } from 'react-redux'
 import { storeBookingDetails } from "../../redux/voucherSlice"
 import MUIDataTable from "mui-datatables";
 import axios from '../../API/axios'
+import AddHotel from '../FrontDesk/AddHotel'
 // shared module-level cache and promise so the API is fetched only once
 let creditDetailsCache = null
 let creditDetailsPromise = null
@@ -303,7 +304,7 @@ const CardDetail = (props) => {
                             sortIcon={<ChevronDown size={10} />}
                             data={props?.dataArr && props?.dataArr}
                         />
-                        <BookingModal bookingID={sel_bookingID} open={open} handleOpen={handleOpen} bookingStatus={bookingStatus} />
+                        <AddHotel bookingID={sel_bookingID} open={open} handleOpen={handleOpen} bookingStatus={bookingStatus} />
                     </div>
                     <div className='my-50 d-flex justify-content-end'>
                         <Button color='primary' onClick={e => {
@@ -347,7 +348,7 @@ const CardDetail = (props) => {
                             columns={columns}
                             options={options}
                         />
-                        <BookingModal bookingID={sel_bookingID} open={open} handleOpen={handleOpen} bookingStatus={bookingStatus} />
+                        <AddHotel bookingID={sel_bookingID} open={open} handleOpen={handleOpen} bookingStatus={bookingStatus} />
                     </div>
                     <div className='my-50 d-flex justify-content-end'>
                         <Button color='primary' onClick={e => {
@@ -363,7 +364,7 @@ const CardDetail = (props) => {
                     <div className="modal-backdrop fade show" ></div>
                 ) : null
             }
-            {open && <BookingModal open={open} handleOpen={handleOpen} bookingID={sel_bookingID} bookingStatus={bookingStatus} />}
+            {open && <AddHotel open={open} handleOpen={handleOpen} bookingID={sel_bookingID} bookingStatus={bookingStatus} />}
         </>
     )
 }

@@ -3,7 +3,8 @@ import { Button, Input, Col, Label, Modal, ModalBody, ModalHeader, Row, Form, Mo
 // import { store } from '@store/store'
 import { useSelector } from 'react-redux'
 import moment from 'moment'
-import BookingModal from '../../FrontDesk/BookingModal'
+// import BookingModal from '../../FrontDesk/BookingModal'
+import AddHotel from '../../FrontDesk/AddHotel'
 
 
 const NewBookingDetailPreview = ({ bookingOption, bookingResponse, showBookingDetails, BookingError, handleFinalModal, dispose }) => {
@@ -138,7 +139,7 @@ const NewBookingDetailPreview = ({ bookingOption, bookingResponse, showBookingDe
                 </>
 
             }
-            {open && <BookingModal open={open} handleOpen={handleOpen} bookingID={bookingResponse?.bookingMapID} />}
+            {open && <AddHotel open={open} handleOpen={handleOpen} bookingID={bookingResponse?.bookingMapID} />}
         </>
 
     )

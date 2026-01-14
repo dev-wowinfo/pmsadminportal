@@ -2,7 +2,7 @@ import moment from 'moment'
 import React, { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { Button, Col, Input, Label, Modal, ModalBody, ModalFooter, ModalHeader, Row } from 'reactstrap'
-import BookingModal from './BookingModal'
+// import BookingModal from './BookingModal'
 import { store } from '@store/store'
 import { setRefresh } from '../../redux/quickBookingSlice'
 
@@ -101,7 +101,7 @@ const QuickBookingDetailPreview = ({ open, handleOpen, handleModalOpen }) => {
                     <div className="modal-backdrop fade show" ></div>
                 ) : null
             }
-            {openBM && <BookingModal open={openBM} handleOpen={handleOpenBM} bookingID={data[0]?.bookingMapID} handleModalOpen={handleModalOpen} />}
+            {openBM && <AddHotel open={openBM} handleOpen={handleOpenBM} bookingID={data[0]?.bookingMapID} handleModalOpen={handleModalOpen} />}
         </>
     )
 }

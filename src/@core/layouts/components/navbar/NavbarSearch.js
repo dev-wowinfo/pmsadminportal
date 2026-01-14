@@ -9,7 +9,7 @@ import axios from "../../../../API/axios";
 import Avatar from '@components/avatar'
 import { User } from 'react-feather'
 import { storeBookingDetails } from "../../../../redux/voucherSlice"
-import BookingModal from '../../../../views/FrontDesk/BookingModal'
+// import BookingModal from '../../../../views/FrontDesk/BookingModal'
 import OnHoldQuickBookingModal from '../../../../views/FrontDesk/OnHoldQuickBookingModal'
 // ** Reactstrap Imports
 import { NavItem, NavLink, Modal, ModalHeader, ModalBody, Input, UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem, Badge } from "reactstrap";
@@ -22,6 +22,7 @@ import { handleSearchQuery } from "@store/navbar";
 // ** Custom Components
 import Autocomplete from "@components/autocomplete";
 import moment from "moment";
+import AddHotel from "../../../../views/FrontDesk/AddHotel";
 
 const NavbarSearch = () => {
   // ** Store Vars
@@ -379,7 +380,7 @@ const NavbarSearch = () => {
           </Modal>
         )
       }
-      {open && <BookingModal open={open} handleOpen={handleOpen} bookingID={sel_bookingID} bookingStatus={bookingStatus} />}
+      {open && <AddHotel open={open} handleOpen={handleOpen} bookingID={sel_bookingID} bookingStatus={bookingStatus} />}
       {onHoldOpen && <OnHoldQuickBookingModal open={onHoldOpen} handleOnHoldOpen={handleOnHoldOpne} bookingID={sel_bookingID} />}
     </>
   );
