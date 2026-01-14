@@ -305,6 +305,17 @@ const NewGuest = ({ open, handleOpen, getOption }) => {
     }
   };
 
+  const options = [
+    { value: 'chocolate', label: 'Chocolate' },
+    { value: 'strawberry', label: 'Strawberry' },
+    { value: 'vanilla', label: 'Vanilla' }
+  ]
+  const [selectedOption, setSelectedOption] = useState(null)
+
+  const handleChange = (selected) => {
+    setSelectedOption(selected);
+  }
+
   return (
     <>
       <Modal
@@ -318,7 +329,7 @@ const NewGuest = ({ open, handleOpen, getOption }) => {
         <Form>
           <ModalBody>
             <Row className="d-flex flex-column justify-content-center align-items-center">
-              <Col className="mt-1 d-flex flex-column">
+              <Col className="mt-1 d-flex flex-row">
                 <Col className="mx-1">
                   <Label className="form-label" for="name">
                     Plan Name <span className="text-danger">*</span>
@@ -326,9 +337,9 @@ const NewGuest = ({ open, handleOpen, getOption }) => {
                   <input type="text" placeholder="e.g.,Professional Plan" className="form-control input-default w-100" />
 
                 </Col>
-                <Col className="mx-1">
+                <Col className="mx-1 ">
                   <Label className="form-label" for="last_name">
-                    Guest Last Name<span className="text-danger">*</span>
+                    Description<span className="text-danger">*</span>
                   </Label>
                   <input type="textarea" placeholder="Brief Description..." className="form-control input-default w-100" />
                 </Col>
@@ -340,12 +351,12 @@ const NewGuest = ({ open, handleOpen, getOption }) => {
                     Subscription Type
                   </Label>
                   {/* <input type="text" placeholder="search" className="form-control input-default w-100" /> */}
-                  <Select>
-                    <option>Demo/Trial</option>
-                    <option>Monthly</option>
-                    <option>6 Month</option>
-                    <option>1 Year</option>
-                    <option>2 Year</option>
+                  <Select
+                    options={options}
+                    value={selectedOption}
+                    onChange={handleChange}
+                  >
+
                   </Select>
                 </Col>
                 <Col className="mx-1">
@@ -413,8 +424,8 @@ const NewGuest = ({ open, handleOpen, getOption }) => {
                 </Col>
               </Col>
             </Row>
-            <div className="included-module pt-1"> 
-              <label className="form-label fw-semibold">
+            <div className="included-module pt-1">
+              <label className="form-label fw-bold p-1">
                 Included Module<span className="text-danger">*</span>
               </label>
 
@@ -442,7 +453,7 @@ const NewGuest = ({ open, handleOpen, getOption }) => {
                   </div>
                 </div>
 
-                <div className="col-6">
+                <div className="col-3">
                   <div className="form-check mb-2">
                     <input className="form-check-input" type="checkbox" id="housekeeping" />
                     <label className="form-check-label" htmlFor="housekeeping">
@@ -461,6 +472,26 @@ const NewGuest = ({ open, handleOpen, getOption }) => {
                     <input className="form-check-input" type="checkbox" id="integrations" />
                     <label className="form-check-label" htmlFor="integrations">
                       Integrations
+                    </label>
+                  </div>
+                </div>
+                <div className="col-6 border-start">
+                  <div class="form-check mb-1">
+                    <input class="form-check-input" type="checkbox" value="" id="checkChecked" checked />
+                    <label class="form-check-label" for="checkChecked">
+                      Trial Eligible
+                    </label>
+                  </div>
+                  <div class="form-check mb-1">
+                    <input class="form-check-input" type="checkbox" value="" id="checkChecked" checked />
+                    <label class="form-check-label" for="checkChecked">
+                      Auto Renew
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="checkChecked" checked />
+                    <label class="form-check-label" for="checkChecked">
+                      Active
                     </label>
                   </div>
                 </div>
