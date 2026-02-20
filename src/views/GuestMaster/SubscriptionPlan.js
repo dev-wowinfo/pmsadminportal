@@ -3,6 +3,7 @@ import { FaArchive } from "react-icons/fa";
 import DataTable from "react-data-table-component";
 import {
   Card,
+  Modal,
   CardBody,
   CardTitle,
   CardHeader,
@@ -17,6 +18,7 @@ import axios from "../../API/axios";
 import GuestEdit from "./GuestEdit";
 import { padding } from "@mui/system";
 import AddPlan from "./AddPlan";
+import EditPlanModal from "./EditPlanModal";
 
 const SubscriptionPlan = () => {
   useEffect(() => {
@@ -46,6 +48,48 @@ const SubscriptionPlan = () => {
   const { LoginID, Token } = getUserData;
 
 
+  const [showModal, setShowModal] = useState(false);
+  const [selectedPlan, setSelectedPlan] = useState(null);
+  
+  const handleSave = (data) => {
+  console.log("Saved data:", data);
+};
+
+  const plans = {
+    starter: {
+      name: "Starter",
+      description: "Perfect for small hotels getting started",
+      type: "Monthly",
+      duration: 30,
+      price: 99,
+      rooms: 25,
+      users: 5,
+    },
+    professional: {
+      name: "Professional",
+      description: "For growing hotels",
+      type: "Monthly",
+      duration: 30,
+      price: 199,
+      rooms: 50,
+      users: 10,
+    },
+    enterprise: {
+      name: "Enterprise",
+      description: "Full power plan",
+      type: "Yearly",
+      duration: 365,
+      price: 499,
+      rooms: 100,
+      users: 25,
+    },
+  };
+
+  const handleEdit = (planKey) => {
+    setSelectedPlan(plans[planKey]);
+    setShowModal(true);
+  };
+
   const [query, setQuery] = useState("")
   const search = (data) => {
     return data.filter(item =>
@@ -55,126 +99,6 @@ const SubscriptionPlan = () => {
       // item.GuestAddress.toLowerCase().includes(query.toLowerCase())
     )
   }
-
-  // const Columns = [
-  //   // {
-  //   //   name: "Guest ID",
-  //   //   sortable: true,
-  //   //   width: '17rem',
-  //   //   selector: (row) => row.guestID,
-  //   // },
-  //   // {
-  //   //   name: "Guest Name",
-  //   //   sortable: true,
-  //   //   selector: (row) => row.guestName,
-  //   // },
-  //   // {
-  //   //   name: "Guest Address",
-  //   //   sortable: true,
-  //   //   selector: (row) => row.guestAddress,
-  //   // },
-  //   // {
-  //   //   name: "Guest phoneNumber",
-  //   //   sortable: true,
-  //   //   selector: (row) => row.guestMobileNumber,
-  //   // },
-  //   {
-  //     // name: 'Promotion Id',
-  //     name: 'Hotel',
-  //     sortable: true,
-  //     minWidth: '250px',
-  //     className: "hotel-name",
-  //     cell: () => <span>Grand Plaza Hotel</span>
-  //   },
-  //   {
-  //     // name: 'Promotion Date',
-  //     name: 'Plan',
-  //     sortable: true,
-  //     // minWidth: '225px',             
-  //     // selector: row => moment(row.promoDate).format('YYYY-MM-DD')
-  //     cell: () => <span>Enterprises</span>
-  //   },
-  //   {
-  //     // name: 'Promotion Name',
-  //     name: 'Status',
-  //     sortable: true,
-  //     // minWidth: '250px',
-  //     cell: () => <span class="border rounded bg-success text-light px-1">Active</span>
-  //   },
-  //   {
-  //     // name: 'Discount Type',
-  //     name: 'Start Date',
-  //     sortable: true,
-  //     // minWidth: '310px',
-  //     // selector: row => row.discountType === 'P' ? 'Percentage' : 'Flat'
-  //     cell: () => <span>Jun 23, 2025</span>
-
-  //   },
-  //   {
-  //     // name: 'Discount Percentage',
-  //     name: 'End Date',
-  //     sortable: true,
-  //     // minWidth: '250px',
-  //     // selector: row => row.discPercentage
-  //     cell: () => <span>Jun 23, 2026</span>
-  //   },
-  //   {
-  //     // name: 'Discount Amount',
-  //     name: 'Rooms',
-  //     sortable: true,
-  //     // minWidth: '250px',
-  //     // selector: row => row.discAmount
-  //     cell: () => <span>500</span>
-  //   },
-  //   {
-  //     // name: 'Guest Type',
-  //     name: 'Users',
-  //     sortable: true,
-  //     // minWidth: '250px',
-  //     // selector: row => row.guestType
-  //     cell: () => <span>50</span>
-  //   },
-
-  //   {
-  //     name: "Status",
-  //     sortable: true,
-  //     selector: (row) => row.status,
-  //     cell: (row) => {
-  //       return (
-  //         <>
-  //           {row.status === "Active" ? (
-  //             <Badge color="light-success"> {row.status}</Badge>
-  //           ) : (
-  //             <Badge color="light-danger"> {row.status}</Badge>
-  //           )}
-  //         </>
-  //       );
-  //     },
-  //   },
-  //   {
-  //     name: "Action",
-  //     sortable: true,
-  //     center: true,
-  //     selector: (row) => (
-  //       <>
-  //         {/* <Col> */}
-  //         <Edit
-  //           className="me-50 pe-auto"
-  //           onClick={() => {
-  //             setShowEdit(true);
-  //             setGuestId(row.guestID);
-  //           }}
-  //           size={15}
-  //         />
-  //         {/* <Trash className='me-50' size={15} onClick={() => {
-  //                       setDel(true)
-  //                       // setSelected_roomView(row.RoomViewID)
-  //                   }} /> */}
-  //         {/* </Col> */}
-  //       </>
-  //     ),
-  //   },
-  // ];
 
   const Columns = [
     {
@@ -296,9 +220,9 @@ const SubscriptionPlan = () => {
         </CardHeader>
       </Card>
 
-      
+
       <div className="d-flex justify-content-between">
-        <Card style={{ width: '24rem', paddingTop: '20px' , marginRight:'5px' }}>
+        <Card style={{ width: '24rem', paddingTop: '20px', marginRight: '5px' }}>
           <div className="p-1">
             <div className="d-flex justify-content-between">
               <div>
@@ -306,8 +230,7 @@ const SubscriptionPlan = () => {
                 <p className="mb-2 text-dark">Perfect for small hotels getting started</p>
               </div>
               <div>
-                <span className="border rounded bg-primary text-light m-1 px-1" style={{
-                  paddingBottom: "5px", paddingTop: "5px"}}>Active</span>
+                <span className="border rounded bg-primary text-light px-1" >Active</span>
               </div>
             </div>
             <div >
@@ -338,17 +261,18 @@ const SubscriptionPlan = () => {
 
 
             <div className="d-flex justify-content-between">
-              <Button color="primary"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-pencil-square me-1" viewBox="0 0 16 16">
-                <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456l-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
-                <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z" />
-              </svg>Edit</Button>
+              <Button color="primary" onClick={() => handleEdit("starter")}
+              ><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-pencil-square me-1" viewBox="0 0 16 16">
+                  <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456l-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
+                  <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z" />
+                </svg>Edit</Button>
               <Button color="primary"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 256 256" class="me-1"><path d="M216,32H88a8,8,0,0,0-8,8V80H40a8,8,0,0,0-8,8V216a8,8,0,0,0,8,8H168a8,8,0,0,0,8-8V176h40a8,8,0,0,0,8-8V40A8,8,0,0,0,216,32ZM160,208H48V96H160Zm48-48H176V88a8,8,0,0,0-8-8H96V48H208Z"></path></svg>Clone</Button>
               <Button color="primary"><FaArchive /></Button>
             </div>
           </div>
         </Card>
 
-        <Card style={{ width: '24rem', paddingTop: '20px' , marginRight:'5px' }}>
+        <Card style={{ width: '24rem', paddingTop: '20px', marginRight: '5px' }}>
           <div className="p-1">
             <div className="d-flex justify-content-between">
               <div>
@@ -356,8 +280,7 @@ const SubscriptionPlan = () => {
                 <p className="mb-2 text-dark">Comprehensive solution for growing properties</p>
               </div>
               <div>
-                <span className="border rounded bg-primary text-light m-1 px-1" style={{
-                  paddingBottom: "5px", paddingTop: "5px"}}>Active</span>
+                <span className="border rounded bg-primary text-light px-1">Active</span>
               </div>
             </div>
             <div >
@@ -367,11 +290,11 @@ const SubscriptionPlan = () => {
             <div className="pt-2 border-top">
               <div className="d-flex justify-content-between mb-1">
                 <span>Max Rooms</span>
-                <span>25</span>
+                <span>100</span>
               </div>
               <div className="d-flex justify-content-between mb-1">
                 <span>Max Users</span>
-                <span>5</span>
+                <span>15</span>
               </div>
               <div className="d-flex justify-content-between mb-1">
                 <span>Auto Renew</span>
@@ -380,16 +303,19 @@ const SubscriptionPlan = () => {
             </div>
             <div className="pt-2 border-top mb-2">
               <h4 className="fs-5 fw-bolder">Included Modules</h4>
-              <div className="d-flex gap-1">
+              <div className="d-flex gap-1 flex-wrap">
                 <span className="px-1 border rounded">Front Office</span>
                 <span className="px-1 border rounded">Housekeeping</span>
+                <span className="px-1 border rounded">Pos</span>
+                <span className="px-1 border rounded">Reports</span>
               </div>
             </div>
             <div className="d-flex justify-content-between">
-              <Button color="primary"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-pencil-square me-1" viewBox="0 0 16 16">
-                <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456l-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
-                <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z" />
-              </svg>Edit</Button>
+              <Button color="primary" onClick={() => handleEdit("professional")}
+              ><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-pencil-square me-1" viewBox="0 0 16 16">
+                  <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456l-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
+                  <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z" />
+                </svg>Edit</Button>
               <Button color="primary"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 256 256" class="me-1"><path d="M216,32H88a8,8,0,0,0-8,8V80H40a8,8,0,0,0-8,8V216a8,8,0,0,0,8,8H168a8,8,0,0,0,8-8V176h40a8,8,0,0,0,8-8V40A8,8,0,0,0,216,32ZM160,208H48V96H160Zm48-48H176V88a8,8,0,0,0-8-8H96V48H208Z"></path></svg>Clone</Button>
               <Button color="primary"><FaArchive /></Button>
             </div>
@@ -403,8 +329,7 @@ const SubscriptionPlan = () => {
                 <p className="mb-2 text-dark">Perfect for small hotels getting started</p>
               </div>
               <div>
-                <span className="border rounded bg-primary text-light m-1 px-1" style={{
-                  paddingBottom: "5px", paddingTop: "5px"}}>Active</span>
+                <span className="border rounded bg-primary text-light px-1">Active</span>
               </div>
             </div>
             <div >
@@ -414,11 +339,11 @@ const SubscriptionPlan = () => {
             <div className="pt-2 border-top mb-1">
               <div className="d-flex justify-content-between mb-1">
                 <span>Max Rooms</span>
-                <span>25</span>
+                <span>500</span>
               </div>
               <div className="d-flex justify-content-between mb-1">
                 <span>Max Users</span>
-                <span>5</span>
+                <span>50</span>
               </div>
               <div className="d-flex justify-content-between mb-1">
                 <span>Auto Renew</span>
@@ -427,17 +352,22 @@ const SubscriptionPlan = () => {
             </div>
             <div className="pt-2 border-top mb-2">
               <h4 className="fs-5 fw-bolder">Included Modules</h4>
-              <div className="d-flex gap-1">
+              <div className="d-flex gap-1 flex-wrap">
                 <span className="px-1 border rounded">Front Office</span>
                 <span className="px-1 border rounded">Housekeeping</span>
+                <span className="px-1 border rounded">Pos</span>
+                <span className="px-1 border rounded">Reports</span>
+                <span className="px-1 border rounded">Accounting</span>
+                <span className="px-1 border rounded">Integrations</span>
               </div>
             </div>
 
             <div className="d-flex justify-content-between">
-              <Button color="primary"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-pencil-square me-1" viewBox="0 0 16 16">
-                <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456l-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
-                <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z" />
-              </svg>Edit</Button>
+              <Button color="primary" onClick={() => handleEdit("enterprise")}
+              ><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-pencil-square me-1" viewBox="0 0 16 16">
+                  <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456l-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
+                  <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z" />
+                </svg>Edit</Button>
               <Button color="primary"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 256 256" class="me-1"><path d="M216,32H88a8,8,0,0,0-8,8V80H40a8,8,0,0,0-8,8V216a8,8,0,0,0,8,8H168a8,8,0,0,0,8-8V176h40a8,8,0,0,0,8-8V40A8,8,0,0,0,216,32ZM160,208H48V96H160Zm48-48H176V88a8,8,0,0,0-8-8H96V48H208Z"></path></svg>Clone</Button>
               <Button color="primary"><FaArchive /></Button>
             </div>
@@ -445,14 +375,19 @@ const SubscriptionPlan = () => {
         </Card>
       </div>
 
-
+      <EditPlanModal
+        show={showModal}
+        handleClose={() => setShowModal(false)}
+        plan={selectedPlan}
+        onSave={handleSave}
+      />
 
       {newGuest ? (
         <AddPlan open={newGuest} handleOpen={handleNewGuest} getOption={handleGuestOptions} />
       ) : (
         <></>
       )}
-      
+
       {showEdit ? (
         <GuestEdit
           open={showEdit}

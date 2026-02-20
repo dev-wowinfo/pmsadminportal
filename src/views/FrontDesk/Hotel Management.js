@@ -11,10 +11,12 @@ import {
 import { ChevronDown, Edit, Trash } from "react-feather";
 import { useSelector } from "react-redux";
 import axios from "../../API/axios";
+import AddHotel from "./AddHotel"
 // import NewGuest from "../GuestMaster/NewGuest";
 // import BookingModal from "./BookingModal";
 // import NewGuest from "./NewGuest";
 // import GuestEdit from "./GuestEdit";
+
 
 const HotelManagement = () => {
   useEffect(() => {
@@ -249,7 +251,7 @@ const HotelManagement = () => {
         <></>
       )}
       {showEdit ? (
-        <GuestEdit
+        <HotelEdit
           open={showEdit}
           handleOpen={handleGuestEdit}
           guestData={guestId}

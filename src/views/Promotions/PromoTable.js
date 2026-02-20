@@ -32,6 +32,14 @@ const PromoTable = () => {
             dates: '22/8/2022',
             applicability: 'all',
             action: 'btns'
+        },
+        {
+            id: '2',
+            type: 'Different',
+            details: 'something',
+            dates: '22/8/2023',
+            applicability: 'all',
+            action: 'btns'
         }
     ]
     const getPromoData = async () => {
@@ -121,6 +129,7 @@ const PromoTable = () => {
             sortable: true,
             minWidth: '250px',
             cell: () => <span>Grand Plaza Hotel</span>
+            
         },
         {
             // name: 'Promotion Date',
@@ -143,7 +152,7 @@ const PromoTable = () => {
             sortable: true,
             // minWidth: '310px',
             // selector: row => row.discountType === 'P' ? 'Percentage' : 'Flat'
-            cell: () => <span>Jun 23, 2025</span>
+            cell: () => <span>Aug 02, 2025</span>
 
         },
         {
@@ -152,7 +161,7 @@ const PromoTable = () => {
             sortable: true,
             // minWidth: '250px',
             // selector: row => row.discPercentage
-            cell: () => <span>Jun 23, 2026</span>
+            cell: () => <span>Aug 02, 2026</span>
         },
         {
             // name: 'Discount Amount',

@@ -27,7 +27,7 @@ let discountType = [
 const PromoUpdate = ({ updateOpen, handleUpdateOpen, promoId, getPromoData }) => {
     const getUserData = useSelector(state => state.userManageSlice.userData)
     const { LoginID, Token, CompanyID, HotelName } = getUserData
-    
+
     const [discountT, setDiscounT] = useState('')
     const [checkRoomType, setCheckRoomType] = useState(false)
     const [isRefundable, setIsRefundable] = useState(false)
@@ -59,6 +59,9 @@ const PromoUpdate = ({ updateOpen, handleUpdateOpen, promoId, getPromoData }) =>
     const [blDate, setBlDate] = useState('');
     const [blackoutData, setBlackoutData] = useState([]);
     const [roomCheckData, setRoomCheckData] = useState([]);
+
+    const [activeTab, setActiveTab] = useState("details");
+
     let UpdateBDate = []
     const roomTypeList = () => {
         try {
@@ -284,437 +287,190 @@ const PromoUpdate = ({ updateOpen, handleUpdateOpen, promoId, getPromoData }) =>
                 backdrop={false}
             >
                 <ModalHeader toggle={handleUpdateOpen}>
-                    Update Promotion
+
                 </ModalHeader>
-                <ModalBody>
-                    <Form>
-                        <Row>
-                            <Col lg='6' className='mb-1'>
-                                <Label className='form-label' for='promo'>Promotion Name <span className='text-danger'>*</span></Label>
-                                <Input
-                                    type='text'
-                                    name='promo'
-                                    id='promo'
-                                    value={promoName}
-                                    onChange={e => setPromoName(e.target.value)}
-                                />
-                                {showErrors && promoName === '' && <p className='text-danger'>Promo Name is required</p>}
-                            </Col>
-                            <Col lg='3' className='mb-1'>
-                                <Label className='form-label' for='discount'>Discount Type <span className='text-danger'>*</span> </Label>
-                                <Select
-                                    theme={selectThemeColors}
-                                    className='react-select'
-                                    classNamePrefix='select'
-                                    placeholder="Select"
-                                    options={discountType}
-                                    value={discountType.filter(a => a.value === discountT)}
-                                    onChange={(e) => {
-                                        setDiscounT(e.value)
-                                    }}
-                                />
-                                {showErrors && discountT === '' && <p className='text-danger'>Select Discount Type</p>}
-                            </Col>
-                            {discountT === 'P' ? <Col lg='3' className='mb-1'>
-                                <Label className='form-label' for='promo'>Discount Percentage <span className='text-danger'>*</span></Label>
-                                <Input
-                                    type='text'
-                                    name='promo'
-                                    id='promo'
-                                    onChange={e => setDPercentage(e.target.value)}
-                                    value={dPercentage}
-                                />
-                                {/* {showErrors && dPercentage === 0 && <p className='text-danger'>Discount Percentage is required</p>} */}
-                            </Col> : <Col lg='3' className='mb-1'>
-                                <Label className='form-label' for='promo'>Discount Amount <span className='text-danger'>*</span></Label>
-                                <Input
-                                    type='text'
-                                    name='promo'
-                                    id='promo'
-                                    onChange={e => setDAmount(e.target.value)}
-                                    value={dAmount}
-                                />
-                                {/* {showErrors && dAmount === 0 && <p className='text-danger'>Discount Amount is required</p>} */}
-                            </Col>
-                            }
 
-                            <Col lg='6' className='mb-1'>
-                                <Label className='form-label' for='promo'>No. of Rooms <span className='text-danger'>*</span></Label>
-                                <Input
-                                    type='text'
-                                    name='promo'
-                                    id='promo'
-                                    onChange={e => setNoOfRoom(e.target.value)}
-                                    value={noOfRoom}
-                                />
-                                {showErrors && noOfRoom === 0 && <p className='text-danger'>No.of Rooms Required</p>}
-                            </Col>
-                            <Col lg='6' className='mt-2'>
-                                <div className='d-flex flex-row'>
-                                    <Label className='form-check-label' for='confirm'>Guest Type:</Label>
-                                    <Col className='form-check mx-1 mb-1'>
-                                        <Input
-                                            type='radio'
-                                            id='confirm'
-                                            name='GuestType'
-                                            onChange={() => {
-                                                setGuestType('Existing')
-                                            }}
-                                            checked={guestType === 'Existing'}
-                                        />
-                                        <Label className='form-check-label' for='confirm'>Existing</Label>
-                                    </Col>
-                                    <Col className='form-check mx-1 mb-1 d-block'>
-                                        <Input
-                                            type='radio'
-                                            id='hold'
-                                            name='GuestType'
-                                            onChange={() => {
-                                                setGuestType('All')
-                                            }}
-                                            checked={guestType === 'All'}
-                                        />
-                                        <Label className='form-check-label' for='confirm'>All</Label>
-                                    </Col>
-                                </div>
-                                {showErrors && guestType === '' && <p className='text-danger'>Select Guest Type</p>}
-                            </Col>
-                        </Row>
-                        <Row>
-                            <h4 style={{ borderTop: '1px solid #d8d6df' }} className='mt-2 pt-1'>Refundable</h4>
-                            <Col lg='6' className=' mt-2 mb-2'>
-                                <div className='form-check form-check-inline'>
-                                    <Input type='checkbox' id='basic-unchecked' checked={isRefundable} onClick={(e) => { setIsRefundable(!isRefundable) }} />
-                                    <Label for='basic-unchecked' className='form-check-label'>
-                                        IsRefundable
-                                    </Label>
-                                </div>
-                            </Col>
-                        </Row>
-                        <Row>
-                            {isRefundable === true ? <>
-                                <Col lg='6' className=''>
-                                    <Label className='form-label' for='checkIn_date'>
-                                        Refundable Date:<span className='text-danger'>*</span>
-                                    </Label>
-                                    <Flatpickr
-                                        id='checkIn_date'
-                                        name='checkIn_date'
-                                        placeholder='Select Refundable Date'
-                                        options={{
-                                            altInput: true,
-                                            altFormat: 'd-m-y',
-                                            dateFormat: 'd-m-y',
-                                            // minDate: moment(new Date()).subtract(1, 'days'),
-                                            defaultDate: refundDate
-                                        }}
-                                        // disabled
-                                        defaultValue={moment(refundDate).format('DD-MM-YY')}
-                                        value={moment(refundDate).format('DD-MM-YY')}
-                                        onChange={date => {
-                                            setRefundDate((date[0]))
-                                        }}
-                                    />
-                                </Col>
-                                <Col lg='6' className='mt-2'>
-                                    <div className='form-check form-check-inline'>
-                                        <Input type='checkbox' id='basic-bb-unchecked' checked={isPenalty} onClick={(e) => { setIsPenalty(!isPenalty) }} />
-                                        <Label for='basic-bb-unchecked' className='form-check-label'>
-                                            Is Penalty Applied
-                                        </Label>
-                                    </div>
-                                </Col>
-                                <Col lg='6' className=' mt-2'>
-                                    <Label className='form-label' for='checkIn_date'>
-                                        Refundable Penalty Date:<span className='text-danger'>*</span>
-                                    </Label>
-                                    <Flatpickr
-                                        id='checkIn_date'
-                                        name='checkIn_date'
-                                        placeholder='Select Penalty Date'
-                                        options={{
-                                            altInput: true,
-                                            altFormat: 'd-m-y',
-                                            dateFormat: 'd-m-y',
-                                            // minDate: moment(new Date()).subtract(1, 'days'),
-                                            // defaultDate: inDate
-                                        }}
-                                        // disabled
-                                        // defaultValue={inDate}
-                                        value={moment(pDate).format('DD-MM-YY')}
-                                        onChange={date => {
-                                            setPDate(date[0])
-                                        }}
-                                    />
-                                </Col>
-                                <Col lg='6' className='mt-2'>
-                                    <Label className='form-label' for='discount'>Discount Type <span className='text-danger'>*</span> </Label>
-                                    <Select
-                                        theme={selectThemeColors}
-                                        className='react-select'
-                                        classNamePrefix='select'
-                                        placeholder="Select Type"
-                                        options={discountType}
-                                        value={discountType.filter(a => a.value === refundDiscounT)}
-                                        onChange={(e) => {
-                                            setRefundDiscounT(e.value)
-                                        }}
-                                    />
-                                </Col>
-                                {refundDiscounT === 'P' ? <Col lg='6' className='mb-1 mt-2'>
-                                    <Label className='form-label' for='promo'>Discount Percentage <span className='text-danger'>*</span></Label>
-                                    <Input
-                                        type='text'
-                                        name='promo'
-                                        id='promo'
-                                        onChange={(e) => {
-                                            setRefundDPercent(e.target.value)
-                                        }}
-                                        value={refundDPercent}
-                                    />
-                                </Col> : <Col lg='6' className='mb-1 mt-2'>
-                                    <Label className='form-label' for='promo'>Discount Amount <span className='text-danger'>*</span></Label>
-                                    <Input
-                                        type='text'
-                                        name='promo'
-                                        id='promo'
-                                        onChange={(e) => {
-                                            setRefundDAmount(e.target.value)
-                                        }}
-                                        value={refundDAmount}
-                                    />
-                                </Col>
-                                }
+                <div className="modal-content shadow rounded-4">
 
-                            </>
-                                : ''}
-                        </Row>
-                        <Row>
-                            <h4 style={{ borderTop: '1px solid #d8d6df' }} className='mt-2 pt-1'>Promo Reservation</h4>
-                            <Col lg='6' className=' mt-1'>
-                                <Label className='form-label' for='checkIn_date'>
-                                    Start Stay Date:<span className='text-danger'>*</span>
-                                </Label>
-                                <Flatpickr
-                                    id='checkIn_date'
-                                    name='checkIn_date'
-                                    placeholder='Select Start Date'
-                                    options={{
-                                        altInput: true,
-                                        altFormat: 'd-m-y',
-                                        dateFormat: 'd-m-y',
-                                        // minDate: moment(new Date()).subtract(1, 'days'),
-                                        // defaultDate: inDate
-                                    }}
-                                    // disabled
-                                    // defaultValue={inDate}
-                                    value={moment(promoStartD).format('DD-MM-YY')}
-                                    onChange={date => {
-                                        setPromoStartD(date[0])
-                                    }}
-                                />
-                                {showErrors && promoStartD === '' && <p className='text-danger'>Promo Start Date is required</p>}
-                            </Col>
-                            <Col lg='6' className=' mt-1'>
-                                <Label className='form-label' for='checkIn_date'>
-                                    End Stay Date:<span className='text-danger'>*</span>
-                                </Label>
-                                <Flatpickr
-                                    id='checkIn_date'
-                                    name='checkIn_date'
-                                    placeholder='Select End Date'
-                                    options={{
-                                        altInput: true,
-                                        altFormat: 'd-m-y',
-                                        dateFormat: 'd-m-y',
-                                        // minDate: moment(new Date()).subtract(1, 'days'),
-                                        // defaultDate: inDate
-                                    }}
-                                    // disabled
-                                    // defaultValue={inDate}
-                                    value={moment(promoEndD).format('DD-MM-YY')}
-                                    onChange={date => {
-                                        setPromoEndD(date[0])
-                                    }}
-                                />
-                                {showErrors && promoEndD === '' && <p className='text-danger'>Promo End Date is required</p>}
-                            </Col>
-                        </Row>
-                        <Row>
-                            <h4 style={{ borderTop: '1px solid #d8d6df' }} className='mt-2 pt-1'>Booking Time</h4>
-                            <Col lg='6' className=' mt-1'>
-                                <Label className='form-label' for='checkIn_date'>
-                                    Booking Start Date:<span className='text-danger'>*</span>
-                                </Label>
-                                <Flatpickr
-                                    value={moment(bookingStartD).toISOString()}
-                                    data-enable-time
-                                    id='date-time-picker'
-                                    className='form-control'
-                                    onChange={date => setBookingStartD(moment(date[0]).format('YYYY-MM-DD HH:mm'))}
-                                />
-                                {showErrors && bookingStartD === '' && <p className='text-danger'>Booking Start Date is required</p>}
-                            </Col>
-                            <Col lg='6' className=' mt-1'>
-                                <Label className='form-label' for='checkIn_date'>
-                                    Booking End Date:<span className='text-danger'>*</span>
-                                </Label>
-                                <Flatpickr
-                                    value={moment(bookingEndD).toISOString()}
-                                    data-enable-time
-                                    id='date-time-picker'
-                                    className='form-control'
-                                    onChange={date => setBookingEndD(moment(date[0]).format('YYYY-MM-DD HH:mm'))}
-                                />
-                                {showErrors && bookingEndD === '' && <p className='text-danger'>Booking End Date is required</p>}
-                            </Col>
-                        </Row>
-                        <Row>
-                            <h4 style={{ borderTop: '1px solid #d8d6df' }} className='mt-2 pt-1'>Blackout Date</h4>
-                            {/* {bDate.map((field, index) => {
-                                return ( */}
-                            <div className=' mt-1 w-50 d-block'>
-                                <Label className='form-label' for='checkIn_date'>
-                                    Blackout Date:<span className='text-danger'>*</span>
-                                </Label>
-                                <Flatpickr
-                                    id='checkIn_date'
-                                    name='Date'
-                                    placeholder='Select Date'
-                                    options={{
-                                        altInput: true,
-                                        altFormat: 'd-m-y',
-                                        dateFormat: 'd-m-y',
-                                        // minDate: moment(new Date()).subtract(1, 'days'),
-                                        // defaultDate: inDate
-                                    }}
-                                    // disabled
-                                    // defaultValue={inDate}
-                                    value={blDate}
-                                    // onChange={date => {
-                                    //     setInDate(date[0])
-                                    //     setLoader(false);
-                                    // }}
-                                    onChange={(date) => {
-                                        // handleBDateInput(index, date[0])
-                                        setBlDate(date[0])
-                                    }
-                                    }
-                                />
+                    {/* Header */}
+                    <div className="modal-header border-0">
+                        <div className='d-flex gap-3'>
+                            <div className='d-flex flex-column'>
+                                <h4 className="fw-bold mb-1">Grand Plaza Hotel</h4>
+                                <small className="text-mute">License ID: LIC-001</small>
                             </div>
-                            {/* )
-                            })} */}
-                        </Row>
-                        <Button color='primary' onClick={() => handleAddDate()} className='mt-2 d-block' style={{ width: '150px' }}> Add Date</Button>
-                        <Table responsive className='mt-2'>
-                            <thead>
-                                <tr>
-                                    <th scope='col' className='text-nowrap'>
-                                        Date
-                                    </th>
-                                    {/* <th scope='col' className='text-nowrap'>
-                                        Id
-                                    </th> */}
-                                    <th scope='col' className='text-nowrap'>
-                                        Delete
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {blackoutData && blackoutData?.map((a, index) => {
-                                    return (
-                                        <>
-                                            <tr>
-                                                <td className='text-nowrap text-start'>{moment(a.Date).format('YYYY-MM-DD')}</td>
-                                                {/* <td className='text-nowrap text-start'>{a.BlackOutDateId}</td> */}
-                                                <td className='text-nowrap text-start'><Trash className='me-50' size={15} onClick={() => {
-                                                    deleteBDateInput(a.BlackOutDateId, index)
-                                                }} /></td>
-                                            </tr>
-                                        </>
-                                    );
-                                })}
-                            </tbody>
-                        </Table>
-                        <Row>
-                            <h4 style={{ borderTop: '1px solid #d8d6df' }} className='mt-2 pt-1'>Room Type Details</h4>
-                            <Col lg='12' className=' mt-2'>
-                                <div className='form-check form-check-inline'>
-                                    <Input type='checkbox' id='basic-cb-unchecked' checked={checkRoomType} onClick={(e) => { setCheckRoomType(!checkRoomType) }} />
-                                    <Label for='basic-cb-unchecked' className='form-check-label'>
-                                        Check Room Type
-                                    </Label>
+                            <div className="mt-1">
+                                <span className="badge bg-success">Active</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Tabs */}
+                    <div className="px-4">
+                        <ul className="nav nav-pills bg-light rounded-3 mt-1 mb-3">
+                            <li className="nav-item flex-fill text-center">
+                                <button
+                                    className={`nav-link w-100 ${activeTab === "details" ? "active" : ""}`}
+                                    onClick={() => setActiveTab("details")}
+                                >
+                                    Details
+                                </button>
+                            </li>
+
+                            <li className="nav-item flex-fill text-center">
+                                <button
+                                    className={`nav-link w-100 ${activeTab === "modules" ? "active" : ""}`}
+                                    onClick={() => setActiveTab("modules")}
+                                >
+                                    Modules
+                                </button>
+                            </li>
+
+                            <li className="nav-item flex-fill text-center">
+                                <button
+                                    className={`nav-link w-100 ${activeTab === "actions" ? "active" : ""}`}
+                                    onClick={() => setActiveTab("actions")}
+                                >
+                                    Actions
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
+
+                    {/* Body */}
+                    <div className="modal-body">
+
+                        {/* DETAILS TAB */}
+                        {activeTab === "details" && (
+                            <div className="card border-0 shadow-sm rounded-4 p-1">
+                                <h5 className="fw-bold mb-4">Subscription Details</h5>
+
+                                <div className="row g-4">
+                                    <div className="col-md-3">
+                                        <small className="text-muted">Plan Name</small>
+                                        <h6 className="fw-semibold">Enterprise</h6>
+                                    </div>
+
+                                    <div className="col-md-3">
+                                        <small className="text-muted">Status</small>
+                                        <div>
+                                            <span className="badge bg-success">Active</span>
+                                        </div>
+                                    </div>
+
+                                    <div className="col-md-3">
+                                        <small className="text-muted">Start Date</small>
+                                        <h6 className="fw-semibold">Aug 02, 2025</h6>
+                                    </div>
+
+                                    <div className="col-md-3">
+                                        <small className="text-muted">End Date</small>
+                                        <h6 className="fw-semibold">Aug 02, 2026</h6>
+                                    </div>
+
+                                    <div className="col-md-3">
+                                        <small className="text-muted">Max Rooms</small>
+                                        <h6 className="fw-semibold">500</h6>
+                                    </div>
+
+                                    <div className="col-md-3">
+                                        <small className="text-muted">Max Users</small>
+                                        <h6 className="fw-semibold">50</h6>
+                                    </div>
+
+                                    <div className="col-md-3">
+                                        <small className="text-muted">Auto Renew</small>
+                                        <h6 className="fw-semibold">Yes</h6>
+                                    </div>
+
+                                    <div className="col-md-3">
+                                        <small className="text-muted">Created By</small>
+                                        <h6 className="fw-semibold">Admin</h6>
+                                    </div>
                                 </div>
-                            </Col>
-                            {checkRoomType === true ?
-                                <>
-                                    <Col lg='6' className=' mt-1'>
-                                        <Label className='form-label' for='promo'>Room Type <span className='text-danger'>*</span></Label>
-                                        <Select
-                                            theme={selectThemeColors}
-                                            className='react-select'
-                                            classNamePrefix='select'
-                                            placeholder="Select Type"
-                                            options={roomTypes}
-                                            name='RoomID'
-                                            value={roomTypes.filter(c => c.value === roomTypesId)}
-                                            onChange={(event) => {
-                                                // handleCheckRoomInput(index, event)
-                                                setRoomTypesId(event.value)
-                                            }}
-                                        />
-                                    </Col>
-                                    <Col lg='6' className=' mt-1'>
-                                        <Label className='form-label' for='promo'>No. of Rooms <span className='text-danger'>*</span></Label>
-                                        <Input
-                                            type='text'
-                                            name='NumberOfRooms'
-                                            id='promo'
-                                            value={roomNo}
-                                            onChange={(event) => {
-                                                setRoomNo(event.target.value)
-                                            }}
-                                        />
-                                    </Col>
+                            </div>
+                        )}
 
-                                    <Button color='primary' onClick={() => handleAddRoom()} className='mt-2' style={{ width: '200px' }}> Add Room Details</Button>
-                                    <Table responsive className='mt-2'>
-                                        <thead>
-                                            <tr>
-                                                <th scope='col' className='text-nowrap'>
-                                                    Room ID
-                                                </th>
-                                                <th scope='col' className='text-nowrap'>
-                                                    No of Rooms
-                                                </th>
-                                                <th scope='col' className='text-nowrap'>
-                                                    Delete
-                                                </th>
+                        {/* MODULES TAB */}
+                        {activeTab === "modules" && (
+                            <div className="card border-0 shadow-sm rounded-4 p-1">
+                                <h5 className="fw-bold mb-1">Enabled Modules</h5>
+                                <p className="text-mute mb-4">
+                                    Features available in this license
+                                </p>
 
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {roomCheckData && roomCheckData?.map((a, index) => {
-                                                return (
-                                                    <>
-                                                        <tr>
-                                                            <td className='text-nowrap text-start'>{a.roomID}</td>
-                                                            <td className='text-nowrap text-start'>{a.numberOfRooms}</td>
-                                                            <td className='text-nowrap text-start'><Trash className='me-50' size={15} onClick={() => {
-                                                                deleteRoomInput(a.applicableRoomId, index)
-                                                            }} /></td>
-                                                        </tr>
-                                                    </>
-                                                );
-                                            })}
-                                        </tbody>
-                                    </Table>
-                                </>
-                                : ''}
-                        </Row>
-                        <Button color='primary' className='mt-2 d-flex justify-content-center m-auto' style={{ width: '200px' }} onClick={() => savePromotion()}> Save Promotions</Button>
-                    </Form>
-                </ModalBody>
+                                <div className="d-flex flex-wrap gap-2">
+                                    {[
+                                        "Front Office",
+                                        "Housekeeping",
+                                        "POS",
+                                        "Accounting",
+                                        "Reports",
+                                        "Integrations",
+                                    ].map((module, i) => (
+                                        <span
+                                            key={i}
+                                            className="badge bg-secondary px-1 py-1 d-flex align-items-center gap-2"
+                                            style={{ fontSize: "14px" }}
+                                        >
+                                            <span
+                                                className="bg-success rounded-circle"
+                                                style={{ width: 8, height: 8 }}
+                                            ></span>
+                                            {module}
+                                        </span>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+
+                        {/* ACTIONS TAB */}
+                        {activeTab === "actions" && (
+                            <div className="text-center">
+                                {activeTab === "actions" && (
+                                    <div className="card border-0 shadow-sm rounded-4 p-1">
+
+                                        <h5 className="fw-bold mb-1">License Actions</h5>
+                                        <p className="text-mute mb-2">
+                                            Manage license status and settings
+                                        </p>
+
+                                        {/* Suspend Button */}
+                                        <div className='d-flex justify-content-center'>
+                                            <button className="btn btn-danger w-50 py-1 fw-semibold mb-1">
+                                                🚫 Suspend License
+                                            </button>
+                                        </div>
+                                        <hr />
+
+                                        {/* Action Buttons */}
+                                        <div className="d-grid gap-1 mt-1">
+                                            <div className='d-flex justify-content-center'>
+                                                <button className="btn btn-light border w-50 py-1 fw-semibold">
+                                                    🔄 Extend Duration
+                                                </button>
+                                            </div>
+                                            <div className='d-flex justify-content-center'>
+                                                <button className="btn btn-light border w-50 py-1 fw-semibold">
+                                                    🕒 Apply Grace Period
+                                                </button>
+                                            </div>
+                                            <div className='d-flex justify-content-center'>
+                                                <button className="btn btn-light border w-50 py-1 fw-semibold">
+                                                    🔑 Upgrade Plan
+                                                </button>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                )}
+
+                            </div>
+                        )}
+
+                    </div>
+                </div>
+
             </Modal>
             {
                 updateOpen ? (
