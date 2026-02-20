@@ -6,7 +6,12 @@ import session from "express-session";
 import authRoutes from "./routes/authRoutes.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
+import authenticateToken from "./middlewares/authenticateToken.js";
+import planRoutes from "./routes/plan.routes.js";
+import licenseRoutes from "./routes/license.routes.js";
+import hotelRoutes from "./routes/hotel.routes.js";
 // import jwt from "jsonwebtoken";
+import notificationRoutes from "./routes/notifications.routes.js";
 
 dotenv.config();
 
@@ -36,149 +41,6 @@ app.use(
   })
 );
 
-// JWT authentication middleware
-function authenticateToken(req, res, next) {
-  const authHeader = req.headers.authorization || req.headers.Authorization;
-  if (!authHeader) {
-    return res.status(401).json({ success: false, message: "Access token required" });
-  }
-
-  // Support 'Bearer <token>' or raw token in header
-  const token = authHeader.startsWith("Bearer ") ? authHeader.slice(7) : authHeader;
-
-  jwt.verify(token, process.env.JWT_SECRET || "my_secret_key", (err, decoded) => {
-    if (err) {
-      return res.status(403).json({ success: false, message: "Invalid or expired token" });
-    }
-    req.user = decoded; // attach decoded payload
-    next();
-  });
-}
-
-// Login
-
-// app.post("/api/login", (req, res) => {
-//   const { email, password } = req.body;
-
-//   if (!email || !password) {
-//     return res.status(400).json({
-//       success: false,
-//       message: "Email and password required",
-//     });
-//   }
-
-//   const sql = `
-//     SELECT id, email, name
-//     FROM users
-//     WHERE email = ? AND password = ? AND is_active = 1
-//   `;
-
-//   db.query(sql, [email, password], (err, result) => {
-//     if (err) {
-//       return res.status(500).json({
-//         success: false,
-//         error: err.message,
-//       });
-//     }
-
-//     if (result.length === 0) {
-//       return res.status(401).json({
-//         success: false,
-//         message: "Invalid credentials",
-//       });
-//     }
-
-//     // session create
-//     req.session.user = result[0];
-
-//     res.json({
-//       success: true,
-//       message: "Login successful",
-//       user: result[0],
-//     });
-//   });
-// });
-
-
-// app.post("/api/login", (req, res) => {
-
-//   const { email, password } = req.body;
-
-//   if (!email || !password) {
-//     return res.status(400).json({
-//       success: false,
-//       message: "Email and password required",
-//     });
-//   }
-
-//   const sql = `
-//     SELECT id, email, name, password, is_active
-//     FROM users
-//     WHERE email = ?
-//     LIMIT 1
-//   `;
-
-//   db.query(sql, [email], (err, result) => {
-//     if (err) {
-//       return res.status(500).json({
-//         success: false,
-//         error: err.message,
-//       });
-//     }
-
-//     if (result.length === 0) {
-//       return res.status(401).json({
-//         success: false,
-//         message: "Invalid credentials (email)",
-//       });
-//     }
-
-//     const user = result[0];
-
-//     // ❌ inactive user
-//     if (user.is_active !== 1) {
-//       return res.status(403).json({
-//         success: false,
-//         message: "User is inactive",
-//       });
-//     }
-
-//     // ❌ password mismatch
-//     if (user.password !== password) {
-//       return res.status(401).json({
-//         success: false,
-//         message: "Invalid credentials (password)",
-//       });
-//     }
-
-//     // ✅ JWT generate
-//     const token = jwt.sign(
-//       {
-//         user_id: user.id,
-//         email: user.email,
-//         name: user.name,
-//       },
-//       process.env.JWT_SECRET || "my_secret_key",
-//       { expiresIn: "1d" }
-//     );
-
-//     return res.json({
-//       success: true,
-//       message: "Login successful",
-//       token,
-//       user: {
-//         id: user.id,
-//         email: user.email,
-//         name: user.name,
-//       },
-//     });
-//   });
-// });
-
-
-
-// import bcrypt from "bcrypt";
-// import jwt from "jsonwebtoken";
 
 app.post("/api/login", async (req, res) => {
   const { email, password } = req.body;
@@ -241,10 +103,6 @@ app.post("/api/login", async (req, res) => {
   });
 });
 
-
-
-
-
 // Logout
 
 app.post("/api/logout", (req, res) => {
@@ -260,145 +118,11 @@ app.post("/api/logout", (req, res) => {
 
 //  ***********************        License       ***********************
 
-// Create license
+app.use("/api", authenticateToken, licenseRoutes);
+app.use("/api", authenticateToken, planRoutes);
+app.use("/api", authenticateToken, hotelRoutes);
+app.use("/api", authenticateToken, notificationRoutes);
 
-app.post("/api/addLicenses", authenticateToken, (req, res) => {
-  const { hotel_id, plan_id, start_date, end_date } = req.body;
-
-  if (!hotel_id || !plan_id || !start_date) {
-    return res.status(400).json({
-      success: false,
-      message: "hotel_id, plan_id and start_date are required",
-    });
-  }
-
-  const sql = `
-    INSERT INTO license_table
-    (hotel_id, plan_id, start_date, end_date, status, is_archived, created_at)
-    VALUES (?, ?, ?, ?, 1, 0, NOW())
-  `;
-
-  db.query(
-    sql,
-    [hotel_id, plan_id, start_date, end_date || null],
-    (err, result) => {
-      if (err) {
-        return res.status(500).json({
-          success: false,
-          message: "Error creating license",
-          error: err,
-        });
-      }
-
-      return res.status(201).json({
-        success: true,
-        message: "License created successfully",
-        license_id: result.insertId,
-      });
-    }
-  );
-});
-
-// Get license
-
-app.get("/api/getAllLicenses", (req, res) => {
-  const sql = `
-    SELECT *
-    FROM license_table
-    WHERE is_archived = 0
-    AND status = 1
-    ORDER BY id DESC
-  `;
-
-  db.query(sql, (err, results) => {
-    if (err) {
-      return res.status(500).json({
-        success: false,
-        message: "Error fetching licenses",
-        error: err,
-      });
-    }
-
-    return res.json({
-      success: true,
-      count: results.length,
-      data: results,
-    });
-  });
-});
-
-// Update license
-
-app.put("/api/licenses/:id", (req, res) => {
-  const { id } = req.params;
-  const { start_date, end_date, status, is_archived } = req.body;
-
-  const sql = `
-    UPDATE license_table
-    SET
-      start_date  = COALESCE(?, start_date),
-      end_date    = COALESCE(?, end_date),
-      status      = COALESCE(?, status),
-      is_archived = COALESCE(?, is_archived)
-    WHERE id = ?
-  `;
-
-  db.query(
-    sql,
-    [start_date, end_date, status, is_archived, id],
-    (err, result) => {
-      if (err) {
-        return res.status(500).json({
-          success: false,
-          message: "Error updating license",
-          error: err,
-        });
-      }
-
-      if (result.affectedRows === 0) {
-        return res.status(404).json({
-          success: false,
-          message: "License not found",
-        });
-      }
-
-      return res.json({
-        success: true,
-        message: "License updated successfully",
-      });
-    }
-  );
-});
-
-// Delete license
-
-app.delete("/api/deleteLicenses/:id", (req, res) => {
-  const { id } = req.params;
-
-  const sql = `DELETE FROM license_table WHERE id = ?`;
-
-  db.query(sql, [id], (err, result) => {
-    if (err) {
-      return res.status(500).json({
-        success: false,
-        message: "Error deleting license",
-        error: err,
-      });
-    }
-
-    if (result.affectedRows === 0) {
-      return res.status(404).json({
-        success: false,
-        message: "License not found",
-      });
-    }
-
-    return res.json({
-      success: true,
-      message: "License deleted permanently",
-    });
-  });
-});
 
 //  ***********************        Plan       ***********************
 
@@ -856,30 +580,29 @@ app.get("/api/getAllHotels", (req, res) => {
     SELECT
       id,
       hotel_name,
-      email,
-      phone,
+      contact_email AS email,
+      contact_phone AS phone,
       address,
       city,
       country,
-      room_count,
-      active_users,
-      status,
+      is_active AS status,
       created_at
-    FROM hotels_table
-    WHERE status = 1
+    FROM hotels
+    WHERE is_active = 1
     ORDER BY id DESC
   `;
 
   db.query(sql, (err, results) => {
     if (err) {
+      console.error("DB ERROR 👉", err.message);
       return res.status(500).json({
         success: false,
         message: "Error fetching hotels",
-        error: err,
+        error: err.message,
       });
     }
 
-    return res.status(200).json({
+    res.status(200).json({
       success: true,
       count: results.length,
       data: results,
@@ -887,6 +610,7 @@ app.get("/api/getAllHotels", (req, res) => {
     });
   });
 });
+
 
 // Update Hotel
 
