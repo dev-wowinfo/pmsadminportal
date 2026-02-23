@@ -1,27 +1,52 @@
 import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
-import db from "./config/db.js";
+
+// DB connections
+import mysqlPool from "./config/db.js";     // MySQL (existing)
+import pgPool from "./db/postgres.js";      // PostgreSQL (new)
 import session from "express-session";
+// Routes
 import authRoutes from "./routes/authRoutes.js";
-import jwt from "jsonwebtoken";
-import bcrypt from "bcrypt";
-import authenticateToken from "./middlewares/authenticateToken.js";
 import planRoutes from "./routes/plan.routes.js";
 import licenseRoutes from "./routes/license.routes.js";
 import hotelRoutes from "./routes/hotel.routes.js";
-// import jwt from "jsonwebtoken";
 import notificationRoutes from "./routes/notifications.routes.js";
 
+// Middlewares
+import authenticateToken from "./middlewares/authenticateToken.js";
+
+// Config
 dotenv.config();
 
+// App init
 const app = express();
 
 // Middlewares
-
 app.use(cors());
 app.use(express.json());
+
+// =======================
+// 🔍 PostgreSQL TEST API
+// =======================
+app.get("/api/pg-test", async (req, res) => {
+  try {
+    const result = await pgPool.query("SELECT * FROM products1");
+    res.json(result.rows);
+  } catch (error) {
+    console.error("PostgreSQL Error:", error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// =======================
+// Existing APIs
+// =======================
 app.use("/api/auth", authRoutes);
+app.use("/api/plans", authenticateToken, planRoutes);
+app.use("/api/licenses", authenticateToken, licenseRoutes);
+app.use("/api/hotels", authenticateToken, hotelRoutes);
+app.use("/api/notifications", authenticateToken, notificationRoutes);
 
 // ===== Module ID → Value Mapping =====
 const MODULE_MAP = {
