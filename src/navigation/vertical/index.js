@@ -31,7 +31,8 @@ import dashboard from './dashboard'
 import plan from './GuestMaster'
 import hotels from './bookingChart'
 import licences from './promotions'
-import Master from './Master'
+import planmaster from './planmaster'
+
 import notifications from './rateInventory'
 import propertyMaster from './propertyMaster'
 import regionMaster from './regionMaster'
@@ -58,7 +59,7 @@ pageName = [
     ...licences,
     ...plan,
     ...hotels,
-    ...Master,
+    ...planmaster,
     ...notifications,
     // ...frontDesk,
     // ...WakeUpCall,

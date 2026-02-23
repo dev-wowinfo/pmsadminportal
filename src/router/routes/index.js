@@ -90,7 +90,7 @@ import ManageProfile from '../../views/PropertyMaster/AccountSetup/ProfileModal'
 import LicenseManagement from "../../views/Promotions/LicenseManagement.js";
 import SubscriptionPlan from "../../views/GuestMaster/SubscriptionPlan.js";
 import HotelManagement from "../../views/FrontDesk/Hotel Management.js";
-import PlanManagement from "../../views/MasterPlan/PlanManagement.js";
+
 // import ManageProfile from '../../../../ layouts/components/menu/vertical-menu/EditProfileModal.js'
 // import PaymentGateWay from "../../views/FrontDesk/PaymentsFolioAcc/PaymentGateWay";
 // import pos2 from "../../views/POS2/POS2"
@@ -509,10 +509,7 @@ const Routes = [
     path: "/licenseManagement",
     element: <LicenseManagement />,
   },
-  {
-    path: "/planManagement",
-    element: <PlanManagement />,
-  },
+  
   {
     path: "/ratingsReviews",
     element: <RatingReviews />,
