@@ -167,7 +167,7 @@ const DashBoard = () => {
 			console.log("Bookings Error=====", error);
 			toast.error("Something went wrong, Try again!");
 		}
-		if (data === []) {
+		if (data == []) {
 			setRefresh(true);
 		}
 	}, [refresh]);

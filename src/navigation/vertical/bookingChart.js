@@ -1,10 +1,10 @@
-import { FaUncharted } from "react-icons/fa"
+import { SiHotelsdotcom } from "react-icons/si";
 
 export default [
     {
         id: 'hotelManagement',
         title: 'Hotels',
-        icon: <FaUncharted size={20} />,
+        icon: <SiHotelsdotcom  size={20} />,
         navLink: '/hotelManagement'
         // children: [
         //     {

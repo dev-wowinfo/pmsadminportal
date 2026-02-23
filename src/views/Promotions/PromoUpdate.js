@@ -337,10 +337,9 @@ const PromoUpdate = ({ updateOpen, handleUpdateOpen, promoId, getPromoData }) =>
                         </ul>
                     </div>
 
-                    {/* Body */}
                     <div className="modal-body">
 
-                        {/* DETAILS TAB */}
+                     
                         {activeTab === "details" && (
                             <div className="card border-0 shadow-sm rounded-4 p-1">
                                 <h5 className="fw-bold mb-4">Subscription Details</h5>
@@ -391,7 +390,7 @@ const PromoUpdate = ({ updateOpen, handleUpdateOpen, promoId, getPromoData }) =>
                             </div>
                         )}
 
-                        {/* MODULES TAB */}
+                        
                         {activeTab === "modules" && (
                             <div className="card border-0 shadow-sm rounded-4 p-1">
                                 <h5 className="fw-bold mb-1">Enabled Modules</h5>
@@ -424,7 +423,7 @@ const PromoUpdate = ({ updateOpen, handleUpdateOpen, promoId, getPromoData }) =>
                             </div>
                         )}
 
-                        {/* ACTIONS TAB */}
+
                         {activeTab === "actions" && (
                             <div className="text-center">
                                 {activeTab === "actions" && (
@@ -435,7 +434,7 @@ const PromoUpdate = ({ updateOpen, handleUpdateOpen, promoId, getPromoData }) =>
                                             Manage license status and settings
                                         </p>
 
-                                        {/* Suspend Button */}
+                                        
                                         <div className='d-flex justify-content-center'>
                                             <button className="btn btn-danger w-50 py-1 fw-semibold mb-1">
                                                 🚫 Suspend License
@@ -443,7 +442,7 @@ const PromoUpdate = ({ updateOpen, handleUpdateOpen, promoId, getPromoData }) =>
                                         </div>
                                         <hr />
 
-                                        {/* Action Buttons */}
+                                        
                                         <div className="d-grid gap-1 mt-1">
                                             <div className='d-flex justify-content-center'>
                                                 <button className="btn btn-light border w-50 py-1 fw-semibold">
