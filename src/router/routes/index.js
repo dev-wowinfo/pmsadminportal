@@ -162,6 +162,7 @@ const DiscountMaster = lazy(() => import("../../views/MasterSetting/Discount"));
 const HotelMaster = lazy(() =>
   import("../../views/PropertyMaster/Hotel/Hotel")
 );
+//test
 const UserMaster = lazy(() => import("../../views/PropertyMaster/User/User"));
 const FloorMaster = lazy(() =>
   import("../../views/PropertyMaster/Floor/Floor")
