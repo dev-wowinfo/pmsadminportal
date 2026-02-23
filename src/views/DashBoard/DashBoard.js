@@ -59,6 +59,8 @@ const DashBoard = () => {
 	const { LoginID, Token, CompanyID, PropertyID } = getUserData;
 
 	const [dailyNumData, setDailyNumData] = useState([]);
+	console.log("dailyNumData" , dailyNumData);
+	
 	const handleOpen = () => setOpen(!open)
 	const handleOnHoldOpne = () => setOnHoldOpen(!onHoldOpen)
 	const [onHoldOpen, setOnHoldOpen] = useState(false)
@@ -78,9 +80,9 @@ const DashBoard = () => {
 				Event: "chart",
 			};
 			const res = await axios.post("getdata/bookingdata/dashboardchart", objc1);
-			console.log("numres", res);
+			console.log("numressss", res);
 			setDailyNumData(res.data);
-			setRemaining(res.data[0])
+			setRemaining(res.data[1])
 		} catch (error) {
 			console.log("Error", error);
 		}
@@ -165,7 +167,7 @@ const DashBoard = () => {
 			console.log("Bookings Error=====", error);
 			toast.error("Something went wrong, Try again!");
 		}
-		if (data === []) {
+		if (data == []) {
 			setRefresh(true);
 		}
 	}, [refresh]);
@@ -537,7 +539,7 @@ const DashBoard = () => {
 							amount={
 								cardData && cardData[0]?.todaysBookings
 									? cardData[0]?.todaysBookings
-									: ""
+									: "111"
 							}
 						/>
 						

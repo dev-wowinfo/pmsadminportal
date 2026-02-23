@@ -552,7 +552,7 @@ const VerticalMenuFooter = (props) => {
                             </DropdownItem>
                         </DropdownMenu>
                     </UncontrolledDropdown>
-                )
+                ) 
             }
             {showEdit ? <EditAccountModal id={selected_account} /> : <></>}
         </ul>

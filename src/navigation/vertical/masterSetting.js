@@ -6,7 +6,7 @@ export default [
   
   {
     id: 'masterSetting',
-    title: 'Licences',
+    title: 'Licences...',
     icon: <RiCreativeCommonsNdFill size={20} />,
     navLink: '/commonMasters'//,
    

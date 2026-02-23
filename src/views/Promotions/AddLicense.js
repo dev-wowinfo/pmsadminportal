@@ -356,7 +356,7 @@ const AddLicense = ({ open, handleOpen, getOption }) => {
           <ModalFooter>
             <Col xs={12} className="text-center">
               <Button className="me-1" color="primary" onClick={onSubmit}>
-                Cancel
+                 Create License
               </Button>
               <Button
                 type="reset"
@@ -364,7 +364,7 @@ const AddLicense = ({ open, handleOpen, getOption }) => {
                 outline
                 onClick={() => handleReset()}
               >
-                Create License
+                Cancel
               </Button>
             </Col>
           </ModalFooter>

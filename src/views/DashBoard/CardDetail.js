@@ -56,7 +56,7 @@ const CardDetail = (props) => {
                     }}>
                     <Avatar
                         title="Click to Manage Booking"
-                        icon={<User color='#FFFFFF' size={25} />}
+                        icon={<User color='#FFFFFF' size={50} />}
                         color={
                             row.status === 'CheckedIN' ? (
                                 'success'
