@@ -171,7 +171,7 @@ const ContactMaster = lazy(() => import("../../views/PropertyMaster/Contact"));
 const BankDetailsMaster = lazy(() =>
   import("../../views/PropertyMaster/BankDetails")
 );
-const RoomDetailsMaster = lazy(() =>
+const RoomDetailsMaster = lazy(() => 
   import("../../views/PropertyMaster/RoomDetails/RoomDetails")
 );
 const RoomType = lazy(() =>

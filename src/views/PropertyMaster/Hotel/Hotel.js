@@ -59,16 +59,36 @@ const Hotel = () => {
         console.log(e);
       });
   };
-   const data = [
-        {
-            id: 1,
-            type: 'Basic',
-            details: 'something',
-            dates: '22/8/2022',
-            applicability: 'all',
-            action: 'btns'
-        },
-    ]
+  const data = [
+    // {
+    //   id: 1,
+    //   type: "Basic",
+    //   details: "something",
+    //   dates: "22/8/2022",
+    //   applicability: "all",
+    //   action: "btns",
+    // },
+    {
+      name: "PMS",
+      type: "Basic",
+      details: "Basic package details",
+      dates: "22/08/2022",
+      applicability: "All Users",
+      room: "100",
+      user: "50",
+      action: "btns",
+    },
+    {
+      name: "LLM",
+      type: "Standard",
+      details: "Standard package details",
+      dates: "15/10/2023",
+      applicability: "selected",
+      room: "500",
+      user: "200",
+      action: "btns",
+    },
+  ];
 
   const [show, setShow] = useState(false);
   const handleShowModal = () => setShow(!show);
@@ -127,85 +147,79 @@ const Hotel = () => {
   // }, [])
 
   const hotelTable = [
-          {
-              // name: 'Promotion Id',
-              name: 'Product Name',
-              sortable: true,
-              minWidth: '250px',
-              cell: () => <span>PMS</span>
-          },
-          {
-              // name: 'Promotion Date',
-              name: 'Plan',
-              sortable: true,
-              // minWidth: '225px',             
-              // selector: row => moment(row.promoDate).format('YYYY-MM-DD')
-              cell: () => <span>Enterprises</span>
-          },
-          {
-              // name: 'Promotion Name',
-              name: 'Status',
-              sortable: true,
-              // minWidth: '250px',
-              cell: () => <span class="border rounded bg-success text-light px-1">Active</span>
-          },
-          {
-              // name: 'Discount Type',
-              name: 'Start Date',
-              sortable: true,
-              // minWidth: '310px',
-              // selector: row => row.discountType === 'P' ? 'Percentage' : 'Flat'
-              cell: () => <span>Aug 02, 2025</span>
-  
-          },
-          {
-              // name: 'Discount Percentage',
-              name: 'End Date',
-              sortable: true,
-              // minWidth: '250px',
-              // selector: row => row.discPercentage
-              cell: () => <span>Aug 02, 2026</span>
-          },
-          {
-              // name: 'Discount Amount',
-              name: 'Rooms',
-              sortable: true,
-              // minWidth: '250px',
-              // selector: row => row.discAmount
-              cell: () => <span>500</span>
-          },
-          {
-              // name: 'Guest Type',
-              name: 'Users',
-              sortable: true,
-              // minWidth: '250px',
-              // selector: row => row.guestType
-              cell: () => <span>50</span>
-          },
-          {
-              name: 'Actions',
-              center: true,
-              selector: row => {
-                  return (
-                      <>
-                          <Col>
-                              <Edit className='me-1 cursor-pointer' size={15} onClick={() => {
-                                  handleUpdateOpen()
-                                  setPromoId(row.promotionId)
-                              }} />
-  
-                          </Col>
-                      </>
-                  )
-              }
-          }
-      ]
+    {
+      name: "Product Name",
+      sortable: true,
+      minWidth: "80px",
+      cell: (row) => <span>{row.name}</span>,
+    },
+    {
+      name: "Type",
+      sortable: true,
+      minWidth: "50px",
+      cell: (row) => <span>{row.type}</span>,
+    },
+    {
+      name: "Details",
+      sortable: true,
+      minWidth: "180px",
+      cell: (row) => <span>{row.details}</span>,
+    },
+    {
+      name: "Date",
+      sortable: true,
+      minWidth: "50px",
+      cell: (row) => <span>{row.dates}</span>,
+    },
+    {
+      name: "Applicability",
+      sortable: true,
+      minWidth: "80px",
+      cell: (row) => <span>{row.applicability}</span>,
+    },
+    {
+      // name: 'Discount Amount',
+      name: "Rooms",
+      sortable: true,
+      minWidth: "50px",
+      cell: (row) => <span>{row.room}</span>,
+    },
+    {
+      name: "Users",
+      sortable: true,
+      minWidth: "50px",
+      cell: (row) => <span>{row.user}</span>,
+    },
+    {
+      name: "Actions",
+      center: true,
+      minWidth: "80px",
+      selector: (row) => {
+        return (
+          <>
+            <Col>
+              <Edit
+                className="me-1 cursor-pointer"
+                size={15}
+                onClick={() => {
+                  handleUpdateOpen();
+                  setPromoId(row.promotionId);
+                }}
+              />
+            </Col>
+          </>
+        );
+      },
+    },
+  ];
 
   return (
     <>
       <Card>
         <CardHeader>
-          <CardTitle><h2>Product</h2></CardTitle>
+          <CardTitle>
+            <h2>Product</h2>
+          </CardTitle>
           {UserRole === "SuperAdmin" ? (
             <Button color="primary" onClick={() => setShow(true)}>
               Add Product
@@ -246,14 +260,6 @@ const Hotel = () => {
         <DeleteHotelModal
           del={del}
           handleDelModal={handleDelModal}
-          hotels={hotels}
-          id={selected_hotel}
-        />
-      )}
-      {OTA && (
-        <HotelOTA
-          open={OTA}
-          handleOTA={handleOTA}
           hotels={hotels}
           id={selected_hotel}
         />

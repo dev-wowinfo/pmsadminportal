@@ -189,7 +189,8 @@ const HotelManagement = () => {
       active: '8',
       status: 'Trial',
       date: 'Sep 30,2025',
-    }
+    },
+    
   ];
   return (
     <>
