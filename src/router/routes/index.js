@@ -29,9 +29,9 @@ import IdCard from "../../views/MasterSetting/IdCard";
 import Note from "../../views/MasterSetting/Note";
 import Discount from "../../views/MasterSetting/Discount";
 import Common from "../../views/MasterSetting/Common/Common";
-import Hotel from "../../views/PropertyMaster/Hotel/Hotel";
-import Floor from "../../views/PropertyMaster/Floor/Floor";
-import Contact from "../../views/PropertyMaster/Contact";
+import Hotel from "../../views/PropertyMaster/Hotel/Products.js";
+import Floor from "../../views/PropertyMaster/Floor/Price.js";
+import Contact from "../../views/PropertyMaster/Feature.js";
 import BankDetails from "../../views/PropertyMaster/BankDetails";
 import RoomDetails from "../../views/PropertyMaster/RoomDetails/RoomDetails";
 //import AccountSetup from "../../views/PropertyMaster/AccountSetup/AccountSetup"
@@ -90,6 +90,7 @@ import ManageProfile from '../../views/PropertyMaster/AccountSetup/ProfileModal'
 import LicenseManagement from "../../views/Promotions/LicenseManagement.js";
 import SubscriptionPlan from "../../views/GuestMaster/SubscriptionPlan.js";
 import HotelManagement from "../../views/FrontDesk/Hotel Management.js";
+import Feature from "../../views/PropertyMaster/Feature.js";
 
 // import ManageProfile from '../../../../ layouts/components/menu/vertical-menu/EditProfileModal.js'
 // import PaymentGateWay from "../../views/FrontDesk/PaymentsFolioAcc/PaymentGateWay";
@@ -159,15 +160,15 @@ const ExtraBedChargesMaster = lazy(() =>
 const IdCardMaster = lazy(() => import("../../views/MasterSetting/IdCard"));
 const NoteMaster = lazy(() => import("../../views/MasterSetting/Note"));
 const DiscountMaster = lazy(() => import("../../views/MasterSetting/Discount"));
-const HotelMaster = lazy(() =>
-  import("../../views/PropertyMaster/Hotel/Hotel")
+const ProductsMaster = lazy(() =>
+  import("../../views/PropertyMaster/Hotel/Products.js")
 );
 //test
-const UserMaster = lazy(() => import("../../views/PropertyMaster/User/User"));
-const FloorMaster = lazy(() =>
-  import("../../views/PropertyMaster/Floor/Floor")
+const PlansMaster = lazy(() => import("../../views/PropertyMaster/User/Plans.js"));
+const PriceMaster = lazy(() =>
+  import("../../views/PropertyMaster/Floor/Price.js")
 );
-const ContactMaster = lazy(() => import("../../views/PropertyMaster/Contact"));
+const FeatureMaster = lazy(() => import("../../views/PropertyMaster/Feature.js"));
 const BankDetailsMaster = lazy(() =>
   import("../../views/PropertyMaster/BankDetails")
 );
@@ -552,20 +553,20 @@ const Routes = [
     element: <Discount />,
   },
   {
-    path: "/hotelMaster",
-    element: <Hotel />,
+    path: "/productsMaster",
+    element: <ProductsMaster />,
   },
   {
-    path: "/userMaster",
-    element: <UserMaster />,
+    path: "/plansMaster",
+    element: <PlansMaster />,
   },
   {
-    path: "/floorMaster",
-    element: <Floor />,
+    path: "/priceMaster",
+    element: <PriceMaster />,
   },
   {
-    path: "/contact",
-    element: <Contact />,
+    path: "/featureMaster",
+    element: <FeatureMaster />,
   },
   {
     path: "/bankDetails",

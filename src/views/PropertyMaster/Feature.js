@@ -12,7 +12,7 @@ import {
 } from 'reactstrap'
 import toast from 'react-hot-toast'
 
-const Contact = () => {
+const Feature = () => {
   const [hotelPhone, setHotelPhone] = useState('')
   const [hotelMobile, setHotelMobile] = useState('')
   const [hotelEmail, setHotelEmail] = useState('')
@@ -41,7 +41,7 @@ const Contact = () => {
     <>
       <Card>
         <CardHeader>
-          <CardTitle tag='h1' className='fw-bold fs-2 mb-1'>Contact Info</CardTitle>
+          <CardTitle tag='h1' className='fw-bold fs-2 mb-1'><h2>Features</h2></CardTitle>
         </CardHeader>
         <CardBody>
           <Row>
@@ -101,4 +101,4 @@ const Contact = () => {
   )
 }
 
-export default Contact
+export default Feature

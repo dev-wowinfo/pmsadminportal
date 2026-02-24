@@ -306,9 +306,9 @@ const AddPlan = ({ open, handleOpen, getOption }) => {
   };
 
   const options = [
-    { value: 'chocolate', label: 'Chocolate' },
-    { value: 'strawberry', label: 'Strawberry' },
-    { value: 'vanilla', label: 'Vanilla' }
+    { value: 'starter', label: 'Starter' },
+    { value: 'professional', label: 'Professional' },
+    { value: 'enterprises', label: 'Enterprises' }
   ]
   const [selectedOption, setSelectedOption] = useState(null)
 
@@ -339,7 +339,7 @@ const AddPlan = ({ open, handleOpen, getOption }) => {
                 </Col>
                 <Col className="mx-1 ">
                   <Label className="form-label" for="last_name">
-                    Description<span className="text-danger">*</span>
+                    Description
                   </Label>
                   <input type="textarea" placeholder="Brief Description..." className="form-control input-default w-100" />
                 </Col>
@@ -348,7 +348,7 @@ const AddPlan = ({ open, handleOpen, getOption }) => {
               <Col className="mt-1 d-flex flex-md-row flex-column">
                 <Col className="mx-1">
                   <Label className="form-label" for="email">
-                    Subscription Type
+                    Subscription Type<span className="text-danger">*</span>
                   </Label>
                   {/* <input type="text" placeholder="search" className="form-control input-default w-100" /> */}
                   <Select
@@ -398,7 +398,7 @@ const AddPlan = ({ open, handleOpen, getOption }) => {
 
                 <Col className="mx-1">
                   <Label className="form-label" for="pincode">
-                    Currency<span className="text-danger">*</span>
+                    Currency
                   </Label>
                   <Select>
                     <option>Demo/Trial</option>

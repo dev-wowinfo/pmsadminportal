@@ -32,7 +32,8 @@ import EditHotelModal from "./EditHotelModal";
 import DeleteHotelModal from "./DeleteHotelModal";
 import HotelOTA from "./HotelOTA";
 import Avatar from "@components/avatar";
-const Hotel = () => {
+
+const Products = () => {
   useEffect(() => {
     const prevTitle = document.title;
     document.title = "PMS-Hotel";
@@ -218,7 +219,7 @@ const Hotel = () => {
       <Card>
         <CardHeader>
           <CardTitle>
-            <h2>Product</h2>
+            <h2>Products</h2>
           </CardTitle>
           {UserRole === "SuperAdmin" ? (
             <Button color="primary" onClick={() => setShow(true)}>
@@ -268,4 +269,4 @@ const Hotel = () => {
   );
 };
 
-export default Hotel;
+export default Products;

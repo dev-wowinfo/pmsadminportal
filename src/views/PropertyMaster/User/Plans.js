@@ -48,7 +48,7 @@ const userRoles = [
 //     data = response.data
 // })
 
-const User = () => {
+const Plans = () => {
   useEffect(() => {
     const prevTitle = document.title;
     document.title = "PMS-User";
@@ -752,7 +752,7 @@ const User = () => {
     <>
       <Card>
         <CardHeader>
-          <CardTitle><h2>LLM Subscription Plan</h2></CardTitle>
+          <CardTitle><h2>Subscription Plan</h2></CardTitle>
 
           <Button color="primary" onClick={() => setShow(true)}>
             Add User
@@ -775,7 +775,7 @@ const User = () => {
                 </CardBody> */}
       </Card>
 
-      <div className="d-flex justify-content-between">
+      <div className="d-flex justify-content-evenly">
         <Card
           style={{ width: "24rem", paddingTop: "20px", marginRight: "5px" }}
         >
@@ -1051,4 +1051,4 @@ const User = () => {
   );
 };
 
-export default User;
+export default Plans;
