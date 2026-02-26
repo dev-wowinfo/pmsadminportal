@@ -1,4 +1,4 @@
-import { React, useState } from 'react'
+import { React, useState } from "react";
 import {
   Card,
   CardHeader,
@@ -8,23 +8,30 @@ import {
   Input,
   Row,
   Col,
-  Button
-} from 'reactstrap'
-import toast from 'react-hot-toast'
+  Button,
+} from "reactstrap";
+import toast from "react-hot-toast";
 
 const Feature = () => {
-  const [hotelPhone, setHotelPhone] = useState('')
-  const [hotelMobile, setHotelMobile] = useState('')
-  const [hotelEmail, setHotelEmail] = useState('')
-  const [phoneList, setPhoneList] = useState('')
-  const [emailID, setEmailID] = useState('')
-  const [websiteList, setWebsiteList] = useState('')
-  const [display, setDisplay] = useState(false)
+  const [hotelPhone, setHotelPhone] = useState("");
+  const [hotelMobile, setHotelMobile] = useState("");
+  const [hotelEmail, setHotelEmail] = useState("");
+  const [phoneList, setPhoneList] = useState("");
+  const [emailID, setEmailID] = useState("");
+  const [websiteList, setWebsiteList] = useState("");
+  const [display, setDisplay] = useState(false);
 
   const handleSubmit = () => {
-    setDisplay(true)
-    if (hotelPhone && hotelMobile && hotelEmail && phoneList && emailID && websiteList !== '') {
-      toast.success('Form Submitted!', { position: "top-center" })
+    setDisplay(true);
+    if (
+      hotelPhone &&
+      hotelMobile &&
+      hotelEmail &&
+      phoneList &&
+      emailID &&
+      websiteList !== ""
+    ) {
+      toast.success("Form Submitted!", { position: "top-center" });
     }
     // else {
     //   toast.error('Fill All Fields!', {
@@ -35,16 +42,18 @@ const Feature = () => {
     //     duration: 4000
     //   })
     // }
-  }
+  };
 
   return (
     <>
       <Card>
         <CardHeader>
-          <CardTitle tag='h1' className='fw-bold fs-2 mb-1'><h2>Features</h2></CardTitle>
+          <CardTitle tag="h1" className="fw-bold fs-2">
+            <h2>Features</h2>
+          </CardTitle>
         </CardHeader>
         <CardBody>
-          <Row>
+          {/* <Row>
             <Col md='4 '>
               <div  className='d-flex'>
               <Label for="hphone" className='w-50'>Hotel Phone<span className='text-danger'>*</span></Label>
@@ -94,11 +103,14 @@ const Feature = () => {
             <Col md='12 text-end my-2'>
               <Button color='info' onClick={handleSubmit}>Save</Button>
             </Col>
-          </Row>
+          </Row> */}
+          <div className="d-flex justify-content-center py-5">
+            <h2>Something is coming....😉</h2>
+          </div>
         </CardBody>
       </Card>
     </>
-  )
-}
+  );
+};
 
-export default Feature
+export default Feature;

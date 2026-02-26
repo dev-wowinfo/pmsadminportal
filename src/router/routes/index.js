@@ -219,7 +219,7 @@ const DistrictMaster = lazy(() =>
   import("../../views/RegionMaster/District/District")
 );
 const StateMaster = lazy(() => import("../../views/RegionMaster/State/State"));
-//const Vendor = lazy(() => import("../../views/RoomInventory/VendorMaster/VendorMaster"))
+// const Vendor = lazy(() => import("../../views/RoomInventory/VendorMaster/VendorMaster"))
 const Product = lazy(() =>
   import("../../views/RoomInventory/ProductMaster/ProductMaster")
 );

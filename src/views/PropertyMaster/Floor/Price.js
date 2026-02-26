@@ -27,7 +27,7 @@ import { useSelector } from "react-redux";
 const Price = () => {
   useEffect(() => {
     const prevTitle = document.title;
-    document.title = "PMS-Floor";
+    document.title = "PMS-Price";
 
     return () => {
       document.title = prevTitle;

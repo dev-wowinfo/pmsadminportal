@@ -51,7 +51,7 @@ const userRoles = [
 const Plans = () => {
   useEffect(() => {
     const prevTitle = document.title;
-    document.title = "PMS-User";
+    document.title = "PMS-Plans";
 
     return () => {
       document.title = prevTitle;
@@ -788,7 +788,7 @@ const Plans = () => {
                 </p>
               </div>
               <div>
-                <span className="border rounded bg-primary text-light px-1">
+                <span className="border rounded bg-primary text-light px-1"style={{paddingTop: "2px", paddingBottom: "2px"}}>
                   Active
                 </span>
               </div>
@@ -869,7 +869,7 @@ const Plans = () => {
                 </p>
               </div>
               <div>
-                <span className="border rounded bg-primary text-light px-1">
+                <span className="border rounded bg-primary text-light px-1" style={{paddingTop: "2px", paddingBottom: "2px"}}>
                   Active
                 </span>
               </div>
@@ -951,7 +951,7 @@ const Plans = () => {
                 </p>
               </div>
               <div>
-                <span className="border rounded bg-primary text-light px-1">
+                <span className="border rounded bg-primary text-light px-1" style={{paddingTop: "2px", paddingBottom: "2px"}}>
                   Active
                 </span>
               </div>

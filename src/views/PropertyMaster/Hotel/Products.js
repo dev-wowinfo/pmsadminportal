@@ -36,7 +36,7 @@ import Avatar from "@components/avatar";
 const Products = () => {
   useEffect(() => {
     const prevTitle = document.title;
-    document.title = "PMS-Hotel";
+    document.title = "PMS-Products";
 
     return () => {
       document.title = prevTitle;
@@ -227,8 +227,6 @@ const Products = () => {
             </Button>
           ) : null}
         </CardHeader>
-      </Card>
-      <Card>
         <CardBody>
           <Row className="my-1">
             <Col>
@@ -241,6 +239,9 @@ const Products = () => {
             </Col>
           </Row>
         </CardBody>
+      </Card>
+      <Card>
+        
       </Card>
       {show && (
         <NewHotelModal

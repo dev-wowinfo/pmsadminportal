@@ -32,7 +32,7 @@ import plan from './GuestMaster'
 import hotels from './bookingChart'
 import licences from './promotions'
 import pannelmaster from './pannelmaster'
-
+import subscription from './subscription'
 import notifications from './rateInventory'
 import propertyMaster from './propertyMaster'
 import regionMaster from './regionMaster'
@@ -60,6 +60,7 @@ pageName = [
     ...plan,
     ...hotels,
     ...pannelmaster,
+    ...subscription,
     ...notifications,
     // ...frontDesk,
     // ...WakeUpCall,

@@ -10,7 +10,7 @@ export default [
         navLink: '/pannelmaster',
         children: [
             {
-                id: 'productMaster',
+                id: 'productsMaster',
                 title: 'Products',
                 icon: <AiOutlineArrowRight size={20} />,
                 navLink: '/productsMaster'
