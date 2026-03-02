@@ -135,7 +135,7 @@ const ProductMaster = () => {
                 }`}
                 onClick={() => setActiveTab("active")}
               >
-                Active Hotels (2)
+                All Subscription (2)
               </button>
 
               <button
@@ -143,7 +143,7 @@ const ProductMaster = () => {
                 }`}
                 onClick={() => setActiveTab("archived")}
               >
-                Archived Hotels (0)
+                Active (0)
               </button>
 
               <button
@@ -151,7 +151,7 @@ const ProductMaster = () => {
                 }`}
                 onClick={() => setActiveTab("expired")}
               >
-                Expired Hotels (0)
+                Expired (0)
               </button>
             </div>
           </CardTitle>
