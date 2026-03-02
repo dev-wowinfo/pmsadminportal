@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react'
 import MUIDataTable from "mui-datatables";
 import { Button, Card, CardBody, CardHeader, CardTitle, Col, InputGroup, InputGroupText, Label, Row } from 'reactstrap';
@@ -9,24 +8,22 @@ import { selectThemeColors } from '@utils'
 import axios from '../../API/axios'
 import { useSelector } from 'react-redux';
 import moment from 'moment';
-const BookingReport = () => {
+const AssignSubscription = () => {
 
     useEffect(() => {
         const prevTitle = document.title
-        document.title = "PMS-Booking Report"
+        document.title = "PMS-Assign Subscription"
 
         return () => {
             document.title = prevTitle
         }
     }, [])
 
-
     const getUserData = useSelector(state => state.userManageSlice.userData)
     const { LoginID, Token } = getUserData
     const [fromDate, setFromDate] = useState(moment(new Date()).format('YYYY-MM-DD'))
     const [toDate, setToDate] = useState(moment(new Date()).format('YYYY-MM-DD'))
-    const [bookingdata, setBookingdata] = useState([])
-    console.log('bookingdata', bookingdata);
+    const [stayover, setStayover] = useState([])
     const [dType, setDType] = useState('')
     // console.log(dType, toDate, fromDate);
     const dateType = [
@@ -37,47 +34,24 @@ const BookingReport = () => {
     ]
     const columns = [
         {
-            name: "bookingMapID",
-            label: "Booking Map Id",
+            name: "bookingID",
+            label: "Booking ID",
         },
         {
-            name: "hotel Name",
-            label: "Hotel Name",
-            options: {
-                customBodyRenderLite: (dataIndex) => bookingdata[dataIndex]["hotel Name"],
-            },
+            name: "status",
+            label: "Status",
         },
         {
             name: "bookingSource",
             label: "Booking Source",
         },
         {
+            name: "guestName",
+            label: "Guest Name",
+        },
+        {
             name: "roomType",
             label: "Room Type",
-        },
-        {
-            name: "roomCount",
-            label: "Room Count",
-        },
-        {
-            name: "adult",
-            label: "Adult",
-        },
-        {
-            name: "children",
-            label: "Children",
-        },
-        {
-            name: "mealPlan",
-            label: "Meal Plan",
-        },
-        {
-            name: "bookingTime",
-            label: "Booking Time",
-        },
-        {
-            name: "totalNights",
-            label: "Total Nights",
         },
         {
             name: "checkInDate",
@@ -88,129 +62,71 @@ const BookingReport = () => {
             label: "CheckOut Date",
         },
         {
-            name: "guestName",
-            label: "Guest Name",
-        },
-        {
-            name: "guestEmail",
-            label: "Guest Email",
-        },
-        {
-            name: "guestMobileNumber",
-            label: "Guest Mobile Number",
-        },
-        {
-            name: "discount",
-            label: "Discount",
-        },
-        {
-            name: "roomAmount",
-            label: "Room Amount",
-        },
-        {
-            name: "ottalTax",
-            label: "Total Tax",
-        },
-        {
-            name: "roomAmountIncTax",
-            label: "Room AmountIncTax",
-        },
-        {
-            name: "laundaryAMT",
-            label: "Laundary Amount",
-        },
-        {
-            name: "posAmount",
-            label: "POS Amount",
-        },
-        {
-            name: "extraServiceAMT",
-            label: "Extra Service Amount"
+            name: "guests",
+            label: "Guests",
         },
         {
             name: "totalAmount",
-            label: "Total Amount (BKG)",
+            label: "Total Amount",
         },
-
         {
             name: "recievedAmount",
             label: "Recieved Amount",
         },
-        {
-            name: "pendingAmount",
-            label: "Pending Amount",
-        },
-        {
-            name: "status",
-            label: "Status",
-        },
-        {
-            name: "assign Room",
-            label: "Assign Room",
-            options: {
-    customBodyRenderLite: (dataIndex) => bookingdata[dataIndex]["assing Room"],
-  },
-        },
-        {
-            name: "invNo",
-            label: "Invoice No",
-        },
+
     ];
 
-    // const data = [
-    //     { bookingId: "Joe James", hotelName: "Test Corp", source: "Yonkers", roomType: "NY", noofRooms: '1', noofAdults: '1' },
-    //     { bookingId: "John Walsh", hotelName: "Test Corp", source: "Hartford", roomType: "CT", noofRooms: '1', noofAdults: '1' },
-    //     { bookingId: "Bob Herm", hotelName: "Test Corp", source: "Tampa", roomType: "FL", noofRooms: '1', noofAdults: '1' },
-    //     { bookingId: "James Houston", hotelName: "Test Corp", source: "Dallas", roomType: "TX", noofRooms: '1', noofAdults: '1' },
-    // ];
 
     const options = {
         filterType: 'dropdown',
         download: true,
     };
+
     const handelReset = async () => {
         setDType("");
         setFromDate(moment(new Date()).format("YYYY-MM-DD"));
         setToDate(moment(new Date()).format("YYYY-MM-DD"));
         try {
             const res = await axios.get(
-                `/Reports/BookinDetails?FromDate=${moment(new Date()).format("YYYY-MM-DD")}&ToDate=${moment(new Date()).format("YYYY-MM-DD")}&FetchType=`,
+                `/Reports/StayOverDetails?FromDate=${moment(new Date()).format("YYYY-MM-DD")}&ToDate=${moment(new Date()).format("YYYY-MM-DD")}&FetchType=`,
                 {
                     headers: {
                         LoginID,
                         Token,
+                        FetchType
                     },
                 }
             );
             console.log("resData", res.data[0]);
-            setBookingdata(res?.data[0]);
+            setStayover(res?.data[0]);
         } catch (error) {
             console.log("error", error);
         }
     };
-    const getBookingData = async () => {
+
+    const getstayover = async () => {
         try {
-            const res = await axios.get(`/Reports/BookinDetails?FromDate=${moment(fromDate).format('YYYY-MM-DD')}&ToDate=${moment(toDate).format('YYYY-MM-DD')}&FetchType=${dType}`, {
+            const res = await axios.get(`/Reports/StayOverDetails?FromDate=${moment(fromDate).format('YYYY-MM-DD')}&ToDate=${moment(toDate).format('YYYY-MM-DD')}&FetchType=${dType}`, {
                 headers: {
                     LoginID,
                     Token
                 }
             })
             // console.log('resData', res.data[0])
-            setBookingdata(res?.data[0])
+            setStayover(res?.data[0])
         } catch (error) {
             console.log('error', error)
         }
     }
     useEffect(() => {
-        getBookingData()
+        getstayover()
     }, [])
 
     return (
         <>
             <Card>
                 <CardHeader>
-                    <CardTitle>Booking Report</CardTitle>
+                    <CardTitle><h2>Assign Subscription</h2></CardTitle>
                 </CardHeader>
                 <CardBody className='text-center'>
                     <Row className='align-items-end'>
@@ -236,6 +152,8 @@ const BookingReport = () => {
                             <Label className='form-label' for='startDate'>
                                 From Date
                             </Label>
+                            {/* <div className='datePicker'>
+                                <InputGroup className='input-group-merge'> */}
                             <Flatpickr className='form-control' value={moment(fromDate).format('YYYY-MM-DD')} onChange={date => {
                                 setFromDate(moment(date[0]).format('YYYY-MM-DD'))
                             }} id='startDate'
@@ -244,11 +162,18 @@ const BookingReport = () => {
                                     // altFormat: 'F j, Y',
                                     dateFormat: 'Y-m-d'
                                 }} />
+                            {/* <InputGroupText>
+                                        <MdDateRange size={15} />
+                                    </InputGroupText>
+                                </InputGroup>
+                            </div> */}
                         </Col>
                         <Col className='text-start'>
                             <Label className='form-label' for='startDate'>
                                 To Date
                             </Label>
+                            {/* <div className='datePicker'>
+                                <InputGroup className='input-group-merge'> */}
                             <Flatpickr className='form-control' value={toDate} onChange={date => {
                                 setToDate(moment(date[0]).format('YYYY-MM-DD'))
                             }} id='startDate'
@@ -257,9 +182,14 @@ const BookingReport = () => {
                                     // altFormat: 'F j, Y',
                                     dateFormat: 'Y-m-d'
                                 }} />
+                            {/* <InputGroupText>
+                                        <MdDateRange size={15} />
+                                    </InputGroupText>
+                                </InputGroup>
+                            </div> */}
                         </Col>
                         <Col>
-                            <Button className='me-1' color='primary' onClick={getBookingData}>
+                            <Button className='me-1' color='primary' onClick={getstayover}>
                                 Search
                             </Button>
                             <Button className="me-1" color="primary" onClick={handelReset}>
@@ -270,7 +200,7 @@ const BookingReport = () => {
                 </CardBody>
                 <MUIDataTable
                     // title={"Booking Report"}
-                    data={bookingdata}
+                    data={stayover}
                     columns={columns}
                     options={options}
                 />
@@ -282,4 +212,4 @@ const BookingReport = () => {
     )
 }
 
-export default BookingReport
+export default AssignSubscription

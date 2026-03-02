@@ -21,13 +21,7 @@ import {
 import Category from "./Category";
 import ProductCategory from "./ProductCategory";
 const ProductMaster = () => {
-  const [active, setActive] = useState("1");
-
-  const toggle = (tab) => {
-    if (active !== tab) {
-      setActive(tab);
-    }
-  };
+  const [activeTab, setActiveTab] = useState("active");
 
   const [refresh, setRefresh] = useState(false);
   const handleRefresh = () => setRefresh(!refresh);
@@ -135,6 +129,31 @@ const ProductMaster = () => {
         <CardHeader>
           <CardTitle>
             <h2>All Subscription</h2>
+            <div className="d-flex gap-1 mt-2">
+              <button
+                className={`btn rounded-pill px-1 ${activeTab === "active" ? "btn-primary" : "btn-white shadow-sm fw-medium"
+                }`}
+                onClick={() => setActiveTab("active")}
+              >
+                Active Hotels (2)
+              </button>
+
+              <button
+                className={`btn rounded-pill px-1 ${activeTab === "archived" ? "btn-primary" : "btn-white shadow-sm fw-medium"
+                }`}
+                onClick={() => setActiveTab("archived")}
+              >
+                Archived Hotels (0)
+              </button>
+
+              <button
+                className={`btn rounded-pill px-1 ${activeTab === "expired" ? "btn-primary" : "btn-white shadow-sm fw-medium"
+                }`}
+                onClick={() => setActiveTab("expired")}
+              >
+                Expired Hotels (0)
+              </button>
+            </div>
           </CardTitle>
         </CardHeader>
 

@@ -45,6 +45,7 @@ import bookingChart from './bookingChart'
 import GuestMaster from './GuestMaster'
 import { useSelector } from 'react-redux'
 import { userdata } from './hookcall'
+import hotelPannel from './hotelPannel'
 
 
 
@@ -61,6 +62,7 @@ pageName = [
     ...hotels,
     ...pannelmaster,
     ...subscription,
+    ...hotelPannel,
     ...notifications,
     // ...frontDesk,
     // ...WakeUpCall,

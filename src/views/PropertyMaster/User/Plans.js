@@ -247,7 +247,7 @@ const Plans = () => {
           backdrop={false}
         >
           <ModalHeader className="bg-transparent" toggle={handleModal}>
-            <span className=" mb-1">Add User</span>
+            <span className=" mb-1">Add Plan</span>
           </ModalHeader>
           <ModalBody className="px-sm-2 mx-50 pb-5">
             <>
@@ -755,7 +755,7 @@ const Plans = () => {
           <CardTitle><h2>Subscription Plan</h2></CardTitle>
 
           <Button color="primary" onClick={() => setShow(true)}>
-            Add User
+            Add Plan
           </Button>
         </CardHeader>
         {/* <CardBody>

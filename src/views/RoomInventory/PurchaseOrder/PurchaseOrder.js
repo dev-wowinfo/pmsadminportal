@@ -177,7 +177,7 @@ const PurchaseOrder = () => {
         <Col md='12'>
           <Card>
             <CardHeader>
-              <CardTitle className='mb-1'>Direct/Local Purchase</CardTitle>
+              <CardTitle className='mb-1'><h2>Active Subscription</h2></CardTitle>
             </CardHeader>
             <CardBody>
               <Row className='d-flex flex-row align-items-center'>
@@ -193,7 +193,7 @@ const PurchaseOrder = () => {
                   />
                 </Col>
                 <Col className='mb-1 text-end'>
-                  <Button color='primary me-1' onClick={() => setShow(true)}>Create PO</Button>
+                  <Button color='primary me-1' onClick={() => setShow(true)}>Add User</Button>
                 </Col>
               </Row>
               <Row className='my-1'>

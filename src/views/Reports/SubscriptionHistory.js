@@ -7,7 +7,7 @@ import axios from '../../API/axios';
 import { useSelector } from 'react-redux';
 import moment from 'moment';
 
-const PaymentFolio = () => {
+const SubscriptionHistory = () => {
 
     useEffect(() => {
         const prevTitle = document.title
@@ -104,7 +104,7 @@ const PaymentFolio = () => {
         <>
             <Card>
                 <CardHeader>
-                    <CardTitle>Payment Folio</CardTitle>
+                    <CardTitle><h2>Subscription History</h2></CardTitle>
                 </CardHeader>
                 <CardBody className='text-center'>
                     <Row className='align-items-end'>
@@ -164,4 +164,4 @@ const PaymentFolio = () => {
     );
 };
 
-export default PaymentFolio;
+export default SubscriptionHistory;

@@ -75,9 +75,9 @@ import Invoice from "../../apps/Templates/Invoice";
 import Invoice1 from "../../apps/Templates/Invoice1";
 import Voucher1 from "../../apps/Templates/Voucher1";
 import KOT from "../../apps/Templates/KOT";
-import BookingReport from "../../views/Reports/BookingReport";
-import StayOver from "../../views/Reports/StayOver";
-import PaymentFolio from "../../views/Reports/PaymentFolio";
+import ListHotel from "../../views/Reports/ListHotel.js";
+import AssignSubscription from "../../views/Reports/AssignSubscription.js";
+import SubscriptionHistory from "../../views/Reports/SubscriptionHistory.js";
 import CreditReport from "../../views/Reports/CreditReport";
 import RevenueReport from "../../views/Reports/RevenueReport";
 import OTAReport from "../../views/Reports/OTAReport";
@@ -219,7 +219,7 @@ const DistrictMaster = lazy(() =>
   import("../../views/RegionMaster/District/District")
 );
 const StateMaster = lazy(() => import("../../views/RegionMaster/State/State"));
-// const Vendor = lazy(() => import("../../views/RoomInventory/VendorMaster/VendorMaster"))
+//const Vendor = lazy(() => import("../../views/RoomInventory/VendorMaster/VendorMaster"))
 const Product = lazy(() =>
   import("../../views/RoomInventory/ProductMaster/ProductMaster")
 );
@@ -691,12 +691,12 @@ const Routes = [
     element: <GuestList />,
   },
   {
-    path: "/bookingReport",
-    element: <BookingReport />,
+    path: "/listHotel",
+    element: <ListHotel />,
   },
   {
-    path: "/stayOver",
-    element: <StayOver />,
+    path: "/assignSubscription",
+    element: <AssignSubscription />,
   },
   {
     path: "/creditReport",
@@ -723,8 +723,8 @@ const Routes = [
     element: <Notifications />,
   },
   {
-    path: "/paymentFolio",
-    element: <PaymentFolio />,
+    path: "/subscriptionHistory",
+    element: <SubscriptionHistory />,
   },
   {
     path: "/paylink",

@@ -15,18 +15,18 @@ export default [
                 icon: <AiOutlineArrowRight size={20} />,
                 navLink: '/productMaster'
             },
-            {
-                id: 'purchaseOrder',
-                title: 'Purchase Order',
-                icon: <AiOutlineArrowRight size={20} />,
-                navLink: '/purchaseOrder'
-            },
-            {
-                id: 'purchaseReceive',
-                title: 'Purchase Receive',
-                icon: <AiOutlineArrowRight size={20} />,
-                navLink: '/purchaseReceive'
-            },
+            // {
+            //     id: 'purchaseOrder',
+            //     title: 'Active',
+            //     icon: <AiOutlineArrowRight size={20} />,
+            //     navLink: '/purchaseOrder'
+            // },
+            // {
+            //     id: 'purchaseReceive',
+            //     title: 'Expired',
+            //     icon: <AiOutlineArrowRight size={20} />,
+            //     navLink: '/purchaseReceive'
+            // },
             // {
             //     id: 'stockCount',
             //     title: 'Stock Count',
