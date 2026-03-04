@@ -78,81 +78,98 @@ router.post("/addHotel", (req, res) => {
 /* ===============================
    GET ALL HOTELS
 =============================== */
-router.get("/getAllHotels", (req, res) => {
-  const sql = `SELECT * FROM hotels WHERE is_archived = 0`;
+router.get("/getAllHotels", async (req, res) => {
+  try {
+    const sql = `
+      SELECT *
+      FROM hotels_table
+      WHERE is_archived = 0
+    `;
 
-  db.query(sql, (err, rows) => {
-    if (err) {
-      return res.status(500).json({ success: false });
-    }
+    const [rows] = await db.query(sql);
 
-    res.json({
+    return res.json({
       success: true,
+      count: rows.length,
       data: rows
     });
-  });
+
+  } catch (err) {
+    console.error("GET HOTELS ERROR 👉", err.message);
+    return res.status(500).json({
+      success: false,
+      message: "Failed to fetch hotels",
+      error: err.message
+    });
+  }
 });
 
 /* ===============================
    UPDATE HOTEL
 =============================== */
-router.put("/updateHotel/:id", (req, res) => {
-  const { id } = req.params;
-  const {
-    hotel_name,
-    address,
-    city,
-    state,
-    country,
-    pincode,
-    contact_person,
-    contact_email,
-    contact_phone,
-    is_active
-  } = req.body;
+router.put("/updateHotel/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
 
-  const sql = `
-    UPDATE hotels
-    SET
-      hotel_name = ?,
-      address = ?,
-      city = ?,
-      state = ?,
-      country = ?,
-      pincode = ?,
-      contact_person = ?,
-      contact_email = ?,
-      contact_phone = ?,
-      is_active = ?
-    WHERE id = ?
-  `;
-
-  db.query(
-    sql,
-    [
+    const {
       hotel_name,
       address,
       city,
-      state,
       country,
-      pincode,
       contact_person,
       contact_email,
       contact_phone,
-      is_active,
-      id
-    ],
-    (err) => {
-      if (err) {
-        return res.status(500).json({ success: false });
-      }
+      is_active
+    } = req.body;
 
-      res.json({
-        success: true,
-        message: "Hotel updated successfully"
+    const sql = `
+      UPDATE hotels_table
+      SET
+        hotel_name = ?,
+        address = ?,
+        city = ?,
+        country = ?,
+        contact_person = ?,
+        contact_email = ?,
+        contact_phone = ?,
+        is_active = ?
+      WHERE id = ?
+    `;
+
+    const values = [
+      hotel_name,
+      address,
+      city,
+      country,
+      contact_person,
+      contact_email,
+      contact_phone,
+      is_active ? 1 : 0,
+      id
+    ];
+
+    const [result] = await db.query(sql, values);
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "Hotel not found"
       });
     }
-  );
+
+    return res.json({
+      success: true,
+      message: "Hotel updated successfully"
+    });
+
+  } catch (err) {
+    console.error("UPDATE HOTEL ERROR 👉", err.message);
+
+    return res.status(500).json({
+      success: false,
+      message: err.message
+    });
+  }
 });
 
 /* ===============================

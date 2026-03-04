@@ -26,7 +26,7 @@ import { cipherPasswordFunc } from "../common/commonMethods"
 
 
 const Login = () => {
-  const [userName, setUserName] = useState("")
+  const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [display, setDisplay] = useState(false)
   const navigate = useNavigate()
@@ -38,15 +38,14 @@ const Login = () => {
 	  let cipherPassword = cipherPasswordFunc(password);
 
 	  const loginBody = {
-		Username: userName,
+		email: email,
 		Password: password,
-		Event: "selectone",
 	  }
 	  setDisplay(true)
 	  console.log(loginBody);
 	  if (userName && password !== '') {
 		// const result = await axios.post(`/authentication/userauthentication/loginauthentication`, loginBody)
-		   const result = await axios.post(`/authentication/userauthentication/loginauthentication`,loginBody); 
+		   const result = await axios.post(`/api/auth/login`,loginBody); 
 		   console.log("login api result",result)
 		  const resultData = result.data[0];
 		  console.log("login api result",resultData[0].username)

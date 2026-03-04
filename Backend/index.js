@@ -15,29 +15,35 @@ import notificationRoutes from "./routes/notifications.routes.js";
 
 // Middlewares
 import authenticateToken from "./middlewares/authenticateToken.js";
+import verifyToken from "./routes/middleware/verifyToken.js";
+
+
 
 // Config
 dotenv.config();
 
 // App init
 const app = express();
-
+app.use((req, res, next) => {
+  console.log("HIT:", req.method, req.url);
+  next();
+});
 // Middlewares
 app.use(cors());
 app.use(express.json());
-
+app.use(express.urlencoded({ extended: true }));
 // =======================
 // 🔍 PostgreSQL TEST API
 // =======================
-app.get("/api/pg-test", async (req, res) => {
-  try {
-    const result = await pgPool.query("SELECT * FROM products1");
-    res.json(result.rows);
-  } catch (error) {
-    console.error("PostgreSQL Error:", error);
-    res.status(500).json({ error: error.message });
-  }
-});
+// app.get("/api/pg-test", async (req, res) => {
+//   try {
+//     const result = await pgPool.query("SELECT * FROM products1");
+//     res.json(result.rows);
+//   } catch (error) {
+//     console.error("PostgreSQL Error:", error);
+//     res.status(500).json({ error: error.message });
+//   }
+// });
 
 // =======================
 // Existing APIs
@@ -66,68 +72,6 @@ app.use(
   })
 );
 
-
-app.post("/api/login", async (req, res) => {
-  const { email, password } = req.body;
-
-  const sql = `
-    SELECT id, email, name, password, is_active
-    FROM users
-    WHERE email = ?
-    LIMIT 1
-  `;
-
-  db.query(sql, [email], async (err, result) => {
-    if (err) {
-      return res.status(500).json({ error: err.message });
-    }
-
-    if (result.length === 0) {
-      return res.status(401).json({
-        success: false,
-        message: "Invalid credentials (email)",
-      });
-    }
-
-    const user = result[0];
-
-    if (user.is_active !== 1) {
-      return res.status(403).json({
-        success: false,
-        message: "User inactive",
-      });
-    }
-
-    // 🔐 bcrypt password compare (KEY FIX)
-    const isMatch = await bcrypt.compare(password, user.password);
-
-    if (!isMatch) {
-      return res.status(401).json({
-        success: false,
-        message: "Invalid credentials (password)",
-      });
-    }
-
-    // 🔑 JWT token
-    const token = jwt.sign(
-      { user_id: user.id, email: user.email },
-      process.env.JWT_SECRET || "my_secret_key",
-      { expiresIn: "1d" }
-    );
-
-    return res.json({
-      success: true,
-      message: "Login successful",
-      token,
-      user: {
-        id: user.id,
-        email: user.email,
-        name: user.name,
-      },
-    });
-  });
-});
-
 // Logout
 
 app.post("/api/logout", (req, res) => {
@@ -149,387 +93,7 @@ app.use("/api", authenticateToken, hotelRoutes);
 app.use("/api", authenticateToken, notificationRoutes);
 
 
-//  ***********************        Plan       ***********************
 
-// Add plan
-
-app.post("/api/addPlan", (req, res) => {
-  const {
-    plan_name,
-    description,
-    subscription_type,
-    duration_days,
-    price,
-    currency,
-    max_rooms,
-    max_users,
-    include_modules, // [0,1,2]
-    trial_eligible,
-    auto_renew,
-    is_active,
-  } = req.body;
-
-  /* ===== Validation ===== */
-  if (!plan_name || !subscription_type || !duration_days || !currency) {
-    return res.status(400).json({
-      success: false,
-      message: "Required fields missing",
-      statusCode: 400,
-    });
-  }
-
-  /* ===============================
-     include_modules
-     IDs → DB string
-  =============================== */
-  const moduleIdsString = Array.isArray(include_modules)
-    ? include_modules.join(",") // "0,1,2"
-    : "";
-
-  /* ===============================
-     Booleans → DB (1 / 0)
-  =============================== */
-  const trialEligibleVal = trial_eligible ? 1 : 0;
-  const autoRenewVal = auto_renew ? 1 : 0;
-  const isActiveVal = is_active ? 1 : 0;
-
-  const sql = `
-    INSERT INTO plan_table
-    (
-      plan_name,
-      description,
-      subscription_type,
-      duration_days,
-      price,
-      currency,
-      max_rooms,
-      max_users,
-      include_modules,
-      trial_eligible,
-      auto_renew,
-      is_active
-    )
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-  `;
-
-  const values = [
-    plan_name,
-    description,
-    subscription_type,
-    duration_days,
-    price,
-    currency,
-    max_rooms,
-    max_users,
-    moduleIdsString,
-    trialEligibleVal,
-    autoRenewVal,
-    isActiveVal,
-  ];
-
-  db.query(sql, values, (err, result) => {
-    if (err) {
-      console.error("DB ERROR:", err);
-      return res.status(500).json({
-        success: false,
-        message: "Database error",
-        error: err.message,
-        statusCode: 500,
-      });
-    }
-
-    /* ===============================
-       IDs → Values (for response)
-    =============================== */
-    const moduleValues = Array.isArray(include_modules)
-      ? include_modules.map((id) => MODULE_MAP[id]).filter(Boolean)
-      : [];
-
-    res.status(201).json({
-      success: true,
-      message: "Plan created successfully",
-      statusCode: 201,
-    });
-  });
-});
-
-// Get all plans
-
-app.get("/api/plans", (req, res) => {
-  const moduleMap = {
-    0: "dashboard",
-    1: "booking",
-    2: "reports",
-  };
-
-  const sql = `SELECT * FROM plan_table ORDER BY id DESC`;
-
-  db.query(sql, (err, results) => {
-    if (err) {
-      return res.status(500).json({
-        success: false,
-        message: "Failed to fetch plans",
-        statusCode: 500,
-      });
-    }
-
-    const formattedData = results.map((row) => {
-      let modules = [];
-
-      if (row.include_modules) {
-        modules = String(row.include_modules)
-          .split(",")
-          .map((id) => moduleMap[id])
-          .filter(Boolean);
-      }
-
-      return {
-        ...row,
-        include_modules: modules,
-      };
-    });
-
-    res.status(200).json({
-      success: true,
-      message: "Plans fetched successfully",
-      statusCode: 200,
-      data: formattedData,
-    });
-  });
-});
-
-// Clone plan
-
-app.post("/api/plans/clone/:id", (req, res) => {
-  const { id } = req.params;
-
-  // 1️⃣ Fetch original plan
-  const getSql = `
-    SELECT
-      plan_name,
-      description,
-      subscription_type,
-      duration_days,
-      price,
-      currency,
-      max_rooms,
-      max_users,
-      include_modules,
-      trial_eligible,
-      auto_renew
-    FROM plan_table
-    WHERE id = ?
-  `;
-
-  db.query(getSql, [id], (err, rows) => {
-    if (err) {
-      console.error("FETCH PLAN ERROR 👉", err);
-      return res.status(500).json({
-        success: false,
-        message: "Failed to fetch plan",
-        error: err.message
-      });
-    }
-
-    if (rows.length === 0) {
-      return res.status(404).json({
-        success: false,
-        message: "Plan not found"
-      });
-    }
-
-    const plan = rows[0];
-
-    // 2️⃣ Insert cloned plan (EXACT column match)
-    const insertSql = `
-      INSERT INTO plan_table
-      (
-        plan_name,
-        description,
-        subscription_type,
-        duration_days,
-        price,
-        currency,
-        max_rooms,
-        max_users,
-        include_modules,
-        trial_eligible,
-        auto_renew,
-        is_active,
-        is_archived
-      )
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1, 0)
-    `;
-
-    const values = [
-      `${plan.plan_name} (Copy)`,
-      plan.description,
-      plan.subscription_type,
-      plan.duration_days,
-      plan.price,
-      plan.currency,
-      plan.max_rooms,
-      plan.max_users,
-      plan.include_modules,
-      plan.trial_eligible,
-      plan.auto_renew
-    ];
-
-    db.query(insertSql, values, (err, result) => {
-      if (err) {
-        console.error("CLONE INSERT ERROR 👉", err);
-        return res.status(500).json({
-          success: false,
-          message: "Clone failed",
-          error: err.message
-        });
-      }
-
-      return res.status(201).json({
-        success: true,
-        message: "Plan cloned successfully",
-        new_plan_id: result.insertId,
-        statusCode: 200
-      });
-    });
-  });
-});
-
-
-
-// Update plan
-
-app.put("/api/updatePlans", (req, res) => {
-  const { id } = req.query; // 👈 QUERY PARAM
-
-  if (!id) {
-    return res.status(400).json({
-      success: false,
-      message: "Plan id is required",
-      statusCode: 400,
-    });
-  }
-
-  const {
-    plan_name,
-    description,
-    subscription_type,
-    duration_days,
-    price,
-    currency,
-    max_rooms,
-    max_users,
-    include_modules,
-    trial_eligible,
-    auto_renew,
-    is_active,
-  } = req.body;
-
-  /* ===============================
-     include_modules: IDs → string
-  =============================== */
-  const modulesString = Array.isArray(include_modules)
-    ? include_modules.join(",")
-    : "";
-
-  /* ===============================
-     booleans → 1 / 0
-  =============================== */
-  const trialEligibleVal = trial_eligible ? 1 : 0;
-  const autoRenewVal = auto_renew ? 1 : 0;
-  const isActiveVal = is_active ? 1 : 0;
-
-  const sql = `
-    UPDATE plan_table
-    SET
-      plan_name = ?,
-      description = ?,
-      subscription_type = ?,
-      duration_days = ?,
-      price = ?,
-      currency = ?,
-      max_rooms = ?,
-      max_users = ?,
-      include_modules = ?,
-      trial_eligible = ?,
-      auto_renew = ?,
-      is_active = ?
-    WHERE id = ?
-  `;
-
-  const values = [
-    plan_name,
-    description,
-    subscription_type,
-    duration_days,
-    price,
-    currency,
-    max_rooms,
-    max_users,
-    modulesString,
-    trialEligibleVal,
-    autoRenewVal,
-    isActiveVal,
-    id,
-  ];
-
-  db.query(sql, values, (err, result) => {
-    if (err) {
-      console.error("DB ERROR:", err);
-      return res.status(500).json({
-        success: false,
-        message: "Database error",
-        statusCode: 500,
-        error: err.message,
-      });
-    }
-
-    if (result.affectedRows === 0) {
-      return res.status(404).json({
-        success: false,
-        message: "Plan not found",
-        statusCode: 404,
-      });
-    }
-
-    res.status(200).json({
-      success: true,
-      message: "Plan updated successfully",
-      statusCode: 200,
-    });
-  });
-});
-
-// Delete
-
-app.delete("/api/deletePlans/:id", (req, res) => {
-  const { id } = req.params;
-
-  const sql = `DELETE FROM plan_table WHERE id = ?`;
-
-  db.query(sql, [id], (err, result) => {
-    if (err) {
-      return res.status(500).json({
-        success: false,
-        message: "Error deleting plan",
-        error: err,
-      });
-    }
-
-    if (result.affectedRows === 0) {
-      return res.status(404).json({
-        success: false,
-        message: "Plan not found",
-      });
-    }
-
-    return res.status(200).json({
-      success: true,
-      message: "Plan deleted permanently",
-      statusCode: 200,
-    });
-  });
-});
 
 /* =====================
    SERVER START
@@ -543,204 +107,206 @@ app.listen(PORT, () => {
 
 // Create hotel
 
-app.post("/api/addHotels", (req, res) => {
-  const {
-    hotel_name,
-    email,
-    phone,
-    address,
-    city,
-    country,
-    room_count,
-    active_users,
-  } = req.body;
+// app.post("/api/addHotels", (req, res) => {
+//   const {
+//     hotel_name,
+//     email,
+//     phone,
+//     address,
+//     city,
+//     country,
+//     room_count,
+//     active_users,
+//   } = req.body;
 
-  // Basic validation
-  if (!hotel_name || !email || !phone || !city || !country) {
-    return res.status(400).json({
-      success: false,
-      message: "Required fields are missing",
-    });
-  }
+//   // Basic validation
+//   if (!hotel_name || !email || !phone || !city || !country) {
+//     return res.status(400).json({
+//       success: false,
+//       message: "Required fields are missing",
+//     });
+//   }
 
-  const sql = `
-    INSERT INTO hotels_table
-    (hotel_name, email, phone, address, city, country, room_count, active_users, status, created_at)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, 1, NOW())
-  `;
+//   const sql = `
+//     INSERT INTO hotels_table
+//     (hotel_name, email, phone, address, city, country, room_count, active_users, status, created_at)
+//     VALUES (?, ?, ?, ?, ?, ?, ?, ?, 1, NOW())
+//   `;
 
-  const values = [
-    hotel_name,
-    email,
-    phone,
-    address || null,
-    city,
-    country,
-    room_count || 0,
-    active_users || 0,
-  ];
+//   const values = [
+//     hotel_name,
+//     email,
+//     phone,
+//     address || null,
+//     city,
+//     country,
+//     room_count || 0,
+//     active_users || 0,
+//   ];
 
-  db.query(sql, values, (err, result) => {
-    if (err) {
-      return res.status(500).json({
-        success: false,
-        message: "Error adding hotel",
-        error: err,
-      });
-    }
+//   db.query(sql, values, (err, result) => {
+//     if (err) {
+//       return res.status(500).json({
+//         success: false,
+//         message: "Error adding hotel",
+//         error: err,
+//       });
+//     }
 
-    return res.status(201).json({
-      success: true,
-      message: "Hotel added successfully",
-      hotel_id: result.insertId,
-      statusCode: 200,
-    });
-  });
-});
+//     return res.status(201).json({
+//       success: true,
+//       message: "Hotel added successfully",
+//       hotel_id: result.insertId,
+//       statusCode: 200,
+//     });
+//   });
+// });
 
 // Get All hotels
 
-app.get("/api/getAllHotels", (req, res) => {
-  const sql = `
-    SELECT
-      id,
-      hotel_name,
-      contact_email AS email,
-      contact_phone AS phone,
-      address,
-      city,
-      country,
-      is_active AS status,
-      created_at
-    FROM hotels
-    WHERE is_active = 1
-    ORDER BY id DESC
-  `;
+// app.get("/api/getAllHotels", (req, res) => {
+//   const sql = `
+//     SELECT
+//       id,
+//       hotel_name,
+//       contact_email AS email,
+//       contact_phone AS phone,
+//       address,
+//       city,
+//       country,
+//       is_active AS status,
+//       created_at
+//     FROM hotels
+//     WHERE is_active = 1
+//     ORDER BY id DESC
+//   `;
 
-  db.query(sql, (err, results) => {
-    if (err) {
-      console.error("DB ERROR 👉", err.message);
-      return res.status(500).json({
-        success: false,
-        message: "Error fetching hotels",
-        error: err.message,
-      });
-    }
+//   db.query(sql, (err, results) => {
+//     if (err) {
+//       console.error("DB ERROR 👉", err.message);
+//       return res.status(500).json({
+//         success: false,
+//         message: "Error fetching hotels",
+//         error: err.message,
+//       });
+//     }
 
-    res.status(200).json({
-      success: true,
-      count: results.length,
-      data: results,
-      statusCode: 200,
-    });
-  });
-});
+//     res.status(200).json({
+//       success: true,
+//       count: results.length,
+//       data: results,
+//       statusCode: 200,
+//     });
+//   });
+// });
 
 
 // Update Hotel
 
-app.put("/api/updateHotels/:id", (req, res) => {
-  const { id } = req.params;
+// app.put("/api/updateHotels/:id", (req, res) => {
+//   const { id } = req.params;
 
-  const {
-    hotel_name,
-    email,
-    phone,
-    address,
-    city,
-    country,
-    room_count,
-    active_users,
-    status,
-    is_archived,
-  } = req.body;
+//   const {
+//     hotel_name,
+//     email,
+//     phone,
+//     address,
+//     city,
+//     country,
+//     room_count,
+//     active_users,
+//     status,
+//     is_archived,
+//   } = req.body;
 
-  const sql = `
-    UPDATE hotels_table
-    SET
-      hotel_name   = COALESCE(?, hotel_name),
-      email        = COALESCE(?, email),
-      phone        = COALESCE(?, phone),
-      address      = COALESCE(?, address),
-      city         = COALESCE(?, city),
-      country      = COALESCE(?, country),
-      room_count   = COALESCE(?, room_count),
-      active_users = COALESCE(?, active_users),
-      status       = COALESCE(?, status),
-      is_archived  = COALESCE(?, is_archived)
-    WHERE id = ?
-  `;
+//   const sql = `
+//     UPDATE hotels_table
+//     SET
+//       hotel_name   = COALESCE(?, hotel_name),
+//       email        = COALESCE(?, email),
+//       phone        = COALESCE(?, phone),
+//       address      = COALESCE(?, address),
+//       city         = COALESCE(?, city),
+//       country      = COALESCE(?, country),
+//       room_count   = COALESCE(?, room_count),
+//       active_users = COALESCE(?, active_users),
+//       status       = COALESCE(?, status),
+//       is_archived  = COALESCE(?, is_archived)
+//     WHERE id = ?
+//   `;
 
-  db.query(
-    sql,
-    [
-      hotel_name,
-      email,
-      phone,
-      address,
-      city,
-      country,
-      room_count,
-      active_users,
-      status,
-      is_archived,
-      id,
-    ],
-    (err, result) => {
-      if (err) {
-        return res.status(500).json({
-          success: false,
-          message: "Update failed",
-          error: err,
-        });
-      }
+//   db.query(
+//     sql,
+//     [
+//       hotel_name,
+//       email,
+//       phone,
+//       address,
+//       city,
+//       country,
+//       room_count,
+//       active_users,
+//       status,
+//       is_archived,
+//       id,
+//     ],
+//     (err, result) => {
+//       if (err) {
+//         return res.status(500).json({
+//           success: false,
+//           message: "Update failed",
+//           error: err,
+//         });
+//       }
 
-      if (result.affectedRows === 0) {
-        return res.status(404).json({
-          success: false,
-          message: "Hotel not found",
-        });
-      }
+//       if (result.affectedRows === 0) {
+//         return res.status(404).json({
+//           success: false,
+//           message: "Hotel not found",
+//         });
+//       }
 
-      return res.json({
-        success: true,
-        message: "Hotel updated successfully",
-        statusCode: 200,
-      });
-    }
-  );
-});
+//       return res.json({
+//         success: true,
+//         message: "Hotel updated successfully",
+//         statusCode: 200,
+//       });
+//     }
+//   );
+// });
 
 // Delete Hotle
 
-app.delete("/api/deleteHotels/:id", (req, res) => {
-  const { id } = req.params;
+// app.delete("/api/deleteHotels/:id", (req, res) => {
+//   const { id } = req.params;
 
-  const sql = `DELETE FROM hotels_table WHERE id = ?`;
+//   const sql = `DELETE FROM hotels_table WHERE id = ?`;
 
-  db.query(sql, [id], (err, result) => {
-    if (err) {
-      return res.status(500).json({
-        success: false,
-        message: "Error deleting hotel",
-        error: err,
-      });
-    }
+//   db.query(sql, [id], (err, result) => {
+//     if (err) {
+//       return res.status(500).json({
+//         success: false,
+//         message: "Error deleting hotel",
+//         error: err,
+//       });
+//     }
 
-    if (result.affectedRows === 0) {
-      return res.status(404).json({
-        success: false,
-        message: "Hotel not found",
-      });
-    }
+//     if (result.affectedRows === 0) {
+//       return res.status(404).json({
+//         success: false,
+//         message: "Hotel not found",
+//       });
+//     }
 
-    return res.status(200).json({
-      success: true,
-      message: "Hotel deleted successfully",
-      statusCode: 200,
-    });
-  });
-});
+//     return res.status(200).json({
+//       success: true,
+//       message: "Hotel deleted successfully",
+//       statusCode: 200,
+//     });
+//   });
+// });
+
+//  ***********************        Notifications       ***********************
 
 
 app.get("/api/getAllNotification", (req, res) => {
@@ -830,81 +396,11 @@ app.delete("/api/deleteNotification/:id", (req, res) => {
   });
 });
 
+// const PORT = 8080;
 
-app.post("/api/auth/register", (req, res) => {
-  const { name, email, password, user_type, login_type } = req.body;
-
-  if (!name || !email || !password) {
-    return res.status(400).json({
-      success: false,
-      message: "Name, email and password are required"
-    });
-  }
-
-  // Check if user already exists
-  const checkSql = `SELECT id FROM UsersTB WHERE email = ?`;
-
-  db.query(checkSql, [email], (err, rows) => {
-    if (err) {
-      return res.status(500).json({
-        success: false,
-        message: "DB error",
-        error: err.message
-      });
-    }
-
-    if (rows.length > 0) {
-      return res.status(409).json({
-        success: false,
-        message: "User already registered"
-      });
-    }
-
-    const insertSql = `
-      INSERT INTO UsersTB
-      (
-        user_uid,
-        name,
-        email,
-        password,
-        user_type,
-        login_type,
-        is_verified,
-        status,
-        created_at
-      )
-      VALUES (?, ?, ?, ?, ?, ?, 0, 1, NOW())
-    `;
-
-    const user_uid = "USR_" + Date.now();
-
-    db.query(
-      insertSql,
-      [
-        user_uid,
-        name,
-        email,
-        password,
-        user_type || "user",
-        login_type || "email"
-      ],
-      (err, result) => {
-        if (err) {
-          return res.status(500).json({
-            success: false,
-            message: "Registration failed",
-            error: err.message
-          });
-        }
-
-        return res.status(201).json({
-          success: true,
-          message: "User registered successfully",
-          user_id: result.insertId,
-          user_uid
-        });
-      }
-    );
-  });
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });
+
+
 
