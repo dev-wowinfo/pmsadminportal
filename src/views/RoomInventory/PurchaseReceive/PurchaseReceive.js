@@ -150,7 +150,7 @@ function PurchaseReceive() {
         <Col md='12'>
           <Card>
             <CardHeader>
-              <CardTitle className='mb-1'>Received Local Purchase</CardTitle>
+              <CardTitle className='mb-1'><h2>Expired Subscription</h2></CardTitle>
             </CardHeader>
             <CardBody>
               <Row className='d-flex flex-row flex-wrap justify-content-between align-items-center'>
@@ -173,7 +173,7 @@ function PurchaseReceive() {
                     // disabled={selInvPo === ''}
                     onClick={() => handleShow()}
                   >
-                    Add Purchase Receive
+                    Add User
                   </Button>
                 </Col>
               </Row>

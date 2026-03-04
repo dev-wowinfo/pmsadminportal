@@ -48,10 +48,10 @@ const userRoles = [
 //     data = response.data
 // })
 
-const User = () => {
+const Plans = () => {
   useEffect(() => {
     const prevTitle = document.title;
-    document.title = "PMS-User";
+    document.title = "PMS-Plans";
 
     return () => {
       document.title = prevTitle;
@@ -247,7 +247,7 @@ const User = () => {
           backdrop={false}
         >
           <ModalHeader className="bg-transparent" toggle={handleModal}>
-            <span className=" mb-1">Add User</span>
+            <span className=" mb-1">Add Plan</span>
           </ModalHeader>
           <ModalBody className="px-sm-2 mx-50 pb-5">
             <>
@@ -752,10 +752,10 @@ const User = () => {
     <>
       <Card>
         <CardHeader>
-          <CardTitle><h2>LLM Subscription Plan</h2></CardTitle>
+          <CardTitle><h2>Subscription Plan</h2></CardTitle>
 
           <Button color="primary" onClick={() => setShow(true)}>
-            Add User
+            Add Plan
           </Button>
         </CardHeader>
         {/* <CardBody>
@@ -775,7 +775,7 @@ const User = () => {
                 </CardBody> */}
       </Card>
 
-      <div className="d-flex justify-content-between">
+      <div className="d-flex justify-content-evenly">
         <Card
           style={{ width: "24rem", paddingTop: "20px", marginRight: "5px" }}
         >
@@ -788,7 +788,7 @@ const User = () => {
                 </p>
               </div>
               <div>
-                <span className="border rounded bg-primary text-light px-1">
+                <span className="border rounded bg-primary text-light px-1"style={{paddingTop: "2px", paddingBottom: "2px"}}>
                   Active
                 </span>
               </div>
@@ -869,7 +869,7 @@ const User = () => {
                 </p>
               </div>
               <div>
-                <span className="border rounded bg-primary text-light px-1">
+                <span className="border rounded bg-primary text-light px-1" style={{paddingTop: "2px", paddingBottom: "2px"}}>
                   Active
                 </span>
               </div>
@@ -951,7 +951,7 @@ const User = () => {
                 </p>
               </div>
               <div>
-                <span className="border rounded bg-primary text-light px-1">
+                <span className="border rounded bg-primary text-light px-1" style={{paddingTop: "2px", paddingBottom: "2px"}}>
                   Active
                 </span>
               </div>
@@ -1051,4 +1051,4 @@ const User = () => {
   );
 };
 
-export default User;
+export default Plans;

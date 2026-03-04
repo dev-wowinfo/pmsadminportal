@@ -221,7 +221,7 @@ const SubscriptionPlan = () => {
       </Card>
 
 
-      <div className="d-flex justify-content-between">
+      <div className="d-flex justify-content-evenly">
         <Card style={{ width: '24rem', paddingTop: '20px', marginRight: '5px' }}>
           <div className="p-1">
             <div className="d-flex justify-content-between">

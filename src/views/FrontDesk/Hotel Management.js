@@ -215,13 +215,13 @@ const HotelManagement = () => {
         </div>
         <div className="rounded d-flex ms-2">
           <button
-            className={`btn rounded-pill px-1 ${activeTab === "active" ? "btn-white shadow-sm fw-medium" : "btn-primary"
+            className={`btn rounded-pill px-1 ${activeTab === "archived" ? "btn-white shadow-sm fw-medium" : "btn-primary"
               }`}
             onClick={() => setActiveTab("active")}>
             Active Hotels (2)
           </button>
           <button
-            className={`btn rounded-pill px-1 ${activeTab === "archived" ? "btn-white shadow-sm fw-medium" : "btn-primary"
+            className={`btn rounded-pill px-1 ${activeTab === "active" ? "btn-white shadow-sm fw-medium" : "btn-primary"
               }`}
             onClick={() => setActiveTab("archived")}>
             Archived Hotels (0)
