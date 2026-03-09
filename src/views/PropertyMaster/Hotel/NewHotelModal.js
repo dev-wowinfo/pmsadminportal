@@ -268,7 +268,7 @@ const NewHotelModal = ({ show, handleShowModal, getAllHotelList }) => {
                 backdrop={false}
             >
                 <ModalHeader className='bg-transparent' toggle={handleShowModal}>
-                    <span className=' mb-1'>Add Hotel </span>
+                    <span className=' mb-1'>Add Product </span>
                 </ModalHeader>
                 <ModalBody className='px-sm-2 mx-50 pb-5'>
                     <>

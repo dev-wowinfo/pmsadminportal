@@ -13,20 +13,20 @@ export default [
                 id: 'productsMaster',
                 title: 'Products',
                 icon: <AiOutlineArrowRight size={20} />,
-                navLink: '/productsMaster'
+                navLink: '/products'
             },
             {
                 id: 'plansMaster',
                 title: 'Plans',
                 icon: <AiOutlineArrowRight size={20} />,
-                navLink: '/plansMaster'
+                navLink: '/plans'
             },
-            {
-                id: 'priceMaster',
-                title: 'Plan Pricing',
-                icon: <AiOutlineArrowRight size={20} />,
-                navLink: '/priceMaster'
-            },
+            // {
+            //     id: 'priceMaster',
+            //     title: 'Plan Pricing',
+            //     icon: <AiOutlineArrowRight size={20} />,
+            //     navLink: '/priceMaster'
+            // },
             {
                 id: 'feature',
                 title: 'Features',

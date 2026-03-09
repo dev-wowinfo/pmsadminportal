@@ -31,8 +31,8 @@ import dashboard from './dashboard'
 import plan from './GuestMaster'
 import hotels from './bookingChart'
 import licences from './promotions'
-import pannelmaster from './pannelmaster'
-import subscription from './subscription'
+// import planmaster from './planmaster'
+
 import notifications from './rateInventory'
 import propertyMaster from './propertyMaster'
 import regionMaster from './regionMaster'
@@ -46,6 +46,8 @@ import GuestMaster from './GuestMaster'
 import { useSelector } from 'react-redux'
 import { userdata } from './hookcall'
 import hotelPannel from './hotelPannel'
+import subscription from './subscription'
+import pannelmaster from './pannelmaster'
 
 
 
@@ -58,12 +60,14 @@ let pageName = []
 pageName = [
     ...dashboard,
     ...licences,
-    ...plan,
-    ...hotels,
     ...pannelmaster,
     ...subscription,
     ...hotelPannel,
     ...notifications,
+    // ...plan,
+    // ...hotels,
+    // ...planmaster,
+
     // ...frontDesk,
     // ...WakeUpCall,
     // ...pos,

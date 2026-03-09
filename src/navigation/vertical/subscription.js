@@ -13,7 +13,7 @@ export default [
                 id: 'productMaster',
                 title: 'All subscription',
                 icon: <AiOutlineArrowRight size={20} />,
-                navLink: '/productMaster'
+                navLink: '/allSubscription'
             },
             // {
             //     id: 'purchaseOrder',

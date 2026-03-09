@@ -1,7 +1,6 @@
 import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
-
 // DB connections
 import mysqlPool from "./config/db.js";     // MySQL (existing)
 import pgPool from "./db/postgres.js";      // PostgreSQL (new)
@@ -12,11 +11,12 @@ import planRoutes from "./routes/plan.routes.js";
 import licenseRoutes from "./routes/license.routes.js";
 import hotelRoutes from "./routes/hotel.routes.js";
 import notificationRoutes from "./routes/notifications.routes.js";
-
 // Middlewares
 import authenticateToken from "./middlewares/authenticateToken.js";
 import verifyToken from "./routes/middleware/verifyToken.js";
 
+// ------------------------------   Postgre  SQL   ---------------------------------------------------------------------
+import productRoutes from "./routes/PostgreRoutes/productRoutes.js";
 
 
 // Config
@@ -32,18 +32,6 @@ app.use((req, res, next) => {
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-// =======================
-// 🔍 PostgreSQL TEST API
-// =======================
-// app.get("/api/pg-test", async (req, res) => {
-//   try {
-//     const result = await pgPool.query("SELECT * FROM products1");
-//     res.json(result.rows);
-//   } catch (error) {
-//     console.error("PostgreSQL Error:", error);
-//     res.status(500).json({ error: error.message });
-//   }
-// });
 
 // =======================
 // Existing APIs
@@ -72,17 +60,6 @@ app.use(
   })
 );
 
-// Logout
-
-app.post("/api/logout", (req, res) => {
-  req.session.destroy(() => {
-    res.json({
-      success: true,
-      message: "Logout successful",
-    });
-  });
-});
-
 // Authorization end
 
 //  ***********************        License       ***********************
@@ -91,9 +68,6 @@ app.use("/api", authenticateToken, licenseRoutes);
 app.use("/api", authenticateToken, planRoutes);
 app.use("/api", authenticateToken, hotelRoutes);
 app.use("/api", authenticateToken, notificationRoutes);
-
-
-
 
 /* =====================
    SERVER START
@@ -104,209 +78,6 @@ app.listen(PORT, () => {
 });
 
 //  ***********************        Hotel       ***********************
-
-// Create hotel
-
-// app.post("/api/addHotels", (req, res) => {
-//   const {
-//     hotel_name,
-//     email,
-//     phone,
-//     address,
-//     city,
-//     country,
-//     room_count,
-//     active_users,
-//   } = req.body;
-
-//   // Basic validation
-//   if (!hotel_name || !email || !phone || !city || !country) {
-//     return res.status(400).json({
-//       success: false,
-//       message: "Required fields are missing",
-//     });
-//   }
-
-//   const sql = `
-//     INSERT INTO hotels_table
-//     (hotel_name, email, phone, address, city, country, room_count, active_users, status, created_at)
-//     VALUES (?, ?, ?, ?, ?, ?, ?, ?, 1, NOW())
-//   `;
-
-//   const values = [
-//     hotel_name,
-//     email,
-//     phone,
-//     address || null,
-//     city,
-//     country,
-//     room_count || 0,
-//     active_users || 0,
-//   ];
-
-//   db.query(sql, values, (err, result) => {
-//     if (err) {
-//       return res.status(500).json({
-//         success: false,
-//         message: "Error adding hotel",
-//         error: err,
-//       });
-//     }
-
-//     return res.status(201).json({
-//       success: true,
-//       message: "Hotel added successfully",
-//       hotel_id: result.insertId,
-//       statusCode: 200,
-//     });
-//   });
-// });
-
-// Get All hotels
-
-// app.get("/api/getAllHotels", (req, res) => {
-//   const sql = `
-//     SELECT
-//       id,
-//       hotel_name,
-//       contact_email AS email,
-//       contact_phone AS phone,
-//       address,
-//       city,
-//       country,
-//       is_active AS status,
-//       created_at
-//     FROM hotels
-//     WHERE is_active = 1
-//     ORDER BY id DESC
-//   `;
-
-//   db.query(sql, (err, results) => {
-//     if (err) {
-//       console.error("DB ERROR 👉", err.message);
-//       return res.status(500).json({
-//         success: false,
-//         message: "Error fetching hotels",
-//         error: err.message,
-//       });
-//     }
-
-//     res.status(200).json({
-//       success: true,
-//       count: results.length,
-//       data: results,
-//       statusCode: 200,
-//     });
-//   });
-// });
-
-
-// Update Hotel
-
-// app.put("/api/updateHotels/:id", (req, res) => {
-//   const { id } = req.params;
-
-//   const {
-//     hotel_name,
-//     email,
-//     phone,
-//     address,
-//     city,
-//     country,
-//     room_count,
-//     active_users,
-//     status,
-//     is_archived,
-//   } = req.body;
-
-//   const sql = `
-//     UPDATE hotels_table
-//     SET
-//       hotel_name   = COALESCE(?, hotel_name),
-//       email        = COALESCE(?, email),
-//       phone        = COALESCE(?, phone),
-//       address      = COALESCE(?, address),
-//       city         = COALESCE(?, city),
-//       country      = COALESCE(?, country),
-//       room_count   = COALESCE(?, room_count),
-//       active_users = COALESCE(?, active_users),
-//       status       = COALESCE(?, status),
-//       is_archived  = COALESCE(?, is_archived)
-//     WHERE id = ?
-//   `;
-
-//   db.query(
-//     sql,
-//     [
-//       hotel_name,
-//       email,
-//       phone,
-//       address,
-//       city,
-//       country,
-//       room_count,
-//       active_users,
-//       status,
-//       is_archived,
-//       id,
-//     ],
-//     (err, result) => {
-//       if (err) {
-//         return res.status(500).json({
-//           success: false,
-//           message: "Update failed",
-//           error: err,
-//         });
-//       }
-
-//       if (result.affectedRows === 0) {
-//         return res.status(404).json({
-//           success: false,
-//           message: "Hotel not found",
-//         });
-//       }
-
-//       return res.json({
-//         success: true,
-//         message: "Hotel updated successfully",
-//         statusCode: 200,
-//       });
-//     }
-//   );
-// });
-
-// Delete Hotle
-
-// app.delete("/api/deleteHotels/:id", (req, res) => {
-//   const { id } = req.params;
-
-//   const sql = `DELETE FROM hotels_table WHERE id = ?`;
-
-//   db.query(sql, [id], (err, result) => {
-//     if (err) {
-//       return res.status(500).json({
-//         success: false,
-//         message: "Error deleting hotel",
-//         error: err,
-//       });
-//     }
-
-//     if (result.affectedRows === 0) {
-//       return res.status(404).json({
-//         success: false,
-//         message: "Hotel not found",
-//       });
-//     }
-
-//     return res.status(200).json({
-//       success: true,
-//       message: "Hotel deleted successfully",
-//       statusCode: 200,
-//     });
-//   });
-// });
-
-//  ***********************        Notifications       ***********************
 
 
 app.get("/api/getAllNotification", (req, res) => {
@@ -403,4 +174,6 @@ app.listen(PORT, () => {
 });
 
 
+// ---------------------------------------------   Postgre  SQL   ---------------------------------------------------------------------
 
+app.use("/api/products", productRoutes);

@@ -553,11 +553,11 @@ const Routes = [
     element: <Discount />,
   },
   {
-    path: "/productsMaster",
+    path: "/products",
     element: <ProductsMaster />,
   },
   {
-    path: "/plansMaster",
+    path: "/plans",
     element: <PlansMaster />,
   },
   {
@@ -657,7 +657,7 @@ const Routes = [
   //   element: <VendorMaster />
   // },
   {
-    path: "/productMaster",
+    path: "/allSubscription",
     element: <ProductMaster />,
   },
   {
@@ -691,7 +691,7 @@ const Routes = [
     element: <GuestList />,
   },
   {
-    path: "/listHotel",
+    path: "/clientList",
     element: <ListHotel />,
   },
   {

@@ -210,7 +210,7 @@ const ListHotel = () => {
         <>
             <Card>
                 <CardHeader>
-                    <CardTitle><h2>Hotel Lists</h2></CardTitle>
+                    <CardTitle><h2>Clients Lists</h2></CardTitle>
                 </CardHeader>
                 <CardBody className='text-center'>
                     <Row className='align-items-end'>

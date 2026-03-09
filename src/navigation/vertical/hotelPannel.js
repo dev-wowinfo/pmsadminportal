@@ -5,15 +5,15 @@ import { TbReportSearch } from "react-icons/tb"
 export default [
   {
     id: 'reports',
-    title: 'Hotel',
+    title: 'Clients',
     icon: <TbReportSearch size={20} />,
     navLink: '/hotelPannel',
     children: [
       {
-        id: 'listhotel',
-        title: 'Hotel List',
+        id: 'clientList',
+        title: 'Clients List',
         icon: <AiOutlineArrowRight size={20} />,
-        navLink: '/listHotel'
+        navLink: '/clientList'
       },
       {
         id: 'assignsubscription',
