@@ -1,6 +1,6 @@
 
 import React, { useEffect, useState } from 'react'
-import MUIDataTable from "mui-datatables";
+import DataTable from "mui-datatables";
 import { Button, Card, CardBody, CardHeader, CardTitle, Col, InputGroup, InputGroupText, Label, Row } from 'reactstrap';
 import Flatpickr from 'react-flatpickr'
 import { MdDateRange } from "react-icons/md"
@@ -36,125 +36,74 @@ const ListHotel = () => {
         { value: 'Checkout Date', label: 'Checkout Date' },
     ]
     const columns = [
-        {
-            name: "bookingMapID",
-            label: "Booking Map Id",
-        },
-        {
-            name: "hotel Name",
-            label: "Hotel Name",
-            options: {
-                customBodyRenderLite: (dataIndex) => bookingdata[dataIndex]["hotel Name"],
-            },
-        },
-        {
-            name: "bookingSource",
-            label: "Booking Source",
-        },
-        {
-            name: "roomType",
-            label: "Room Type",
-        },
-        {
-            name: "roomCount",
-            label: "Room Count",
-        },
-        {
-            name: "adult",
-            label: "Adult",
-        },
-        {
-            name: "children",
-            label: "Children",
-        },
-        {
-            name: "mealPlan",
-            label: "Meal Plan",
-        },
-        {
-            name: "bookingTime",
-            label: "Booking Time",
-        },
-        {
-            name: "totalNights",
-            label: "Total Nights",
-        },
-        {
-            name: "checkInDate",
-            label: "CheckIn Date",
-        },
-        {
-            name: "checkOutDate",
-            label: "CheckOut Date",
-        },
-        {
-            name: "guestName",
-            label: "Guest Name",
-        },
-        {
-            name: "guestEmail",
-            label: "Guest Email",
-        },
-        {
-            name: "guestMobileNumber",
-            label: "Guest Mobile Number",
-        },
-        {
-            name: "discount",
-            label: "Discount",
-        },
-        {
-            name: "roomAmount",
-            label: "Room Amount",
-        },
-        {
-            name: "ottalTax",
-            label: "Total Tax",
-        },
-        {
-            name: "roomAmountIncTax",
-            label: "Room AmountIncTax",
-        },
-        {
-            name: "laundaryAMT",
-            label: "Laundary Amount",
-        },
-        {
-            name: "posAmount",
-            label: "POS Amount",
-        },
-        {
-            name: "extraServiceAMT",
-            label: "Extra Service Amount"
-        },
-        {
-            name: "totalAmount",
-            label: "Total Amount (BKG)",
-        },
+        // {
+        //     name: "guestName",
+        //     label: "Guest Name",
+        // },
+        // {
+        //     name: "guestEmail",
+        //     label: "Guest Email",
+        // },
+        // {
+        //     name: "guestMobileNumber",
+        //     label: "Guest Mobile Number",
+        // },
+        // {
+        //     name: "discount",
+        //     label: "Discount",
+        // },
+        // {
+        //     name: "roomAmount",
+        //     label: "Room Amount",
+        // },
+        // {
+        //     name: "ottalTax",
+        //     label: "Total Tax",
+        // },
+        // {
+        //     name: "roomAmountIncTax",
+        //     label: "Room AmountIncTax",
+        // },
+        // {
+        //     name: "laundaryAMT",
+        //     label: "Laundary Amount",
+        // },
+        // {
+        //     name: "posAmount",
+        //     label: "POS Amount",
+        // },
+        // {
+        //     name: "extraServiceAMT",
+        //     label: "Extra Service Amount"
+        // },
+        // {
+        //     name: "totalAmount",
+        //     label: "Total Amount (BKG)",
+        // },
 
-        {
-            name: "recievedAmount",
-            label: "Recieved Amount",
-        },
-        {
-            name: "pendingAmount",
-            label: "Pending Amount",
-        },
-        {
-            name: "status",
-            label: "Status",
-        },
-        {
-            name: "assign Room",
-            label: "Assign Room",
-            options: {
-    customBodyRenderLite: (dataIndex) => bookingdata[dataIndex]["assing Room"],
-  },
-        },
-        {
-            name: "invNo",
-            label: "Invoice No",
-        },
+        // {
+        //     name: "recievedAmount",
+        //     label: "Recieved Amount",
+        // },
+        // {
+        //     name: "pendingAmount",
+        //     label: "Pending Amount",
+        // },
+        // {
+        //     name: "status",
+        //     label: "Status",
+        // },
+//         {
+//             name: "assign Room",
+//             label: "Assign Room",
+//             options: {
+//     customBodyRenderLite: (dataIndex) => bookingdata[dataIndex]["assing Room"],
+//   },
+//         },
+//         {
+//             name: "invNo",
+//             label: "Invoice No",
+//         },
     ];
 
     // const data = [
@@ -268,7 +217,7 @@ const ListHotel = () => {
                         </Col>
                     </Row>
                 </CardBody>
-                <MUIDataTable
+                <DataTable
                     // title={"Booking Report"}
                     data={bookingdata}
                     columns={columns}
