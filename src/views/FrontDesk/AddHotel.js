@@ -435,22 +435,22 @@ const AddHotel = ({ open, handleOpen, getOption }) => {
         {/* ---------- HEADER ---------- */}
         <ModalHeader toggle={handleOpen}>
           <div>
-            <h3 className="fw-bolder mb-0">Add New Hotel</h3>
-            <p className="mb-0">Register a new hotel property</p>
+            <h3 className="fw-bolder mb-0">Add Client</h3>
+            <p className="mb-0">Register a new client</p>
           </div>
         </ModalHeader>
-          
+
         <Form onSubmit={onSubmit}>
           <ModalBody>
             {/* ---------- HOTEL NAME ---------- */}
             <Row className="mb-1">
               <Col md={12}>
                 <Label className="form-label">
-                  Hotel Name <span className="text-danger">*</span>
+                  Client Name <span className="text-danger">*</span>
                 </Label>
                 <input
                   type="text"
-                  placeholder="e.g., Grand Plaza Hotel"
+                  placeholder="e.g., Team Global"
                   className="form-control"
                 />
               </Col>
@@ -458,20 +458,44 @@ const AddHotel = ({ open, handleOpen, getOption }) => {
 
             {/* ---------- EMAIL & PHONE ---------- */}
             <Row className="mb-1">
-              <Col md={6}>
-                <Label className="form-label">
-                  Email <span className="text-danger">*</span>
-                </Label>
-                <input
-                  type="email"
-                  placeholder="contact@hotel.com"
-                  className="form-control"
+              <Col lg='6' className='mb-1'>
+                <Label className='form-label' for='countries'><span className='text-danger'>*</span> Category</Label>
+                <Select
+                  // theme={selectThemeColors}
+                  className='react-select'
+                  classNamePrefix='select'
+                  placeholder="Select Category"
+                // options={countryList}
+                // onChange={e => {
+                //   setCountryId(e.value)
+                //   setCountryCode(e.CountryCode)
+                //   setCountry(e.label)
+                // }}
+                // invalid={display && country === ''}
                 />
+                {display && !country ? <span className='error_msg_lbl'>Enter Category </span> : null}
+              </Col>
+              <Col lg='6' className='mb-1'>
+                <Label className='form-label' for='countries'><span className='text-danger'>*</span> Industry</Label>
+                <Select
+                  // theme={selectThemeColors}
+                  className='react-select'
+                  classNamePrefix='select'
+                  placeholder="Select Industry"
+                // options={countryList}
+                // onChange={e => {
+                //   setCountryId(e.value)
+                //   setCountryCode(e.CountryCode)
+                //   setCountry(e.label)
+                // }}
+                // invalid={display && country === ''}
+                />
+                {display && !country ? <span className='error_msg_lbl'>Enter Industry </span> : null}
               </Col>
 
               <Col md={6}>
                 <Label className="form-label">
-                  Phone <span className="text-danger">*</span>
+                  Phone
                 </Label>
                 <input
                   type="tel"
@@ -479,6 +503,19 @@ const AddHotel = ({ open, handleOpen, getOption }) => {
                   className="form-control"
                 />
               </Col>
+
+              <Col md={6}>
+                <Label className="form-label">
+                  Email
+                </Label>
+                <input
+                  type="email"
+                  placeholder="contact@client.com"
+                  className="form-control"
+                />
+              </Col>
+
+
             </Row>
 
             {/* ---------- ADDRESS ---------- */}
@@ -495,9 +532,21 @@ const AddHotel = ({ open, handleOpen, getOption }) => {
 
             {/* ---------- CITY & COUNTRY ---------- */}
             <Row className="mb-1">
+
               <Col md={6}>
                 <Label className="form-label">
-                  City <span className="text-danger">*</span>
+                  Country
+                </Label>
+                <input
+                  type="text"
+                  placeholder="Country name"
+                  className="form-control"
+                />
+              </Col>
+
+              <Col md={6}>
+                <Label className="form-label">
+                  City
                 </Label>
                 <input
                   type="text"
@@ -506,20 +555,11 @@ const AddHotel = ({ open, handleOpen, getOption }) => {
                 />
               </Col>
 
-              <Col md={6}>
-                <Label className="form-label">
-                  Country <span className="text-danger">*</span>
-                </Label>
-                <input
-                  type="text"
-                  placeholder="Country name"
-                  className="form-control"
-                />
-              </Col>
+
             </Row>
 
             {/* ---------- ROOM COUNT & ACTIVE USERS ---------- */}
-            <Row className="mb-1">
+            {/* <Row className="mb-1">
               <Col md={6}>
                 <Label className="form-label">Room Count</Label>
                 <input
@@ -537,7 +577,7 @@ const AddHotel = ({ open, handleOpen, getOption }) => {
                   className="form-control"
                 />
               </Col>
-            </Row>
+            </Row> */}
           </ModalBody>
 
           {/* ---------- FOOTER ---------- */}
@@ -546,7 +586,7 @@ const AddHotel = ({ open, handleOpen, getOption }) => {
               Cancel
             </Button>
             <Button color="primary" type="submit">
-              Add Hotel
+              Add Client
             </Button>
           </ModalFooter>
         </Form>

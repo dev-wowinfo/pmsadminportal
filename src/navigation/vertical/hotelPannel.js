@@ -1,5 +1,6 @@
 // import { BiCurrentLocation } from "react-icons/bi"
 import { AiOutlineArrowRight } from "react-icons/ai"
+import { SiHotelsdotcom } from "react-icons/si"
 import { TbReportSearch } from "react-icons/tb"
 
 export default [
@@ -9,6 +10,12 @@ export default [
     icon: <TbReportSearch size={20} />,
     navLink: '/hotelPannel',
     children: [
+      // {
+      //   id: 'hotelManagement',
+      //   title: 'Hotels',
+      //   icon: <SiHotelsdotcom size={20} />,
+      //   navLink: '/hotelManagement'
+      // },
       {
         id: 'clientList',
         title: 'Clients List',
@@ -16,53 +23,59 @@ export default [
         navLink: '/clientList'
       },
       {
-        id: 'assignsubscription',
-        title: 'Assign Subscription',
+        id: 'hotelManagement',
+        title: 'Add Client',
         icon: <AiOutlineArrowRight size={20} />,
-        navLink: '/assignSubscription'
+        navLink: '/addClient'
       },
+      // {
+      //   id: 'assignsubscription',
+      //   title: 'Assign Subscription',
+      //   icon: <AiOutlineArrowRight size={20} />,
+      //   navLink: '/assignSubscription'
+      // },
       {
         id: 'paymentFolio',
         title: 'Subscription History',
         icon: <AiOutlineArrowRight size={20} />,
         navLink: '/subscriptionHistory'
       },
-    //   {
-    //     id: 'guestList',
-    //     title: 'Guest List',
-    //     icon: <AiOutlineArrowRight size={20} />,
-    //     navLink: '/guestList'
-    //   },
-    //   {
-    //     id: 'creditReport',
-    //     title: 'Credit Report',
-    //     icon: <AiOutlineArrowRight size={20} />,
-    //     navLink: '/creditReport'
-    //   },
-    //   {
-    //     id: 'revenueReport',
-    //     title: 'Revenue Report',
-    //     icon: <AiOutlineArrowRight size={20} />,
-    //     navLink: '/revenueReport'
-    //   },
-    //   {
-    //     id: 'otaReport',
-    //     title: 'OTA Report',
-    //     icon: <AiOutlineArrowRight size={20} />,
-    //     navLink: '/otaReport'
-    //   },
-    //   {
-    //     id: 'gstReport',
-    //     title: 'GST Report',
-    //     icon: <AiOutlineArrowRight size={20} />,
-    //     navLink: '/gstReport'
-    //   },
-    //   {
-    //     id: 'corporateGSTReport',
-    //     title: 'Corp GST Report',
-    //     icon: <AiOutlineArrowRight size={20} />,
-    //     navLink: '/corporateGSTReport'
-    //   },
+      //   {
+      //     id: 'guestList',
+      //     title: 'Guest List',
+      //     icon: <AiOutlineArrowRight size={20} />,
+      //     navLink: '/guestList'
+      //   },
+      //   {
+      //     id: 'creditReport',
+      //     title: 'Credit Report',
+      //     icon: <AiOutlineArrowRight size={20} />,
+      //     navLink: '/creditReport'
+      //   },
+      //   {
+      //     id: 'revenueReport',
+      //     title: 'Revenue Report',
+      //     icon: <AiOutlineArrowRight size={20} />,
+      //     navLink: '/revenueReport'
+      //   },
+      //   {
+      //     id: 'otaReport',
+      //     title: 'OTA Report',
+      //     icon: <AiOutlineArrowRight size={20} />,
+      //     navLink: '/otaReport'
+      //   },
+      //   {
+      //     id: 'gstReport',
+      //     title: 'GST Report',
+      //     icon: <AiOutlineArrowRight size={20} />,
+      //     navLink: '/gstReport'
+      //   },
+      //   {
+      //     id: 'corporateGSTReport',
+      //     title: 'Corp GST Report',
+      //     icon: <AiOutlineArrowRight size={20} />,
+      //     navLink: '/corporateGSTReport'
+      //   },
       // {
       //   id: 'guestWithRate',
       //   title: 'Guest With Rate',

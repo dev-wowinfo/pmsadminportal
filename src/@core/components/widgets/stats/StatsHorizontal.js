@@ -43,8 +43,9 @@ const StatsHorizontal = ({
             </h2>
           )}
         </div>
-        <p>Currently active</p>
-        <p>↑ 5.2% vs last month</p>
+        {/* <p>Currently active</p>
+        <p>↑ 5.2% vs last month</p> */}
+        <p>0</p>
       </CardBody>
     </Card>
   );

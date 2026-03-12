@@ -451,7 +451,7 @@ const Routes = [
     element: <FrontDesk />,
   },
   {
-    path: "/hotelManagement",
+    path: "/addClient",
     element: <HotelManagement/>,
   },
   

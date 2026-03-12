@@ -226,7 +226,7 @@ const NewHotelModal = ({ show, handleShowModal, getAllHotelList }) => {
                                 , "Surname": surname
                                 , "PhoneNumber": contact
                                 , "Email": email
-                                , "Seckey":"abc"
+                                , "Seckey": "abc"
                             }
                             console.log('body', body);
                             const res = await axios.post('/property/hotel', body)
@@ -275,7 +275,7 @@ const NewHotelModal = ({ show, handleShowModal, getAllHotelList }) => {
                         <Form>
                             <Row>
                                 <Col lg='6' className='mb-1'>
-                                    <Label className='form-label' for='hotel'><span className='text-danger'>*</span>Hotel Name</Label>
+                                    <Label className='form-label' for='hotel'><span className='text-danger'>*</span>Product Name</Label>
                                     <Input
                                         type='text'
                                         name='hotel'
@@ -284,10 +284,10 @@ const NewHotelModal = ({ show, handleShowModal, getAllHotelList }) => {
                                         onChange={e => setHotelName(e.target.value)}
                                         invalid={display && hotelName === ''}
                                     />
-                                    {display && !hotelName ? <span className='error_msg_lbl'>Enter Hotel Name </span> : null}
+                                    {display && !hotelName ? <span className='error_msg_lbl'>Enter Product Name </span> : null}
                                 </Col>
                                 <Col lg='6' className='mb-1'>
-                                    <Label className='form-label' for='address'><span className='text-danger'>*</span>Address </Label>
+                                    <Label className='form-label' for='address'><span className='text-danger'>*</span>Product Code </Label>
                                     <Input
                                         type='text'
                                         name='address'
@@ -297,29 +297,18 @@ const NewHotelModal = ({ show, handleShowModal, getAllHotelList }) => {
                                         invalid={display && address === ''}
 
                                     />
-                                    {display && !address ? <span className='error_msg_lbl'>Enter Address </span> : null}
+                                    {display && !address ? <span className='error_msg_lbl'>Enter client name </span> : null}
                                 </Col>
                             </Row>
                             <Row>
+                                
                                 <Col lg='6' className='mb-1'>
-                                    <Label className='form-label' for='floor'><span className='text-danger'>*</span>No Of Floor </Label>
-                                    <Input
-                                        type='text'
-                                        name='floor'
-                                        id='floor'
-                                        value={noOfFloor}
-                                        onChange={e => setNoOfFloor(e.target.value)}
-                                        invalid={display && noOfFloor === ''}
-                                    />
-                                    {display && !noOfFloor ? <span className='error_msg_lbl'>Enter No Of Floor </span> : null}
-                                </Col>
-                                <Col lg='6' className='mb-1'>
-                                    <Label className='form-label' for='countries'><span className='text-danger'>*</span>Country</Label>
+                                    <Label className='form-label' for='countries'><span className='text-danger'>*</span>Product Category</Label>
                                     <Select
                                         theme={selectThemeColors}
                                         className='react-select'
                                         classNamePrefix='select'
-                                        placeholder="Select Country"
+                                        placeholder="Select Category"
                                         options={countryList}
                                         onChange={e => {
                                             setCountryId(e.value)
@@ -328,312 +317,24 @@ const NewHotelModal = ({ show, handleShowModal, getAllHotelList }) => {
                                         }}
                                     // invalid={display && country === ''}
                                     />
-                                    {display && !country ? <span className='error_msg_lbl'>Enter Country </span> : null}
+                                    {display && !country ? <span className='error_msg_lbl'>Enter Category </span> : null}
                                 </Col>
-                            </Row>
-                            <Row>
-                                <Col lg='6' className='mb-1'>
-                                    <Label className='form-label' for='states'><span className='text-danger'>*</span>State</Label>
-                                    <Select
-                                        isDisabled={countryId === ''}
-                                        theme={selectThemeColors}
-                                        className='react-select'
-                                        classNamePrefix='select'
-                                        placeholder="Select State"
-                                        options={stateList}
-                                        onChange={e => {
-                                            setStateId(e.value)
-                                            setState(e.label)
-                                        }}
-                                    // invalid={display && state === ''}
-                                    />
-                                    {display && !state ? <span className='error_msg_lbl'>Enter State </span> : null}
-                                </Col>
-                                <Col lg='6' className='mb-1'>
-                                    <Label className='form-label' for='cities'><span className='text-danger'>*</span>City</Label>
-                                    <Select
-                                        isDisabled={stateId === ''}
-                                        theme={selectThemeColors}
-                                        className='react-select'
-                                        classNamePrefix='select'
-                                        placeholder="Select City"
-                                        options={cityList}
-                                        onChange={e => {
-                                            setCityId(e.value)
-                                            setCity(e.label)
-                                        }}
-                                    // invalid={display && city === ''}
-                                    />
-                                    {display && !city ? <span className='error_msg_lbl'>Enter City </span> : null}
-                                </Col>
-                            </Row>
-                            <Row>
-                                <Col lg='6' className='mb-1'>
-                                    <Label className='form-label' for='contact'><span className='text-danger'>*</span>Phone Number <span>(Please add phone number with country code. Format:+911234567890)</span></Label>
+                               <Col lg='6' className='mb-1'>
+                                    <Label className='form-label' for='address'><span className='text-danger'>*</span>Product Description </Label>
                                     <Input
                                         type='text'
-                                        name='contact'
-                                        id='contact'
-                                        value={contact}
-                                        // onInput={(e) => {
-                                        //     e.target.value = Math.max(0, parseInt(e.target.value)).toString().slice(0, 13)
-                                        // }}
-                                        onChange={e => setContact(e.target.value)}
-                                        // onChange={(e) => {
-                                        //     const value = e.target.value;
-                                        //     const formatted = value
-                                        //         .replace(/[^+\d]/g, "")
-                                        //         .replace(/(?!^)\+/g, ""); 
-                                        //     if (formatted.length <= 13) {
-                                        //         setContact(formatted);
-                                        //     }
-                                        // }}
-                                        // invalid={display && contact === ''}
-                                    />
-                                    {/* {display && !contact ? <FormFeedback>Contact is required</FormFeedback>} */}
-                                    {display && !contact ? <span className='error_msg_lbl'>Contact is required </span> : null}
-                                </Col>
-                                <Col lg='6' className='mb-1'>
-                                    <Label className='form-label' for='email'>Email<span className='text-danger'>*</span></Label>
-                                    <Input
-                                        type='email'
-                                        name='email'
-                                        id='email'
-                                        value={email}
-                                        onChange={e => setEmail(e.target.value)}
-                                        invalid={display && email === ''}
-                                    />
-                                    {display && !email && <FormFeedback>Email is required</FormFeedback>}
-                                </Col>
-                            </Row>
-                            <Row>
-                                <Col lg='6' className='mb-1'>
-                                    <Label className='form-label' for='baseCountry'><span className='text-danger'>*</span>Base Currency</Label>
-                                    <Select
-                                        theme={selectThemeColors}
-                                        className='react-select'
-                                        classNamePrefix='select'
-                                        placeholder='Select Base Currency'
-                                        options={currency}
-                                        isClearable={false}
-                                        onChange={e => setBaseCurrency(e.value)}
-                                        invalid={display ? baseCurrency === '' : false}
-                                    />
-                                    {display === true && !baseCurrency ? <span className='error_msg_lbl'>Enter Base Currency </span> : <></>}
-                                </Col>
-                                <Col lg='6' className='mb-1'>
-                                    <Label className='form-label' for='contact'><span className='text-danger'>*</span>Pincode</Label>
-                                    <Input
-                                        type='text'
-                                        name='contact'
-                                        id='contact'
-                                        value={pincode}
-                                        onChange={e => setPincode(e.target.value)}
-                                        invalid={display && pincode === ''}
-                                    />
-                                    {display && !pincode && <FormFeedback>Pincode is required</FormFeedback>}
-                                </Col>
-                                {/* <Col lg='6' className='mb-1'>
-                    <Label className='form-label' for='account'>Accounting Period</Label>
-                    <Row>
-                      <Col lg='6'>
-                        <Row>
-                          <Col lg='2'>
-                            <Label className='form-label' for='start'>Start</Label>
-                          </Col>
-                          <Col lg='10'>
-                            <Flatpickr
-                              id='start_date'
-                              className='form-control ms-lg-1'
-                              placeholder='Select Date'
-                              options={{
-                                altInput: true,
-                                // altFormat: 'F, j, Y',
-                                altFormat: 'd-m-y',
-                                dateFormat: 'd-m-y'
-                              }}
-                              value={acc_startDate}
-                              onChange={date => setAcc_startDate(date[0])}
-                            />
-                          </Col>
-                        </Row>
-                      </Col>
-                      <Col lg='6 mb-1'>
-                        <Row>
-                          <Col lg='2'>
-                            <Label className='form-label' for='end'>End</Label>
-                          </Col>
-                          <Col lg='10'>
-                            <Flatpickr
-                              id='start_date'
-                              className='form-control ms-lg-1'
-                              placeholder='Select Date'
-                              options={{
-                                altInput: true,
-                                // altFormat: 'F, j, Y',
-                                altFormat: 'd-m-y',
-                                dateFormat: 'd-m-y'
-                              }}
-                              value={acc_endDate}
-                              onChange={date => setAcc_endDate(date[0])}
-                            />
-                          </Col>
-                        </Row>
-                      </Col>
-                    </Row>
-                  </Col> */}
-                            </Row>
-                            <Row>
-                                <Col lg='6' className='mb-1'>
-                                    <Label className='form-label' for='gst'><span className='text-danger'>*</span>GST Number</Label>
-                                    <Input
-                                        type='text'
-                                        name='gst'
-                                        id='gst'
-                                        value={gst}
-                                        onChange={e => setGst(e.target.value)}
-                                        invalid={display && gst === ''}
-                                    />
-                                    {display && !gst && <FormFeedback>GST is required</FormFeedback>}
-                                </Col>
-                                <Col lg='6' className='mb-1'>
-                                    <Label className='form-label' for='bankName'><span className='text-danger'>*</span>Bank Name</Label>
-                                    <Input
-                                        type='text'
-                                        name='bankName'
-                                        id='bankName'
-                                        value={bankName}
-                                        onChange={e => setBankName(e.target.value)}
-                                        invalid={display && bankName === ''} />
-                                    {display && !bankName ? <span className='error_msg_lbl'>Enter Bank Name </span> : null}
-                                </Col>
-                            </Row>
-                            <Row>
-                                <Col lg='6' className='mb-1'>
-                                    <Label className='form-label' for='accountNo'><span className='text-danger'>*</span>Account No</Label>
-                                    <Input
-                                        type='text'
-                                        name='accountNo'
-                                        id='accountNo'
-                                        value={accountNumber}
-                                        onChange={e => setAccountNumber(e.target.value)}
-                                        invalid={display && accountNumber === ''} />
-                                    {display && !accountNumber ? <span className='error_msg_lbl'>Enter Account Number </span> : null}
-                                </Col>
-                                <Col lg='6' className='mb-1'>
-                                    <Label className='form-label' for='branch'><span className='text-danger'>*</span>Branch</Label>
-                                    <Input
-                                        type='text'
-                                        name='branch'
-                                        id='branch'
-                                        value={branch}
-                                        onChange={e => setBranch(e.target.value)}
-                                        invalid={display && branch === ''} />
-                                    {display && !branch ? <span className='error_msg_lbl'>Enter Branch </span> : null}
-                                </Col>
-                            </Row>
-                            <Row>
-                                <Col lg='6' className='mb-1'>
-                                    <Label className='form-label' for='ifsc'><span className='text-danger'>*</span>IFSC</Label>
-                                    <Input
-                                        type='text'
-                                        name='ifsc'
-                                        id='ifsc'
-                                        value={ifsc}
-                                        onChange={e => setIfsc(e.target.value)}
-                                        invalid={display && ifsc === ''} />
-                                    {display && !ifsc ? <span className='error_msg_lbl'>Enter IFSC </span> : null}
-                                </Col>
-                                <Col lg='6' className='mb-1'>
-                                    <Label className='form-label' for='website'>Web Site</Label>
-                                    <Input
-                                        type='text'
-                                        name='website'
-                                        id='website'
-                                        value={website}
-                                        onChange={e => setWebsite(e.target.value)}
-                                    />
-                                </Col>
-                            </Row>
-                            <Row>
-                                <Col lg='6' className='mb-1'>
-                                    <Label className='form-label' for='personName'><span className='text-danger'>*</span>Contact PersonName</Label>
-                                    <Input
-                                        type='text'
-                                        name='personName'
-                                        id='personName'
-                                        value={personName}
-                                        onChange={e => setPersonName(e.target.value)}
-                                        invalid={display && personName === ''} />
-                                    {display && !personName ? <span className='error_msg_lbl'>Enter Contact PersonName </span> : null}
-                                </Col>
-                                <Col lg='6' className='mb-1'>
-                                    <Label className='form-label' for='surname'>Surname</Label>
-                                    <Input
-                                        type='text'
-                                        name='surname'
-                                        id='surname'
-                                        value={surname}
-                                        onChange={e => setSurname(e.target.value)}
-                                    />
-                                </Col>
-                                <Col lg='6' className='mb-1'>
-                                    <Label className='form-label' for='longitude'><span className='text-danger'>*</span>Longitude  <span >(Please add exact value)</span></Label>
-                                    <Input
-                                        type='text'
-                                        name='longitude'
-                                        id='longitude'
-                                        value={longitude}
-                                        onChange={e => setLongitude(e.target.value)}
-                                        invalid={display && longitude === ''} />
+                                        name='address'
+                                        id='address'
+                                        value={address}
+                                        onChange={e => setAddress(e.target.value)}
+                                        invalid={display && address === ''}
 
-                                    {display && !longitude ? <span className='error_msg_lbl'>Enter Longitude </span> : null}
-                                </Col>
-                                <Col lg='6' className='mb-1'>
-                                    <Label className='form-label' for='latitude'><span className='text-danger'>*</span>Latitude <span >(Please add exact value)</span></Label>
-                                    <Input
-                                        type='text'
-                                        name='latitude'
-                                        id='latitude'
-                                        value={latitude}
-                                        onChange={e => setLatitude(e.target.value)}
-                                        invalid={display && latitude === ''} />
-
-                                    {display && !latitude ? <span className='error_msg_lbl'>Enter Latitude </span> : null}
-                                </Col>
-                                <Col lg='6' className='mb-1'>
-                                    <Label className='form-label' for='licenseNumber'>Property Licencse Number</Label>
-                                    <Input
-                                        type='text'
-                                        name='licenseNumber'
-                                        id='licenseNumber'
-                                        value={licenseNumber}
-                                        onChange={e => setLicenseNumber(e.target.value)}
                                     />
-                                </Col>
-                                <Col lg='6' className='mb-1'>
-                                    <Label className='form-label' for='description'>Property Description</Label>
-                                    <Input
-                                        type='text'
-                                        name='description'
-                                        id='description'
-                                        value={propertydescription}
-                                        onChange={e => setPropertydescription(e.target.value)}
-                                    />
+                                    {display && !address ? <span className='error_msg_lbl'>Enter client name </span> : null}
                                 </Col>
                             </Row>
-                            <Row>
-                                <Col lg='6'>
-                                    <Label className='form-label me-2' for='logo' >Logo</Label>
-                                    <Input
-                                        type='file'
-                                        name='logo'
-                                        id='logo'
-                                        // value={logo}
-                                        onChange={e => setLogo(e.target.files[0])}
-                                    />
-                                </Col>
-                            </Row>
+                           
+                           
                             <Row>
                                 <Col md='12 text-lg-end text-md-center mt-1'>
                                     <Button className='me-1' color='primary' onClick={handleSubmit}>

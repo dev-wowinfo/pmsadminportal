@@ -49,8 +49,6 @@ import hotelPannel from './hotelPannel'
 import subscription from './subscription'
 import pannelmaster from './pannelmaster'
 
-
-
 // const role = userdata()
 // console.log('userStore::::: ', role)
 let pageName = []
@@ -59,7 +57,7 @@ let pageName = []
 // if (role === 'admin') {
 pageName = [
     ...dashboard,
-    ...licences,
+    // ...licences, 
     ...pannelmaster,
     ...subscription,
     ...hotelPannel,

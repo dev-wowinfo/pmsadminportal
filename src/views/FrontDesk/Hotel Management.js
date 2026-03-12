@@ -65,52 +65,45 @@ const HotelManagement = () => {
     //   selector: (row) => row.id,
     // },
     {
-      name: "Hotel Name",
+      name: "Client Name",
       sortable: true,
       width: '17rem',
       selector: (row) => row.hotel,
     },
     {
-      name: "Location",
+      name: "Category",
       sortable: true,
       selector: (row) => row.city,
     },
     {
-      name: "Contact",
+      name: "Industry",
       sortable: true,
       width: '12rem',
       selector: (row) => row.phone,
     },
     {
-      name: "Rooms",
+      name: "Phone",
       sortable: true,
       width: '7rem',
       selector: (row) => row.rooms,
     },
     {
-      name: "Active Users",
+      name: "Email",
       sortable: true,
       selector: (row) => row.active,
     },
-
     {
-      name: "License Status",
+      name: "Country",
       sortable: true,
-      selector: (row) => row.status,
-      cell: (row) => {
-        return (
-          <>
-            {row.status === "Active" ? (
-              <Badge color="light-success"> {row.status}</Badge>
-            ) : (
-              <Badge color="light-primary"> {row.status}</Badge>
-            )}
-          </>
-        );
-      },
+      selector: (row) => row.active,
     },
     {
-      name: "Registered",
+      name: "City",
+      sortable: true,
+      selector: (row) => row.active,
+    },
+    {
+      name: "Address",
       sortable: true,
       selector: (row) => row.date,
     },
@@ -197,23 +190,23 @@ const HotelManagement = () => {
       {console.log("guest", guestOptions)}
       <Card>
         <CardHeader>
-          <CardTitle><h1 class="text-3xl fw-bolder tracking-tight">Hotel Management</h1>
-            <p class="fs-6">Manage customer properties and their licenses</p>
+          <CardTitle><h1 class="text-3xl fw-bolder tracking-tight">Add Client</h1>
+            {/* <p class="fs-6">Manage customer properties and their licenses</p> */}
           </CardTitle>
           <Button color="primary" onClick={() => { setNewGuest(true); }}>
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 256 256" class="me-1"><path d="M228,128a12,12,0,0,1-12,12H140v76a12,12,0,0,1-24,0V140H40a12,12,0,0,1,0-24h76V40a12,12,0,0,1,24,0v76h76A12,12,0,0,1,228,128Z"></path></svg>
-            Add Hotels
+            Add Client
           </Button>
 
         </CardHeader>
       </Card>
       <Card>
 
-        <div className="p-2">
+        {/* <div className="p-2">
           <h4 class="text-3xl fw-bolder tracking-tight">Active Hotels</h4>
           <p class="fs-5">Manage customer licenses and subscriptions</p>
-        </div>
-        <div className="rounded d-flex ms-2">
+        </div> */}
+        {/* <div className="rounded d-flex ms-2 mt-2">
           <button
             className={`btn rounded-pill px-1 ${activeTab === "archived" ? "btn-white shadow-sm fw-medium" : "btn-primary"
               }`}
@@ -226,7 +219,7 @@ const HotelManagement = () => {
             onClick={() => setActiveTab("archived")}>
             Archived Hotels (0)
           </button>
-        </div>
+        </div> */}
         <input type="text" placeholder="search" className="ms-3 mt-2 form-control input-default w-50" onChange={e => setQuery(e.target.value)} />
 
         <CardBody>

@@ -7,7 +7,7 @@ import pgPool from "./db/postgres.js";      // PostgreSQL (new)
 import session from "express-session";
 // Routes
 import authRoutes from "./routes/authRoutes.js";
-import planRoutes from "./routes/plan.routes.js";
+// import planRoutes from "./routes/plan.routes.js";
 import licenseRoutes from "./routes/license.routes.js";
 import hotelRoutes from "./routes/hotel.routes.js";
 import notificationRoutes from "./routes/notifications.routes.js";
@@ -17,6 +17,7 @@ import verifyToken from "./routes/middleware/verifyToken.js";
 
 // ------------------------------   Postgre  SQL   ---------------------------------------------------------------------
 import productRoutes from "./routes/PostgreRoutes/productRoutes.js";
+import planRoutes from "./routes/PostgreRoutes/planRoutes.js";
 
 
 // Config
@@ -177,3 +178,4 @@ app.listen(PORT, () => {
 // ---------------------------------------------   Postgre  SQL   ---------------------------------------------------------------------
 
 app.use("/api/products", productRoutes);
+app.use("/api/plans", planRoutes);

@@ -27,12 +27,12 @@ export default [
             //     icon: <AiOutlineArrowRight size={20} />,
             //     navLink: '/priceMaster'
             // },
-            {
-                id: 'feature',
-                title: 'Features',
-                icon: <AiOutlineArrowRight size={20} />,
-                navLink: '/featureMaster'
-            },
+            // {
+            //     id: 'feature',
+            //     title: 'Features',
+            //     icon: <AiOutlineArrowRight size={20} />,
+            //     navLink: '/featureMaster'
+            // },
             
         ]
     }
