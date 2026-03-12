@@ -105,7 +105,7 @@ const Feature = () => {
             </Col>
           </Row> */}
           <div className="d-flex justify-content-center py-5">
-            <h2>Something is coming....😉</h2>
+            <h2>There is no record</h2>
           </div>
         </CardBody>
       </Card>

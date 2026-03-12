@@ -233,7 +233,7 @@ const HotelManagement = () => {
               columns={Columns}
               className="react-dataTable ms-3"
               sortIcon={<ChevronDown size={10} />}
-              paginationRowsPerPageOptions={[10, 25, 50, 100]}
+              // paginationRowsPerPageOptions={[10, 25, 50, 100]}
             />
           </div>
 
