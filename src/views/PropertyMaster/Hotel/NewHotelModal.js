@@ -12,7 +12,7 @@ let currency = [
     { value: 'USD', label: 'USD' },
     { value: 'EUR', label: 'EUR' }
 ]
-const NewHotelModal = ({ show, handleShowModal, getAllHotelList }) => {
+const NewHotelModal = ({ setShow , show, handleShowModal, getAllHotelList }) => {
 
     const getUserData = useSelector(state => state.userManageSlice.userData)
     const { LoginID, Token, CompanyID } = getUserData
@@ -343,9 +343,10 @@ const NewHotelModal = ({ show, handleShowModal, getAllHotelList }) => {
                                     <Button
                                         color='secondary'
                                         outline
-                                        onClick={() => {
-                                            setShow(!show)
-                                        }}
+                                        // onClick={() => {
+                                        //     setShow(!show)
+                                        // }}
+                                        onClick={handleShowModal}
                                     >
                                         Cancel
                                     </Button>

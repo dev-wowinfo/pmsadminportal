@@ -34,12 +34,12 @@ export default [
       //   icon: <AiOutlineArrowRight size={20} />,
       //   navLink: '/assignSubscription'
       // },
-      {
-        id: 'paymentFolio',
-        title: 'Subscription History',
-        icon: <AiOutlineArrowRight size={20} />,
-        navLink: '/subscriptionHistory'
-      },
+      // {
+      //   id: 'paymentFolio',
+      //   title: 'Subscription History',
+      //   icon: <AiOutlineArrowRight size={20} />,
+      //   navLink: '/subscriptionHistory'
+      // },
       //   {
       //     id: 'guestList',
       //     title: 'Guest List',

@@ -57,179 +57,98 @@ const ListHotel = () => {
     { value: "Checkout Date", label: "Checkout Date" },
   ];
 
-  const data = [
+  const staticData = [
     {
-      name: "Adani Cement",
-      type: "Enterprises",
-      status: "Active",
-      startdates: "Aug 02, 2025",
-      enddates: "Aug 02, 2026",
-      rooms: "500",
-      user: "50",
-      action: "btns",
+      // id: 12222000372122,
+      hotel: 'Grand Plaza Hotel',
+      city: 'Mumbai',
+      phone: '+919677734223',
+      rooms: '150',
+      active: '12',
+      status: 'Active',
+      date: 'Jun 02,2025',
     },
     {
-      name: "LNT",
-      type: "Professional",
-      status: "Active",
-      startdates: "Nov 30, 2025",
-      enddates: "May 30, 2026",
-      rooms: "100",
-      user: "15",
-      action: "btns",
+      // id: 12222000372111,
+      hotel: 'Royal Inn',
+      city: 'Delhi',
+      phone: '+918222245634',
+      rooms: '75',
+      active: '8',
+      status: 'Trial',
+      date: 'Sep 30,2025',
     },
+
   ];
 
-  const basicColumns = [
+  const Columns = [
     {
-      name: "Client List",
+      name: "Client Name",
       sortable: true,
-      minWidth: "250px",
-      cell: (row) => <span>{row.name}</span>,
+      width: '17rem',
+      selector: (row) => row.hotel,
     },
     {
-      name: "Purchase Plan",
+      name: "Category",
       sortable: true,
-      cell: (row) => <span>{row.type}</span>,
+      selector: (row) => row.city,
     },
     {
-      name: "Status",
+      name: "Industry",
       sortable: true,
-      selector: (row) => row.status,
-      cell: (row) => {
-        return (
-          <>
-            {row.status === "Active" ? (
-              <Badge color="light-success"> {row.status}</Badge>
-            ) : (
-              <Badge color="light-primary"> {row.status}</Badge>
-            )}
-          </>
-        );
-      },
+      width: '12rem',
+      selector: (row) => row.phone,
     },
     {
-      name: "Start Date",
+      name: "Phone",
       sortable: true,
-      // minWidth: '310px',
-      cell: (row) => <span>{row.startdates}</span>,
+      width: '7rem',
+      selector: (row) => row.rooms,
     },
     {
-      name: "Expiry Date",
+      name: "Email",
       sortable: true,
-      // minWidth: '250px',
-      cell: (row) => <span>{row.enddates}</span>,
+      selector: (row) => row.active,
     },
     {
-      name: "Projects",
+      name: "Country",
       sortable: true,
-      minWidth: "10px",
-      cell: (row) => <span>{row.rooms}</span>,
+      selector: (row) => row.active,
     },
     {
-      name: "Users",
+      name: "City",
       sortable: true,
-      minWidth: "50px",
-      cell: (row) => <span>{row.user}</span>,
+      selector: (row) => row.active,
     },
     {
-      name: "Actions",
+      name: "Address",
+      sortable: true,
+      selector: (row) => row.date,
+    },
+    {
+      name: "Action",
+      sortable: true,
       center: true,
-      //  minWidth: '150px',
-      selector: (row) => {
-        return (
-          <>
-            <Col>
-              <Edit
-                className="me-1 cursor-pointer"
-                size={15}
-                onClick={() => {
-                  handleUpdateOpen();
-                  setPromoId(row.promotionId);
-                }}
-              />
-            </Col>
-          </>
-        );
-      },
+      width: '9rem',
+
+      selector: (row) => (
+        <>
+          {/* <Col> */}
+          <Edit
+            className="me-50 pe-auto"
+            onClick={() => {
+              setShowEdit(true);
+              setGuestId(row.guestID);
+            }}
+            size={15}
+          />
+          <button data-slot="button" class="inline-flex bg-transparent items-center justify-center whitespace-nowrap border border-0 text-sm font-medium px-1"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="30" fill="currentColor" viewBox="0 0 256 256"><path d="M224,48H32A16,16,0,0,0,16,64V88a16,16,0,0,0,16,16v88a16,16,0,0,0,16,16H208a16,16,0,0,0,16-16V104a16,16,0,0,0,16-16V64A16,16,0,0,0,224,48ZM208,192H48V104H208ZM224,88H32V64H224V88ZM96,136a8,8,0,0,1,8-8h48a8,8,0,0,1,0,16H104A8,8,0,0,1,96,136Z"></path></svg></button>
+          {/* </Col> */}
+        </>
+      ),
     },
   ];
-  // const columns = [
-  //   // {
-  //   //     name: "guestName",
-  //   //     label: "Guest Name",
-  //   // },
-  //   // {
-  //   //     name: "guestEmail",
-  //   //     label: "Guest Email",
-  //   // },
-  //   // {
-  //   //     name: "guestMobileNumber",
-  //   //     label: "Guest Mobile Number",
-  //   // },
-  //   // {
-  //   //     name: "discount",
-  //   //     label: "Discount",
-  //   // },
-  //   // {
-  //   //     name: "roomAmount",
-  //   //     label: "Room Amount",
-  //   // },
-  //   // {
-  //   //     name: "ottalTax",
-  //   //     label: "Total Tax",
-  //   // },
-  //   // {
-  //   //     name: "roomAmountIncTax",
-  //   //     label: "Room AmountIncTax",
-  //   // },
-  //   // {
-  //   //     name: "laundaryAMT",
-  //   //     label: "Laundary Amount",
-  //   // },
-  //   // {
-  //   //     name: "posAmount",
-  //   //     label: "POS Amount",
-  //   // },
-  //   // {
-  //   //     name: "extraServiceAMT",
-  //   //     label: "Extra Service Amount"
-  //   // },
-  //   // {
-  //   //     name: "totalAmount",
-  //   //     label: "Total Amount (BKG)",
-  //   // },
-  //   // {
-  //   //     name: "recievedAmount",
-  //   //     label: "Recieved Amount",
-  //   // },
-  //   // {
-  //   //     name: "pendingAmount",
-  //   //     label: "Pending Amount",
-  //   // },
-  //   // {
-  //   //     name: "status",
-  //   //     label: "Status",
-  //   // },
-  //   //         {
-  //   //             name: "assign Room",
-  //   //             label: "Assign Room",
-  //   //             options: {
-  //   //     customBodyRenderLite: (dataIndex) => bookingdata[dataIndex]["assing Room"],
-  //   //   },
-  //   //         },
-  //   //         {
-  //   //             name: "invNo",
-  //   //             label: "Invoice No",
-  //   //         },
-  // ];
 
-  // const data = [
-  //     { bookingId: "Joe James", hotelName: "Test Corp", source: "Yonkers", roomType: "NY", noofRooms: '1', noofAdults: '1' },
-  //     { bookingId: "John Walsh", hotelName: "Test Corp", source: "Hartford", roomType: "CT", noofRooms: '1', noofAdults: '1' },
-  //     { bookingId: "Bob Herm", hotelName: "Test Corp", source: "Tampa", roomType: "FL", noofRooms: '1', noofAdults: '1' },
-  //     { bookingId: "James Houston", hotelName: "Test Corp", source: "Dallas", roomType: "TX", noofRooms: '1', noofAdults: '1' },
-  // ];
 
   const options = {
     filterType: "dropdown",
@@ -288,83 +207,95 @@ const ListHotel = () => {
             <h2>Clients Lists</h2>
           </CardTitle>
         </CardHeader>
-        <CardBody className="text-center">
-          <Row className="align-items-end">
-            <Col className="text-start">
-              <Label className="form-label" for="dateType">
-                Date Type
-              </Label>
-              <Select
-                theme={selectThemeColors}
-                className="react-select"
-                classNamePrefix="select"
-                // defaultValue={dateType[0]}
-                onChange={(e) => {
-                  // console.log(e.value);
-                  setDType(e.value);
-                }}
-                value={dateType?.filter((c) => c.value === dType)}
-                options={dateType}
-                isClearable={false}
-              />
-            </Col>
-            <Col className="text-start">
-              <Label className="form-label" for="startDate">
-                From Date
-              </Label>
-              <Flatpickr
-                className="form-control"
-                value={moment(fromDate).format("YYYY-MM-DD")}
-                onChange={(date) => {
-                  setFromDate(moment(date[0]).format("YYYY-MM-DD"));
-                }}
-                id="startDate"
-                options={{
-                  altInput: true,
-                  // altFormat: 'F j, Y',
-                  dateFormat: "Y-m-d",
-                }}
-              />
-            </Col>
-            <Col className="text-start">
-              <Label className="form-label" for="startDate">
-                To Date
-              </Label>
-              <Flatpickr
-                className="form-control"
-                value={toDate}
-                onChange={(date) => {
-                  setToDate(moment(date[0]).format("YYYY-MM-DD"));
-                }}
-                id="startDate"
-                options={{
-                  altInput: true,
-                  // altFormat: 'F j, Y',
-                  dateFormat: "Y-m-d",
-                }}
-              />
-            </Col>
-            <Col>
-              <Button className="me-1" color="primary" onClick={getBookingData}>
-                Search
-              </Button>
-              <Button className="me-1" color="primary" onClick={handelReset}>
-                Reset
-              </Button>
-            </Col>
-          </Row>
-        </CardBody>
-        <div className="react-dataTable pt-2">
+
+        <Row className="align-items-end ms-2">
+          <Col className="text-start">
+            <Label className="form-label" for="dateType">
+              Date Type
+            </Label>
+            <Select
+              theme={selectThemeColors}
+              className="react-select"
+              classNamePrefix="select"
+              // defaultValue={dateType[0]}
+              onChange={(e) => {
+                // console.log(e.value);
+                setDType(e.value);
+              }}
+              value={dateType?.filter((c) => c.value === dType)}
+              options={dateType}
+              isClearable={false}
+            />
+          </Col>
+          <Col className="text-start">
+            <Label className="form-label" for="startDate">
+              From Date
+            </Label>
+            <Flatpickr
+              className="form-control"
+              value={moment(fromDate).format("YYYY-MM-DD")}
+              onChange={(date) => {
+                setFromDate(moment(date[0]).format("YYYY-MM-DD"));
+              }}
+              id="startDate"
+              options={{
+                altInput: true,
+                // altFormat: 'F j, Y',
+                dateFormat: "Y-m-d",
+              }}
+            />
+          </Col>
+          <Col className="text-start">
+            <Label className="form-label" for="startDate">
+              To Date
+            </Label>
+            <Flatpickr
+              className="form-control"
+              value={toDate}
+              onChange={(date) => {
+                setToDate(moment(date[0]).format("YYYY-MM-DD"));
+              }}
+              id="startDate"
+              options={{
+                altInput: true,
+                // altFormat: 'F j, Y',
+                dateFormat: "Y-m-d",
+              }}
+            />
+          </Col>
+          <Col>
+            <Button className="me-1" color="primary" onClick={getBookingData}>
+              Search
+            </Button>
+            <Button className="me-1" color="primary" onClick={handelReset}>
+              Reset
+            </Button>
+          </Col>
+        </Row>
+        {/* <div className="react-dataTable pt-2">
           <DataTable
             noHeader
             pagination
-            data={data}
-            columns={basicColumns}
+            data={staticData}
+            columns={Columns}
             className="react-dataTable ms-3"
             sortIcon={<ChevronDown size={10} />}
             paginationRowsPerPageOptions={[10, 25, 50, 100]}
           />
-        </div>
+        </div> */}
+        <CardBody>
+          <Row className="my-1">
+            <Col>
+              <DataTable
+                noHeader
+                data={staticData}
+                columns={Columns}
+                className="react-dataTable"
+              />
+            </Col>
+          </Row>
+        </CardBody>
+
       </Card>
     </>
   );

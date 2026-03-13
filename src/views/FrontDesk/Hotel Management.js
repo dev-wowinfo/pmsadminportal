@@ -7,6 +7,8 @@ import {
   CardHeader,
   Button,
   Badge,
+  Row,
+  Col,
 } from "reactstrap";
 import { ChevronDown, Edit, Trash } from "react-feather";
 import { useSelector } from "react-redux";
@@ -58,12 +60,6 @@ const HotelManagement = () => {
   }
 
   const Columns = [
-    // {
-    //   name: "Guest ID",
-    //   sortable: true,
-    //   width: '17rem',
-    //   selector: (row) => row.id,
-    // },
     {
       name: "Client Name",
       sortable: true,
@@ -183,15 +179,15 @@ const HotelManagement = () => {
       status: 'Trial',
       date: 'Sep 30,2025',
     },
-    
+
   ];
   return (
     <>
-      {console.log("guest", guestOptions)}
-      <Card>
+      {/* <Card>
+        
         <CardHeader>
-          <CardTitle><h1 class="text-3xl fw-bolder tracking-tight">Add Client</h1>
-            {/* <p class="fs-6">Manage customer properties and their licenses</p> */}
+          <CardTitle>
+            <h1 class="text-3xl fw-bolder tracking-tight">Add Client</h1>
           </CardTitle>
           <Button color="primary" onClick={() => { setNewGuest(true); }}>
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 256 256" class="me-1"><path d="M228,128a12,12,0,0,1-12,12H140v76a12,12,0,0,1-24,0V140H40a12,12,0,0,1,0-24h76V40a12,12,0,0,1,24,0v76h76A12,12,0,0,1,228,128Z"></path></svg>
@@ -199,46 +195,54 @@ const HotelManagement = () => {
           </Button>
 
         </CardHeader>
-      </Card>
-      <Card>
+      </Card> */}
+      {/* <Card>
 
-        {/* <div className="p-2">
-          <h4 class="text-3xl fw-bolder tracking-tight">Active Hotels</h4>
-          <p class="fs-5">Manage customer licenses and subscriptions</p>
-        </div> */}
-        {/* <div className="rounded d-flex ms-2 mt-2">
-          <button
-            className={`btn rounded-pill px-1 ${activeTab === "archived" ? "btn-white shadow-sm fw-medium" : "btn-primary"
-              }`}
-            onClick={() => setActiveTab("active")}>
-            Active Hotels (2)
-          </button>
-          <button
-            className={`btn rounded-pill px-1 ${activeTab === "active" ? "btn-white shadow-sm fw-medium" : "btn-primary"
-              }`}
-            onClick={() => setActiveTab("archived")}>
-            Archived Hotels (0)
-          </button>
-        </div> */}
+        
         <input type="text" placeholder="search" className="ms-3 mt-2 form-control input-default w-50" onChange={e => setQuery(e.target.value)} />
 
+        
+
         <CardBody>
+          <Row className="my-1">
+            <Col>
+              <DataTable
+                noHeader
+                data={staticData}
+                columns={Columns}
+                className="react-dataTable"
+              />
+            </Col>
+          </Row>
+        </CardBody>
 
-          <div className="react-dataTable">
-            <DataTable
-              noHeader
-              pagination
-              // data={search(guestOptions)}
-              data={staticData}
-              columns={Columns}
-              className="react-dataTable ms-3"
-              sortIcon={<ChevronDown size={10} />}
-              // paginationRowsPerPageOptions={[10, 25, 50, 100]}
-            />
-          </div>
-
+      </Card> */}
+      <Card>
+        <CardHeader>
+          <CardTitle>
+            <h2>Add Client</h2>
+          </CardTitle>
+          {/* {UserRole === "SuperAdmin" ? ( */}
+           <Button color="primary" onClick={() => { setNewGuest(true); }}>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 256 256" class="me-1"><path d="M228,128a12,12,0,0,1-12,12H140v76a12,12,0,0,1-24,0V140H40a12,12,0,0,1,0-24h76V40a12,12,0,0,1,24,0v76h76A12,12,0,0,1,228,128Z"></path></svg>
+            Add Client
+          </Button>
+          {/* ) : null} */}
+        </CardHeader>
+        <CardBody>
+          <Row className="my-1">
+            <Col>
+              <DataTable
+                noHeader
+                data={staticData}
+                columns={Columns}
+                className="react-dataTable"
+              />
+            </Col>
+          </Row>
         </CardBody>
       </Card>
+
       {newGuest ? (
         <AddHotel open={newGuest} handleOpen={handleNewGuest} getOption={handleGuestOptions} />
       ) : (

@@ -15,6 +15,12 @@ export default [
                 icon: <AiOutlineArrowRight size={20} />,
                 navLink: '/allSubscription'
             },
+            {
+                id: 'paymentFolio',
+                title: 'Subscription History',
+                icon: <AiOutlineArrowRight size={20} />,
+                navLink: '/subscriptionHistory'
+            },
             // {
             //     id: 'purchaseOrder',
             //     title: 'Active',

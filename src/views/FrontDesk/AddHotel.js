@@ -433,11 +433,10 @@ const AddHotel = ({ open, handleOpen, getOption }) => {
         backdrop={false}
       >
         {/* ---------- HEADER ---------- */}
-        <ModalHeader toggle={handleOpen}>
-          <div>
-            <h3 className="fw-bolder mb-0">Add Client</h3>
-            <p className="mb-0">Register a new client</p>
-          </div>
+       
+
+        <ModalHeader className='bg-transparent' toggle={handleOpen}>
+          <span className=' mb-1'>Add Client </span>
         </ModalHeader>
 
         <Form onSubmit={onSubmit}>

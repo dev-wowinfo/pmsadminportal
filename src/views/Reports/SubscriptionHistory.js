@@ -52,34 +52,34 @@ const SubscriptionHistory = () => {
   const [bookingData, setBookingData] = useState([]);
   console.log(toDate, fromDate);
 
-//   const columns = [
-//     {
-//       name: "bookingID",
-//       label: "Booking Id",
-//     },
-//     {
-//       name: "paymentType",
-//       label: "Payment Type",
-//     },
-//     {
-//       name: "paymentDate",
-//       label: "Payment Date",
-//     },
-//     {
-//       name: "referenceText",
-//       label: "Reference Text",
-//     },
-//     {
-//       name: "paidAmount",
-//       label: "Paid Amount",
-//     },
-//     {
-//       name: "invNo",
-//       label: "Invoice Number",
-//     },
-//   ];
-  
-const data = [
+  //   const columns = [
+  //     {
+  //       name: "bookingID",
+  //       label: "Booking Id",
+  //     },
+  //     {
+  //       name: "paymentType",
+  //       label: "Payment Type",
+  //     },
+  //     {
+  //       name: "paymentDate",
+  //       label: "Payment Date",
+  //     },
+  //     {
+  //       name: "referenceText",
+  //       label: "Reference Text",
+  //     },
+  //     {
+  //       name: "paidAmount",
+  //       label: "Paid Amount",
+  //     },
+  //     {
+  //       name: "invNo",
+  //       label: "Invoice Number",
+  //     },
+  //   ];
+
+  const data = [
     {
       name: "Adani Cement",
       type: "Enterprises",
@@ -101,17 +101,35 @@ const data = [
       action: "btns",
     },
   ];
-   const basicColumns = [
+  const basicColumns = [
     {
       name: "Client List",
       sortable: true,
       minWidth: "250px",
       cell: (row) => <span>{row.name}</span>,
     },
+    // {
+    //   name: "Purchase Plan",
+    //   sortable: true,
+    //   cell: (row) => <span>{row.type}</span>,
+    // },
     {
-      name: "Purchase Plan",
+      name: "Plan",
       sortable: true,
-      cell: (row) => <span>{row.type}</span>,
+      minWidth: "10px",
+      cell: (row) => <span>{row.rooms}</span>,
+    },
+    {
+      name: "Start Date",
+      sortable: true,
+      // minWidth: '310px',
+      cell: (row) => <span>{row.startdates}</span>,
+    },
+    {
+      name: "Expiry Date",
+      sortable: true,
+      // minWidth: '250px',
+      cell: (row) => <span>{row.enddates}</span>,
     },
     {
       name: "Status",
@@ -129,51 +147,35 @@ const data = [
         );
       },
     },
-    {
-      name: "Start Date",
-      sortable: true,
-      // minWidth: '310px',
-      cell: (row) => <span>{row.startdates}</span>,
-    },
-    {
-      name: "Expiry Date",
-      sortable: true,
-      // minWidth: '250px',
-      cell: (row) => <span>{row.enddates}</span>,
-    },
-    {
-      name: "Projects",
-      sortable: true,
-      minWidth: "10px",
-      cell: (row) => <span>{row.rooms}</span>,
-    },
-    {
-      name: "Users",
-      sortable: true,
-      minWidth: "50px",
-      cell: (row) => <span>{row.user}</span>,
-    },
-    {
-      name: "Actions",
-      center: true,
-      //  minWidth: '150px',
-      selector: (row) => {
-        return (
-          <>
-            <Col>
-              <Edit
-                className="me-1 cursor-pointer"
-                size={15}
-                onClick={() => {
-                  handleUpdateOpen();
-                  setPromoId(row.promotionId);
-                }}
-              />
-            </Col>
-          </>
-        );
-      },
-    },
+
+
+    // {
+    //   name: "Users",
+    //   sortable: true,
+    //   minWidth: "50px",
+    //   cell: (row) => <span>{row.user}</span>,
+    // },
+    // {
+    //   name: "Actions",
+    //   center: true,
+    //   //  minWidth: '150px',
+    //   selector: (row) => {
+    //     return (
+    //       <>
+    //         <Col>
+    //           <Edit
+    //             className="me-1 cursor-pointer"
+    //             size={15}
+    //             onClick={() => {
+    //               handleUpdateOpen();
+    //               setPromoId(row.promotionId);
+    //             }}
+    //           />
+    //         </Col>
+    //       </>
+    //     );
+    //   },
+    // },
   ];
 
   const options = {
@@ -229,7 +231,7 @@ const data = [
 
   return (
     <>
-      <Card>
+      {/* <Card>
         <CardHeader>
           <CardTitle>
             <h2>Subscription History</h2>
@@ -241,8 +243,7 @@ const data = [
               <Label className="form-label" for="startDate">
                 From Date
               </Label>
-              {/* <div className='datePicker'> */}
-              {/* <InputGroup className='input-group-merge'> */}
+             
               <Flatpickr
                 className="form-control"
                 value={fromDate}
@@ -255,18 +256,13 @@ const data = [
                   dateFormat: "Y-m-d",
                 }}
               />
-              {/* <InputGroupText>
-                                        <MdDateRange size={15} />
-                                    </InputGroupText>
-                                </InputGroup>
-                            </div> */}
+              
             </Col>
             <Col className="text-start">
               <Label className="form-label" for="endDate">
                 To Date
               </Label>
-              {/* <div className='datePicker'>
-                                <InputGroup className='input-group-merge'> */}
+            
               <Flatpickr
                 className="form-control"
                 value={toDate}
@@ -279,11 +275,7 @@ const data = [
                   dateFormat: "Y-m-d",
                 }}
               />
-              {/* <InputGroupText>
-                                        <MdDateRange size={15} />
-                                    </InputGroupText>
-                                </InputGroup>
-                            </div> */}
+             
             </Col>
             <Col>
               <Button className="me-1" color="primary" onClick={getBookingData}>
@@ -306,6 +298,75 @@ const data = [
             paginationRowsPerPageOptions={[10, 25, 50, 100]}
           />
         </div>
+      </Card> */}
+
+      <Card>
+        <CardHeader>
+          <CardTitle>
+            <h2>Subscription History</h2>
+          </CardTitle>
+
+        </CardHeader>
+        <Row className="align-items-end ms-2">
+          <Col className="text-start">
+            <Label className="form-label" for="startDate">
+              From Date
+            </Label>
+
+            <Flatpickr
+              className="form-control"
+              value={fromDate}
+              onChange={(date) => {
+                setFromDate(moment(date[0]).format("YYYY-MM-DD"));
+              }}
+              id="startDate"
+              options={{
+                altInput: true,
+                dateFormat: "Y-m-d",
+              }}
+            />
+
+          </Col>
+          <Col className="text-start">
+            <Label className="form-label" for="endDate">
+              To Date
+            </Label>
+
+            <Flatpickr
+              className="form-control"
+              value={toDate}
+              onChange={(date) => {
+                setToDate(moment(date[0]).format("YYYY-MM-DD"));
+              }}
+              id="endDate"
+              options={{
+                altInput: true,
+                dateFormat: "Y-m-d",
+              }}
+            />
+
+          </Col>
+          <Col>
+            <Button className="me-1" color="primary" onClick={getBookingData}>
+              Search
+            </Button>
+            <Button className="me-1" color="primary" onClick={handelReset}>
+              Reset
+            </Button>
+          </Col>
+        </Row>
+        <CardBody>
+          <Row className="my-1">
+            <Col>
+              <DataTable
+                noHeader
+                data={data}
+                columns={basicColumns}
+                className="react-dataTable"
+              />
+            </Col>
+          </Row>
+        </CardBody>
       </Card>
     </>
   );
