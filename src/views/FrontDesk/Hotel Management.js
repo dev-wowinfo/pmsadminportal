@@ -76,13 +76,13 @@ const HotelManagement = () => {
       selector: (row) => row.city,
     },
     {
-      name: "Industry",
+      name: "Phone",
       sortable: true,
       width: '12rem',
       selector: (row) => row.phone,
     },
     {
-      name: "Phone",
+      name: "Users",
       sortable: true,
       width: '7rem',
       selector: (row) => row.rooms,
@@ -165,7 +165,7 @@ const HotelManagement = () => {
   const staticData = [
     {
       // id: 12222000372122,
-      hotel: 'Grand Plaza Hotel',
+      hotel: 'Adani Cement',
       city: 'Mumbai',
       phone: '+919677734223',
       rooms: '150',
@@ -175,7 +175,7 @@ const HotelManagement = () => {
     },
     {
       // id: 12222000372111,
-      hotel: 'Royal Inn',
+      hotel: 'WowInfobiz',
       city: 'Delhi',
       phone: '+918222245634',
       rooms: '75',

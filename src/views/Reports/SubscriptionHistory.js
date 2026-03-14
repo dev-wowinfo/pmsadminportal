@@ -86,7 +86,7 @@ const data = [
       status: "Active",
       startdates: "Aug 02, 2025",
       enddates: "Aug 02, 2026",
-      rooms: "500",
+      rooms: "₹30000",
       user: "50",
       action: "btns",
     },
@@ -96,7 +96,7 @@ const data = [
       status: "Active",
       startdates: "Nov 30, 2025",
       enddates: "May 30, 2026",
-      rooms: "100",
+      rooms: "₹2000",
       user: "15",
       action: "btns",
     },
@@ -142,7 +142,7 @@ const data = [
       cell: (row) => <span>{row.enddates}</span>,
     },
     {
-      name: "Projects",
+      name: "Amount",
       sortable: true,
       minWidth: "10px",
       cell: (row) => <span>{row.rooms}</span>,
@@ -295,6 +295,7 @@ const data = [
             </Col>
           </Row>
         </CardBody>
+        
         <div className="react-dataTable pt-2">
           <DataTable
             noHeader
