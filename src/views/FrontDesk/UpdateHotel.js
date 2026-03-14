@@ -1,0 +1,483 @@
+import React, { useEffect, useState } from "react";
+import {
+  Button,
+  Col,
+  Form,
+  Input,
+  Label,
+  Modal,
+  ModalBody,
+  ModalFooter,
+  ModalHeader,
+  Row,
+} from "reactstrap";
+import Select from "react-select";
+import { toast } from "react-hot-toast";
+
+// ** Third Party Components
+import * as yup from "yup";
+import { useForm, Controller } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+
+import { selectThemeColors } from "@utils";
+
+import axios from "../../API/axios";
+import { useSelector } from "react-redux";
+import Hotel from "../FrontDesk/Hotel.css"
+
+const defaultValues = {
+  name: "",
+  last_name: "",
+  prefix: "",
+  mobile_number: "",
+  email: "",
+  dob: "",
+  address: "",
+  pincode: "",
+  country: "",
+  state: "",
+  city: "",
+};
+
+const UpdateHotel = ({ showUpdate, handleUpdateHotel, getOption }) => {
+  const getUserData = useSelector((state) => state.userManageSlice.userData);
+
+  const { LoginID, Token } = getUserData;
+
+  const [stateList, setStateList] = useState([]);
+  const [countryList, setCountryList] = useState([]);
+  const [districtList, setDistrictList] = useState([]);
+  const [cityList, setCityList] = useState([]);
+  const [guestName, setGuestName] = useState("");
+  const [guestLastName, setGuestLastName] = useState("");
+  const [mobPrefix, setMobPrefix] = useState("");
+  const [mobNumber, setMobNumber] = useState("");
+  const [guestEmail, setGuestEmail] = useState("");
+  const [guestDob, setGuestDob] = useState("");
+  const [pinCode, setPinCode] = useState("");
+  const [address, setAddress] = useState("");
+  const [countryId, setCountryId] = useState("");
+  const [stateId, setStateId] = useState("");
+  const [districtId, setDistrictId] = useState("");
+  const [cityId, setCityId] = useState("");
+  const [display, setDisplay] = useState(false);
+
+  // const userId = localStorage.getItem('user-id')
+
+  // COUNTRY API
+  const countryDetailsList = async () => {
+    try {
+      const countryListBody = {
+        LoginID,
+        Token,
+        Seckey: "abc",
+        Event: "select",
+      };
+      const res = await axios.post(
+        `https://restcountries.com/v3.1/all?fields=name,flags`,
+        countryListBody
+      );
+      console.log("res-country", res);
+      setCountryList(res?.data[0]);
+    } catch (error) {
+      console.log("Country List Error", error.message);
+    }
+  };
+
+  const countryOptions =
+    countryList?.length && countryList[0]?.countryName
+      ? countryList?.map(function (country) {
+        return { value: country.countryID, label: country.countryName };
+      })
+      : [{ value: "reload", label: "Error loading, click to reload again" }];
+
+  const handleCountryDetailsList = (value) => {
+    if (value === "reload") {
+      countryDetailsList();
+      return;
+    }
+    setCountryId(value);
+  };
+
+  useEffect(() => {
+    countryDetailsList();
+  }, []);
+
+  // STATE API
+  const stateDetailsList = (value) => {
+    try {
+      const stateDetailsBody = {
+        LoginID,
+        Token,
+        Seckey: "abc",
+        CountryID: value,
+        Event: "select",
+      };
+      axios
+        .post(`/getdata/regiondata/statedetails`, stateDetailsBody)
+        .then((stateDropDownResponse) => {
+          setStateList(stateDropDownResponse?.data[0]);
+        });
+    } catch (error) {
+      console.log("State Details Error", error.message);
+    }
+  };
+  const stateOptions =
+    stateList?.length && stateList[0]?.stateName
+      ? stateList?.map(function (state) {
+        return { value: state.stateID, label: state.stateName };
+      })
+      : [{ value: "reload", label: "Error loading, click to reload again" }];
+
+  const handleStateDetailsList = (value) => {
+    if (value === "reload") {
+      stateDetailsList();
+      return;
+    }
+    setStateId(value);
+  };
+
+  // DISTRICT API
+  // const districtDetailsList = (value) => {
+  //     try {
+  //         const districtDetailsBody = {
+  //             LoginID,
+  //             Token,
+  //             Seckey: "abc",
+  //             StateID: value,
+  //             Event: "select"
+  //         }
+  //         axios.post(`/getdata/regiondata/districtdetails`, districtDetailsBody)
+  //             .then(districtDropDownResponse => {
+  //                 setDistrictList(districtDropDownResponse?.data[0])
+  //             })
+  //     } catch (error) {
+  //         console.log("District Details Error", error.message)
+  //     }
+  // }
+  // const districtOptions = districtList?.length && districtList[0]?.DistrictName ? districtList?.map(function (district) {
+  //     return { value: district.DistrictID, label: district.DistrictName }
+  // }) : [{ value: 'reload', label: 'Error loading, click to reload again' }]
+
+  // const handelDistrictDetailsList = (value) => {
+  //     if (value === 'reload') {
+  //         districtDetailsList()
+  //         return
+  //     }
+  //     setDistrictId(value)
+  // }
+
+  // CITY API
+  const cityDetailsList = (value) => {
+    try {
+      const cityListBody = {
+        LoginID,
+        Token,
+        Seckey: "abc",
+        DistrictID: value,
+        StateID: value,
+        Event: "select",
+      };
+      axios
+        .post(`/getdata/regiondata/citydetails`, cityListBody)
+        .then((cityDropDownResponse) => {
+          console.log("cityDropDownResponse", cityDropDownResponse?.data[0]);
+          setCityList(cityDropDownResponse?.data[0]);
+        });
+    } catch (error) {
+      console.log("City Details Error", error.message);
+    }
+  };
+  const cityOptions =
+    cityList?.length && cityList[0]?.cityName
+      ? cityList?.map(function (city) {
+        return { value: city.cityID, label: city.cityName };
+      })
+      : [{ value: "reload", label: "Error loading, click to reload again" }];
+
+  const handleCityDetailsList = (value) => {
+    if (value === "reload") {
+      cityDetailsList();
+      return;
+    }
+    setCityId(value);
+  };
+
+  const GuestSchema = yup.object().shape({
+    name: yup.string().required(),
+    last_name: yup.string().required(),
+    prefix: yup.number().min(2).required(),
+    mobile_number: yup.number().min(10).required(),
+    // email: yup.string().email().required(),
+    // dob: yup.date().required(),
+    pincode: yup.number().required(),
+    address: yup.string().required(),
+    country: yup.string().required(),
+    state: yup.string().required(),
+    city: yup.string().required(),
+  });
+
+  const { reset } = useForm({
+    defaultValues,
+    resolver: yupResolver(GuestSchema),
+  });
+
+  const handleReset = () => {
+    reset({
+      name: "",
+      last_name: "",
+      prefix: "",
+      mobile_number: "",
+      email: "",
+      dob: "",
+      address: "",
+      pincode: "",
+      country: "",
+      state: "",
+      city: "",
+    });
+    handleUpdateHotel();
+  };
+
+  const guestRegister = () => {
+    try {
+      const guestRegisterBody = {
+        LoginID,
+        Token,
+        Seckey: "abc",
+        Name: guestName,
+        LastName: guestLastName,
+        PrefixN: mobPrefix,
+        MobileNumber: mobNumber,
+        Type: "Normal User",
+        Email: guestEmail,
+        DOB: guestDob,
+        Address: address,
+        CountryID: countryId,
+        StateID: stateId,
+        DistrictID: stateId,
+        CityID: cityId,
+        Pincode: pinCode,
+        FloorID: null,
+        SpecialNote: "",
+        Event: "insert",
+      };
+      console.log('guestRegisterBody', guestRegisterBody);
+      axios.post(`/setdata/guestdetails`, guestRegisterBody).then((res) => {
+        console.log("Guest Entry", res);
+        toast.success("Guest registered succesfully");
+        getOption()
+      });
+    } catch (error) {
+      console.log("Guest Register Error", error.message);
+    }
+  };
+
+  const onSubmit = () => {
+    setDisplay(true);
+    if (
+      guestName.trim() &&
+      guestLastName.trim() &&
+      mobPrefix.trim() &&
+      mobNumber.trim() &&
+      // guestEmail.trim() &&
+      // guestDob &&
+      countryId &&
+      stateId &&
+      cityId &&
+      pinCode.trim() &&
+      address.trim() !== ""
+    ) {
+      guestRegister();
+      handleOpen();
+      setGuestName("");
+      setGuestLastName("");
+      setMobPrefix("");
+      setMobNumber("");
+      setGuestEmail("");
+      setGuestDob("");
+      setCountryId("");
+      setStateId("");
+      setCityId("");
+      setPinCode("");
+      setAddress("");
+      setDisplay(false);
+    }
+  };
+
+  return (
+    <>
+     
+
+      <Modal
+        isOpen={showUpdate}
+        toggle={handleUpdateHotel}
+        className="modal-dialog-centered modal-md hotel-modal-header"
+        backdrop={false}
+      >
+        {/* ---------- HEADER ---------- */}
+       
+
+        <ModalHeader className='bg-transparent' toggle={handleUpdateHotel}>
+          <span className=' mb-1'>Update Client </span>
+        </ModalHeader>
+
+        <Form onSubmit={onSubmit}>
+          <ModalBody>
+            {/* ---------- HOTEL NAME ---------- */}
+            <Row className="mb-1">
+              <Col md={12}>
+                <Label className="form-label">
+                  Client Name <span className="text-danger">*</span>
+                </Label>
+                <input
+                  type="text"
+                  placeholder="e.g., Team Global"
+                  className="form-control"
+                />
+              </Col>
+            </Row>
+
+            {/* ---------- EMAIL & PHONE ---------- */}
+            <Row className="mb-1">
+              <Col lg='6' className='mb-1'>
+                <Label className='form-label' for='countries'><span className='text-danger'>*</span> Category</Label>
+                <Select
+                  // theme={selectThemeColors}
+                  className='react-select'
+                  classNamePrefix='select'
+                  placeholder="Select Category"
+                // options={countryList}
+                // onChange={e => {
+                //   setCountryId(e.value)
+                //   setCountryCode(e.CountryCode)
+                //   setCountry(e.label)
+                // }}
+                // invalid={display && country === ''}
+                />
+                {display && !country ? <span className='error_msg_lbl'>Enter Category </span> : null}
+              </Col>
+              <Col lg='6' className='mb-1'>
+                <Label className='form-label' for='countries'><span className='text-danger'>*</span> Industry</Label>
+                <Select
+                  // theme={selectThemeColors}
+                  className='react-select'
+                  classNamePrefix='select'
+                  placeholder="Select Industry"
+                // options={countryList}
+                // onChange={e => {
+                //   setCountryId(e.value)
+                //   setCountryCode(e.CountryCode)
+                //   setCountry(e.label)
+                // }}
+                // invalid={display && country === ''}
+                />
+                {display && !country ? <span className='error_msg_lbl'>Enter Industry </span> : null}
+              </Col>
+
+              <Col md={6}>
+                <Label className="form-label">
+                  Phone
+                </Label>
+                <input
+                  type="tel"
+                  placeholder="+1 234 567 8900"
+                  className="form-control"
+                />
+              </Col>
+
+              <Col md={6}>
+                <Label className="form-label">
+                  Email
+                </Label>
+                <input
+                  type="email"
+                  placeholder="contact@client.com"
+                  className="form-control"
+                />
+              </Col>
+
+
+            </Row>
+
+            {/* ---------- ADDRESS ---------- */}
+            <Row className="mb-1">
+              <Col md={12}>
+                <Label className="form-label">Address</Label>
+                <input
+                  type="text"
+                  placeholder="Street address"
+                  className="form-control"
+                />
+              </Col>
+            </Row>
+
+            {/* ---------- CITY & COUNTRY ---------- */}
+            <Row className="mb-1">
+
+              <Col md={6}>
+                <Label className="form-label">
+                  Country
+                </Label>
+                <input
+                  type="text"
+                  placeholder="Country name"
+                  className="form-control"
+                />
+              </Col>
+
+              <Col md={6}>
+                <Label className="form-label">
+                  City
+                </Label>
+                <input
+                  type="text"
+                  placeholder="City name"
+                  className="form-control"
+                />
+              </Col>
+
+
+            </Row>
+
+            {/* ---------- ROOM COUNT & ACTIVE USERS ---------- */}
+            {/* <Row className="mb-1">
+              <Col md={6}>
+                <Label className="form-label">Room Count</Label>
+                <input
+                  type="number"
+                  placeholder="0"
+                  className="form-control"
+                />
+              </Col>
+
+              <Col md={6}>
+                <Label className="form-label">Active Users</Label>
+                <input
+                  type="number"
+                  placeholder="0"
+                  className="form-control"
+                />
+              </Col>
+            </Row> */}
+          </ModalBody>
+
+          {/* ---------- FOOTER ---------- */}
+          <ModalFooter className="justify-content-end">
+            <Button color="secondary" outline onClick={handleReset}>
+              Cancel
+            </Button>
+            <Button color="primary" type="submit">
+              Add Client
+            </Button>
+          </ModalFooter>
+        </Form>
+      </Modal>
+
+
+      {/* {open ? <div className="modal-backdrop fade show"></div> : null} */}
+    </>
+  );
+};
+
+export default UpdateHotel;

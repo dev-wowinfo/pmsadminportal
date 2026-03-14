@@ -97,6 +97,9 @@ const Products = () => {
   const [showEdit, setShowEdit] = useState(false);
   const handleEditModal = () => setShowEdit(!showEdit);
 
+  const [showUpdate, setShowUpdate] = useState(false);
+  const handleShowModalUpdate = () => setShowUpdate(!showUpdate);
+
   const [selected_hotel, setSelected_hotel] = useState();
 
   const [del, setDel] = useState(false);
@@ -184,8 +187,8 @@ const Products = () => {
                 className="me-1 cursor-pointer"
                 size={15}
                 onClick={() => {
-                  handleUpdateOpen();
-                  setPromoId(row.promotionId);
+                  handleShowModalUpdate();
+                  // setPromoId(row.promotionId);
                 }}
               />
             </Col>
@@ -232,14 +235,17 @@ const Products = () => {
           getAllHotelList={getAllHotelList}
         />
       )}
-      {showEdit && (
+      {/* {showUpdate && ( */}
         <EditHotelModal
-          showEdit={showEdit}
-          handleEditModal={handleEditModal}
+          // showEdit={showEdit}
+          // handleEditModal={handleEditModal}
+          handleShowModalUpdate={handleShowModalUpdate}
+          showUpdate={showUpdate}
           hotels={hotels}
           id={selected_hotel}
+          // show={show}
         />
-      )}
+      {/* )} */}
       {del && (
         <DeleteHotelModal
           del={del}

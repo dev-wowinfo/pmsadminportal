@@ -297,7 +297,7 @@ const NewHotelModal = ({ setShow , show, handleShowModal, getAllHotelList }) => 
                                         invalid={display && address === ''}
 
                                     />
-                                    {display && !address ? <span className='error_msg_lbl'>Enter client name </span> : null}
+                                    {display && !address ? <span className='error_msg_lbl'>Enter Product Code </span> : null}
                                 </Col>
                             </Row>
                             <Row>
@@ -330,7 +330,7 @@ const NewHotelModal = ({ setShow , show, handleShowModal, getAllHotelList }) => 
                                         invalid={display && address === ''}
 
                                     />
-                                    {display && !address ? <span className='error_msg_lbl'>Enter client name </span> : null}
+                                    {display && !address ? <span className='error_msg_lbl'>Enter Product Description </span> : null}
                                 </Col>
                             </Row>
                            

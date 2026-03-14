@@ -18,6 +18,7 @@ import verifyToken from "./routes/middleware/verifyToken.js";
 // ------------------------------   Postgre  SQL   ---------------------------------------------------------------------
 import productRoutes from "./routes/PostgreRoutes/productRoutes.js";
 import planRoutes from "./routes/PostgreRoutes/planRoutes.js";
+import AuthRoutes from "./routes/PostgreRoutes/AuthRoutes.js";
 
 
 // Config
@@ -179,3 +180,8 @@ app.listen(PORT, () => {
 
 app.use("/api/products", productRoutes);
 app.use("/api/plans", planRoutes);
+app.use("/api/auth", AuthRoutes);
+
+app.listen(5000, () => {
+  console.log("Server running on port 5000");
+});

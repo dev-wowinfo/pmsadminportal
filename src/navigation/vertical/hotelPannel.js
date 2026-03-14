@@ -16,17 +16,18 @@ export default [
       //   icon: <SiHotelsdotcom size={20} />,
       //   navLink: '/hotelManagement'
       // },
-      {
-        id: 'clientList',
-        title: 'Clients List',
-        icon: <AiOutlineArrowRight size={20} />,
-        navLink: '/clientList'
-      },
+
       {
         id: 'hotelManagement',
         title: 'Add Client',
         icon: <AiOutlineArrowRight size={20} />,
         navLink: '/addClient'
+      },
+      {
+        id: 'clientList',
+        title: 'Clients List',
+        icon: <AiOutlineArrowRight size={20} />,
+        navLink: '/clientList'
       },
       // {
       //   id: 'assignsubscription',

@@ -370,9 +370,10 @@ const Plans = () => {
 											<></>
 										)}
 									</Col>
-									
+
 								</Row>
 							</Form>
+
 							<Row tag="form" className="gy-1 gx-2 mt-75">
 								<Col className="text-lg-end text-md-center mt-1" xs={12}>
 									<Button
@@ -403,6 +404,7 @@ const Plans = () => {
 
 	const EditUserModal = ({ id }) => {
 		const userData = users.filter((user) => user.id === id);
+		const [display, setDisplay] = useState(false);
 
 		const [editUser, setEditUser] = useState(userData[0]?.userId);
 		const [editUserRole, setEditUserRole] = useState(userData[0]?.userRole);
@@ -484,112 +486,133 @@ const Plans = () => {
 					backdrop={false}
 				>
 					<ModalHeader className="bg-transparent" toggle={handleEditModal}>
-						<span className=" mb-1">Edit User</span>
+						<span className=" mb-1">Update Plan</span>
 					</ModalHeader>
 					<ModalBody className="px-sm-2 mx-50 pb-5">
 						<>
 							<Form>
 								<Row>
-									<Col lg="6" className="mb-md-1">
-										<Label className="form-label" for="user">
-											<span className="text-danger">*</span>Users
-										</Label>
+									<Col lg='6' className='mb-1'>
+										<Label className='form-label' for='countries'><span className='text-danger'>*</span>Plan Name</Label>
 										<Select
-											isDisabled
 											theme={selectThemeColors}
-											className="react-select w-100 me-1"
-											classNamePrefix="select"
-											// defaultValue={users[0]}
-											options={usersType}
-											value={usersType.filter((c) => c.value === editUser)}
-											isClearable={false}
-											onChange={(e) => setEditUser(e.value)}
-											invalid={editDisplay ? editUser === "" : false}
+											className='react-select'
+											classNamePrefix='select'
+											placeholder="Select Category"
+										//   options={countryList}
+										//   onChange={e => {
+										//     setCountryId(e.value)
+										//     setCountryCode(e.CountryCode)
+										//     setCountry(e.label)
+										//   }}
+										// invalid={display && country === ''}
 										/>
-										{editDisplay === true && !editUser ? (
-											<span className="error_msg_lbl">Please Select User </span>
-										) : (
-											<></>
-										)}
+										{/* {display && !country ? <span className='error_msg_lbl'>Enter Plan </span> : null} */}
 									</Col>
-									<Col lg="6" className="mb-1">
-										<Label className="form-label" for="userRole">
-											<span className="text-danger">*</span>User Roles
-										</Label>
+									<Col lg='6' className='mb-1'>
+										<Label className='form-label' for='hotel'><span className='text-danger'>*</span>Product Name</Label>
+										<Input
+											type='text'
+											name='hotel'
+											id='hotel'
+											// value={hotelName}
+											// onChange={e => setHotelName(e.target.value)}
+											invalid={display && hotelName === ''}
+										/>
+										{/* {display && !hotelName ? <span className='error_msg_lbl'>Enter Product Name </span> : null} */}
+									</Col>
+									<Col lg='6' className='mb-1'>
+										<Label className='form-label' for='countries'><span className='text-danger'>*</span>Price</Label>
 										<Select
 											theme={selectThemeColors}
-											className="react-select w-100 me-1"
-											classNamePrefix="select"
-											// defaultValue={userRoles[0]}
-											options={userRoles}
-											value={userRoles.filter((c) => c.value === editUserRole)}
-											isClearable={false}
-											onChange={(e) => setEditUserRole(e.value)}
-											invalid={editDisplay ? editUserRole === "" : false}
+											className='react-select'
+											classNamePrefix='select'
+											placeholder="Select Category"
+										//   options={countryList}
+										//   onChange={e => {
+										//     setCountryId(e.value)
+										//     setCountryCode(e.CountryCode)
+										//     setCountry(e.label)
+										//   }}
+										// invalid={display && country === ''}
 										/>
-										{editDisplay === true && !editUserRole ? (
-											<span className="error_msg_lbl">
-												Please Select User Role{" "}
-											</span>
-										) : (
-											<></>
-										)}
+										{/* {display && !country ? <span className='error_msg_lbl'>Enter Plan </span> : null} */}
+									</Col>
+									<Col lg='6' className='mb-1'>
+										<Label className='form-label' for='countries'><span className='text-danger'>*</span>Billing Cycle</Label>
+										<Select
+											theme={selectThemeColors}
+											className='react-select'
+											classNamePrefix='select'
+											placeholder="Select Category"
+										//   options={countryList}
+										//   onChange={e => {
+										//     setCountryId(e.value)
+										//     setCountryCode(e.CountryCode)
+										//     setCountry(e.label)
+										//   }}
+										// invalid={display && country === ''}
+										/>
+										{/* {display && !country ? <span className='error_msg_lbl'>Enter Plan </span> : null} */}
+									</Col>
+									<Col lg='6' className='mb-1'>
+										<Label className='form-label' for='countries'><span className='text-danger'>*</span>Currency</Label>
+										<Select
+											theme={selectThemeColors}
+											className='react-select'
+											classNamePrefix='select'
+											placeholder="Select Category"
+										//   options={countryList}
+										//   onChange={e => {
+										//     setCountryId(e.value)
+										//     setCountryCode(e.CountryCode)
+										//     setCountry(e.label)
+										//   }}
+										// invalid={display && country === ''}
+										/>
+										{/* {display && !country ? <span className='error_msg_lbl'>Enter Plan </span> : null} */}
+									</Col>
+									<Col lg='6' className='mb-1'>
+										<Label className='form-label' for='countries'><span className='text-danger'>*</span>Duration</Label>
+										<Select
+											theme={selectThemeColors}
+											className='react-select'
+											classNamePrefix='select'
+											placeholder="Select Category"
+										//   options={countryList}
+										//   onChange={e => {
+										//     setCountryId(e.value)
+										//     setCountryCode(e.CountryCode)
+										//     setCountry(e.label)
+										//   }}
+										// invalid={display && country === ''}
+										/>
+										{/* {display && !country ? <span className='error_msg_lbl'>Enter Plan </span> : null} */}
 									</Col>
 								</Row>
 								<Row>
-									<Col lg="6" className="mb-1">
+									<Col lg="12" className="mb-1">
 										<Label className="form-label" for="userName">
-											<span className="text-danger">*</span>userName
+											<span className="text-danger">*</span>Description
 										</Label>
 										<Input
-											disabled
 											type="text"
 											name="userName"
 											id="userName"
-											value={edituserName}
-											onChange={(e) => setEditUserName(e.target.value)}
-											invalid={editDisplay ? edituserName === "" : false}
+											// value={userName}
+											// onChange={(e) => setUserName(e.target.value)}
+											// invalid={display ? userName === "" : false}
 										/>
-										{editDisplay === true && !edituserName ? (
-											<span className="error_msg_lbl">Enter User Name </span>
+										{/* {display === true && !userName ? (
+											<span className="error_msg_lbl">Enter User Id </span>
 										) : (
 											<></>
-										)}
+										)} */}
 									</Col>
-									<Col lg="6" className="mb-1">
-										<Label className="form-label" for="password">
-											<span className="text-danger">*</span>Password
-										</Label>
-										<Input
-											type="text"
-											name="password"
-											id="password"
-											value={editPassword}
-											onChange={(e) => setEditPassword(e.target.value)}
-										/>
-										{/* {editDisplay === true && !editPassword ? <span className='error_msg_lbl'>Enter Password </span> : <></>} */}
-									</Col>
-									<Col>
-										<Label className="form-label">User Status</Label>
-										<Select
-											theme={selectThemeColors}
-											className="react-select w-100"
-											classNamePrefix="select"
-											placeholder="Select Room status"
-											options={statusOptions}
-											value={statusOptions?.filter(
-												(c) => c.value === editStatus,
-											)}
-											onChange={(e) => setEditStatus(e.value)}
-										/>
-										{editDisplay && editStatus === "" && (
-											<span className="text-danger">
-												Room Status is required
-											</span>
-										)}
-									</Col>
+
 								</Row>
 							</Form>
+
 							<Row tag="form" className="gy-1 gx-2 mt-75">
 								<Col className="text-lg-end text-md-center mt-1" xs={12}>
 									<Button
@@ -777,25 +800,11 @@ const Plans = () => {
 						Add Plan
 					</Button>
 				</CardHeader>
-				{/* <CardBody>
-                    <Row className='my-1'>
-                        <Col>
-                            <DataTable
-                                noHeader
-                                pagination
-                                data={search(users)}
-                                columns={userTable}
-                                className='react-dataTable'
-                                sortIcon={<ChevronDown size={10} />}
-                                paginationRowsPerPageOptions={[10, 25, 50, 100]}
-                            />
-                        </Col>
-                    </Row>
-                </CardBody> */}
+
 			</Card>
 
-			<div className="d-flex justify-content-evenly">
-				<Card
+			<div className="d-flex justify-content-evenly align-items-stretch">
+				<Card className="plan-card"
 					style={{ width: "24rem", paddingTop: "20px", marginRight: "5px" }}
 				>
 					<div className="p-1">
@@ -830,7 +839,7 @@ const Plans = () => {
 								<span>Yes</span>
 							</div>
 						</div>
-						<div className="pt-2 border-top mb-2">
+						<div className="pt-2 border-top mb-2" style={{ minHeight: "140px" }}>
 							<h4 className="fs-5 fw-bolder">Included Modules</h4>
 							<div className="d-flex gap-1">
 								<span className="px-1 border rounded">Front Office</span>
@@ -838,8 +847,8 @@ const Plans = () => {
 							</div>
 						</div>
 
-						<div className="d-flex justify-content-between">
-							<Button color="primary" onClick={() => handleEdit("starter")}>
+						<div className="d-flex justify-content-between plan-actions">
+							<Button color="primary" onClick={() => handleEditModal("starter")}>
 								<svg
 									xmlns="http://www.w3.org/2000/svg"
 									width="16"
@@ -875,8 +884,7 @@ const Plans = () => {
 						</div>
 					</div>
 				</Card>
-
-				<Card
+				<Card className="plan-card"
 					style={{ width: "24rem", paddingTop: "20px", marginRight: "5px" }}
 				>
 					<div className="p-1">
@@ -911,7 +919,7 @@ const Plans = () => {
 								<span>Yes</span>
 							</div>
 						</div>
-						<div className="pt-2 border-top mb-2">
+						<div className="pt-2 border-top mb-2" style={{ minHeight: "140px" }}>
 							<h4 className="fs-5 fw-bolder">Included Modules</h4>
 							<div className="d-flex gap-1 flex-wrap">
 								<span className="px-1 border rounded">Front Office</span>
@@ -920,7 +928,7 @@ const Plans = () => {
 								<span className="px-1 border rounded">Reports</span>
 							</div>
 						</div>
-						<div className="d-flex justify-content-between">
+						<div className="d-flex justify-content-between plan-actions">
 							<Button
 								color="primary"
 								onClick={() => handleEdit("professional")}
@@ -960,7 +968,7 @@ const Plans = () => {
 						</div>
 					</div>
 				</Card>
-				<Card style={{ width: "24rem", paddingTop: "20px" }}>
+				<Card className="plan-card" style={{ width: "24rem", paddingTop: "20px" }}>
 					<div className="p-1">
 						<div className="d-flex justify-content-between">
 							<div className="mb-3">
@@ -993,7 +1001,7 @@ const Plans = () => {
 								<span>Yes</span>
 							</div>
 						</div>
-						<div className="pt-2 border-top mb-2">
+						<div className="pt-2 border-top mb-2" style={{ minHeight: "140px" }}>
 							<h4 className="fs-5 fw-bolder">Included Modules</h4>
 							<div className="d-flex gap-1 flex-wrap">
 								<span className="px-1 border rounded">Front Office</span>
@@ -1005,7 +1013,7 @@ const Plans = () => {
 							</div>
 						</div>
 
-						<div className="d-flex justify-content-between">
+						<div className="d-flex justify-content-between plan-actions">
 							<Button color="primary" onClick={() => handleEdit("enterprise")}>
 								<svg
 									xmlns="http://www.w3.org/2000/svg"
@@ -1043,26 +1051,7 @@ const Plans = () => {
 					</div>
 				</Card>
 			</div>
-			{/* <Row>
-                <Col md='12' className='mb-1'>
-                    <Card>
-                        <CardBody>
-                            <CardTitle>
-                                User
-                            </CardTitle>
-                            <Button color='primary' onClick={() => setShow(true)}>Add User</Button>
-                            <CardText>
-                                <DataTable
-                                    noHeader
-                                    data={users}
-                                    columns={userTable}
-                                    className='react-dataTable'
-                                />
-                            </CardText>
-                        </CardBody>
-                    </Card>
-                </Col>
-            </Row> */}
+
 			<NewUserModal />
 			<EditUserModal id={selected_user} />
 			<DeleteUserModal id={selected_user} />
