@@ -14,6 +14,7 @@ import { ChevronDown, Edit, Trash } from "react-feather";
 import { useSelector } from "react-redux";
 import axios from "../../API/axios";
 import AddHotel from "./AddHotel"
+import UpdateHotel from "./UpdateHotel";
 // import NewGuest from "../GuestMaster/NewGuest";
 // import BookingModal from "./BookingModal";
 // import NewGuest from "./NewGuest";
@@ -39,6 +40,10 @@ const HotelManagement = () => {
   const [refresh, setRefresh] = useState(false);
   const handelRefresh = () => setRefresh(!refresh);
   const [activeTab, setActiveTab] = useState("active");
+
+  const [showUpdate, setShowUpdate] = useState(false);
+  const handleUpdateHotel = () => setShowUpdate(!showUpdate);
+
 
   const statusOptions = [
     { value: "Active", label: "Active" },
@@ -115,8 +120,8 @@ const HotelManagement = () => {
           <Edit
             className="me-50 pe-auto"
             onClick={() => {
-              setShowEdit(true);
-              setGuestId(row.guestID);
+              handleUpdateHotel(true);
+              // setGuestId(row.guestID);
             }}
             size={15}
           />
@@ -183,47 +188,14 @@ const HotelManagement = () => {
   ];
   return (
     <>
-      {/* <Card>
-        
-        <CardHeader>
-          <CardTitle>
-            <h1 class="text-3xl fw-bolder tracking-tight">Add Client</h1>
-          </CardTitle>
-          <Button color="primary" onClick={() => { setNewGuest(true); }}>
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 256 256" class="me-1"><path d="M228,128a12,12,0,0,1-12,12H140v76a12,12,0,0,1-24,0V140H40a12,12,0,0,1,0-24h76V40a12,12,0,0,1,24,0v76h76A12,12,0,0,1,228,128Z"></path></svg>
-            Add Client
-          </Button>
 
-        </CardHeader>
-      </Card> */}
-      {/* <Card>
-
-        
-        <input type="text" placeholder="search" className="ms-3 mt-2 form-control input-default w-50" onChange={e => setQuery(e.target.value)} />
-
-        
-
-        <CardBody>
-          <Row className="my-1">
-            <Col>
-              <DataTable
-                noHeader
-                data={staticData}
-                columns={Columns}
-                className="react-dataTable"
-              />
-            </Col>
-          </Row>
-        </CardBody>
-
-      </Card> */}
       <Card>
         <CardHeader>
           <CardTitle>
             <h2>Add Client</h2>
           </CardTitle>
           {/* {UserRole === "SuperAdmin" ? ( */}
-           <Button color="primary" onClick={() => { setNewGuest(true); }}>
+          <Button color="primary" onClick={() => { setNewGuest(true); }}>
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 256 256" class="me-1"><path d="M228,128a12,12,0,0,1-12,12H140v76a12,12,0,0,1-24,0V140H40a12,12,0,0,1,0-24h76V40a12,12,0,0,1,24,0v76h76A12,12,0,0,1,228,128Z"></path></svg>
             Add Client
           </Button>
@@ -248,7 +220,7 @@ const HotelManagement = () => {
       ) : (
         <></>
       )}
-      {showEdit ? (
+      {/* {showEdit ? (
         <HotelEdit
           open={showEdit}
           handleOpen={handleGuestEdit}
@@ -257,7 +229,14 @@ const HotelManagement = () => {
         />
       ) : (
         <></>
-      )}
+      )} */}
+
+      <UpdateHotel
+        // setShowUpdate={setShowUpdate}
+        handleUpdateHotel={handleUpdateHotel}
+        showUpdate={showUpdate}
+      />
+
     </>
   );
 };

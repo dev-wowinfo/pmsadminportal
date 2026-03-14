@@ -56,71 +56,77 @@ const ProductMaster = () => {
     },
   ];
 
-  const hotelTable = [
+  const hotelTable = [	
     {
-      name: "Product Name",
+      name: "Client",
       sortable: true,
       minWidth: "80px",
       cell: (row) => <span>{row.name}</span>,
     },
     {
-      name: "Type",
+      name: "Plan",
       sortable: true,
       minWidth: "50px",
       cell: (row) => <span>{row.type}</span>,
     },
     {
-      name: "Details",
+      name: "Price",
       sortable: true,
       minWidth: "180px",
       cell: (row) => <span>{row.details}</span>,
     },
     {
-      name: "Date",
+      name: "Billing",
       sortable: true,
       minWidth: "50px",
       cell: (row) => <span>{row.dates}</span>,
     },
     {
-      name: "Applicability",
+      name: "Start Date",
       sortable: true,
       minWidth: "80px",
       cell: (row) => <span>{row.applicability}</span>,
     },
     {
       // name: 'Discount Amount',
-      name: "Rooms",
+      name: "Expiry Date",
       sortable: true,
       minWidth: "50px",
       cell: (row) => <span>{row.room}</span>,
     },
     {
-      name: "Users",
+      name: "Payment Status",
       sortable: true,
       minWidth: "50px",
       cell: (row) => <span>{row.user}</span>,
     },
     {
-      name: "Actions",
-      center: true,
-      minWidth: "80px",
-      selector: (row) => {
-        return (
-          <>
-            <Col>
-              <Edit
-                className="me-1 cursor-pointer"
-                size={15}
-                onClick={() => {
-                  handleUpdateOpen();
-                  setPromoId(row.promotionId);
-                }}
-              />
-            </Col>
-          </>
-        );
-      },
+      name: "Subscription Status",
+      sortable: true,
+      minWidth: "150px",
+      cell: (row) => <span>{row.user}</span>,
     },
+    // {
+    //   name: "Actions",
+    //   center: true,
+    //   minWidth: "80px",
+    //   selector: (row) => {
+    //     return (
+    //       <>
+    //         <Col>
+    //           <Edit
+    //             className="me-1 cursor-pointer"
+    //             size={15}
+    //             onClick={() => {
+    //               handleUpdateOpen();
+    //             //   setPromoId(row.promotionId);
+    //             }}
+    //           />
+    //         </Col>
+    //       </>
+    //     );
+    //   },
+    // },
   ];
 
   return (
