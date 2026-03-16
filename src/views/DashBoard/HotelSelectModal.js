@@ -37,7 +37,10 @@ const HotelSelectModal = ({ open1, handleOpen1 }) => {
     const dispatch = useDispatch()
     console.log(selectedHotel);
     const [show, setShow] = useState(false)
-    const handleShowModal = () => setShow(!show)
+    // const handleShowModal = () => setShow(!show)
+    const handleShowModal = () => {
+        setShow(prev => !prev);
+    };
 
     const getAllHotelList = () => {
         axios.get(`/property/hotel/all?CompanyID=${CompanyID}&LoginID=${LoginID}&Token=${Token}`).then((res) => {
@@ -135,7 +138,7 @@ const HotelSelectModal = ({ open1, handleOpen1 }) => {
                 </ModalBody>
             </Modal>
             {open1 ? <div className="modal-backdrop fade show"></div> : null}
-            <NewHotelModal show={show} handleShowModal={handleShowModal} getAllHotelList={getAllHotelList} />
+            <NewHotelModal show={show} setShow={setShow} handleShowModal={handleShowModal} getAllHotelList={getAllHotelList} />
         </>
     );
 };

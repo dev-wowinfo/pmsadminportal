@@ -97,6 +97,9 @@ const Products = () => {
   const [showEdit, setShowEdit] = useState(false);
   const handleEditModal = () => setShowEdit(!showEdit);
 
+  const [showUpdate, setShowUpdate] = useState(false);
+  const handleShowModalUpdate = () => setShowUpdate(!showUpdate);
+
   const [selected_hotel, setSelected_hotel] = useState();
 
   const [del, setDel] = useState(false);
@@ -155,41 +158,22 @@ const Products = () => {
       cell: (row) => <span>{row.name}</span>,
     },
     {
-      name: "Type",
+      name: "Product Code",
       sortable: true,
       minWidth: "50px",
       cell: (row) => <span>{row.type}</span>,
     },
     {
-      name: "Details",
+      name: "Product Category",
       sortable: true,
       minWidth: "180px",
       cell: (row) => <span>{row.details}</span>,
     },
     {
-      name: "Date",
+      name: "Product Description",
       sortable: true,
       minWidth: "50px",
       cell: (row) => <span>{row.dates}</span>,
-    },
-    {
-      name: "Applicability",
-      sortable: true,
-      minWidth: "80px",
-      cell: (row) => <span>{row.applicability}</span>,
-    },
-    {
-      // name: 'Discount Amount',
-      name: "Rooms",
-      sortable: true,
-      minWidth: "50px",
-      cell: (row) => <span>{row.room}</span>,
-    },
-    {
-      name: "Users",
-      sortable: true,
-      minWidth: "50px",
-      cell: (row) => <span>{row.user}</span>,
     },
     {
       name: "Actions",
@@ -203,8 +187,8 @@ const Products = () => {
                 className="me-1 cursor-pointer"
                 size={15}
                 onClick={() => {
-                  handleUpdateOpen();
-                  setPromoId(row.promotionId);
+                  handleShowModalUpdate();
+                  // setPromoId(row.promotionId);
                 }}
               />
             </Col>
@@ -240,9 +224,10 @@ const Products = () => {
           </Row>
         </CardBody>
       </Card>
-      <Card>
-        
-      </Card>
+     
+
+
+
       {show && (
         <NewHotelModal
           show={show}
@@ -250,14 +235,17 @@ const Products = () => {
           getAllHotelList={getAllHotelList}
         />
       )}
-      {showEdit && (
+      {/* {showUpdate && ( */}
         <EditHotelModal
-          showEdit={showEdit}
-          handleEditModal={handleEditModal}
+          // showEdit={showEdit}
+          // handleEditModal={handleEditModal}
+          handleShowModalUpdate={handleShowModalUpdate}
+          showUpdate={showUpdate}
           hotels={hotels}
           id={selected_hotel}
+          // show={show}
         />
-      )}
+      {/* )} */}
       {del && (
         <DeleteHotelModal
           del={del}

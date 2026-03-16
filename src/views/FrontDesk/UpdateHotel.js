@@ -39,7 +39,7 @@ const defaultValues = {
   city: "",
 };
 
-const AddHotel = ({ open, handleOpen, getOption }) => {
+const UpdateHotel = ({ showUpdate, handleUpdateHotel, getOption }) => {
   const getUserData = useSelector((state) => state.userManageSlice.userData);
 
   const { LoginID, Token } = getUserData;
@@ -236,7 +236,7 @@ const AddHotel = ({ open, handleOpen, getOption }) => {
       state: "",
       city: "",
     });
-    handleOpen();
+    handleUpdateHotel();
   };
 
   const guestRegister = () => {
@@ -307,136 +307,19 @@ const AddHotel = ({ open, handleOpen, getOption }) => {
 
   return (
     <>
-      {/* <Modal
-        isOpen={open}
-        toggle={() => handleOpen()}
-        className="modal-dialog-centered modal-md"
-        backdrop={false}
-      >
-        <ModalHeader className="bg-transparent" toggle={() => handleOpen()}><h3 className="fw-bolder"> New Hotel</h3>
-          <p>Register a new hotel property</p></ModalHeader>
-        <Form>
-          <ModalBody>
-            <Row className="d-flex flex-column justify-content-center align-items-center">
-              <Col className="mt-1 d-flex flex-column">
-                <Col className="mx-1">
-                  <Label className="form-label" for="name">
-                    Hotel Name <span className="text-danger">*</span>
-                  </Label>
-                  <input type="text" placeholder="e.g.,Grand plaza hotel" className="form-control input-default w-100" />
-
-                </Col>
-
-              </Col>
-
-              <Col className="mt-1 d-flex flex-md-row flex-column">
-                <Col className="mx-1">
-                  <Label className="form-label" for="last_name">
-                    Email<span className="text-danger">*</span>
-                  </Label>
-                  <input type="textarea" placeholder="Brief Description..." className="form-control input-default w-100" />
-                </Col>
-
-                <Col className="mx-1">
-                  <Label className="form-label" for="last_name">
-                    Phone<span className="text-danger">*</span>
-                  </Label>
-                  <input type="textarea" placeholder="Brief Description..." className="form-control input-default w-100" />
-                </Col>
-
-              </Col>
-              <Row>
-                <Col className="mx-1">
-                  <Label className="form-label" for="dob">
-                    Address
-                  </Label>
-                  <input type="number" placeholder="30" className="form-control w-100" />
-                </Col>
-              </Row>
-
-
-              <Col className="mt-1 d-flex flex-md-row flex-column">
-
-                <Row>
-                  <Col className="mx-1" md={6}>
-                    <Label className="form-label" for="city">
-                      CIty<span className="text-danger">*</span>
-                    </Label>
-                    <input type="number" placeholder="0" className="form-control w-100" />
-                  </Col>
-
-                  <Col className="mx-1" md={6}>
-                    <Label className="form-label" for="city">
-                      Country<span className="text-danger">*</span>
-                    </Label>
-                    <input type="number" placeholder="0" className="form-control w-100" />
-                  </Col>
-                </Row>
-                <Row>
-
-                  <Col className="mx-1" md={6}>
-                    <Label className="form-label" for="city">
-                      Room Count<span className="text-danger">*</span>
-                    </Label>
-                    <input type="number" placeholder="0" className="form-control w-100" />
-                  </Col>
-
-                  <Col className="mx-1" md={6}>
-                    <Label className="form-label" for="city">
-                      Active users<span className="text-danger">*</span>
-                    </Label>
-                    <input type="number" placeholder="0" className="form-control w-100" />
-                  </Col>
-                </Row>
-
-
-
-              </Col>
-              <Col className="mt-1 d-flex flex-md-row flex-column">
-                <Col className="mx-1">Add
-                  <Label className="form-label" for="address">
-                    Max Rooms<span className="text-danger">*</span>
-                  </Label>
-                  <input type="number" placeholder="30" className="form-control w-100" />
-                </Col>
-                <Col className="mx-1">
-                  <Label className="form-label" for="address">
-                    Max Users<span className="text-danger">*</span>
-                  </Label>
-                  <input type="number" placeholder="30" className="form-control w-100" />
-                </Col>
-              </Col>
-            </Row>
-          </ModalBody>
-          <ModalFooter>
-            <Col xs={12} className="text-center">
-              <Button className="me-1" color="primary" onClick={onSubmit}>
-                Submit
-              </Button>
-              <Button
-                type="reset"
-                color="secondary"
-                outline
-                onClick={() => handleReset()}
-              >
-                Discard
-              </Button>
-            </Col>
-          </ModalFooter>
-        </Form>
-      </Modal> */}
+     
 
       <Modal
-        isOpen={open}
-        toggle={handleOpen}
+        isOpen={showUpdate}
+        toggle={handleUpdateHotel}
         className="modal-dialog-centered modal-md hotel-modal-header"
         backdrop={false}
       >
         {/* ---------- HEADER ---------- */}
        
 
-        <ModalHeader className='bg-transparent' toggle={handleOpen}>
-          <span className=' mb-1'>Add Client </span>
+        <ModalHeader className='bg-transparent' toggle={handleUpdateHotel}>
+          <span className=' mb-1'>Update Client </span>
         </ModalHeader>
 
         <Form onSubmit={onSubmit}>
@@ -592,9 +475,9 @@ const AddHotel = ({ open, handleOpen, getOption }) => {
       </Modal>
 
 
-      {open ? <div className="modal-backdrop fade show"></div> : null}
+      {/* {open ? <div className="modal-backdrop fade show"></div> : null} */}
     </>
   );
 };
 
-export default AddHotel;
+export default UpdateHotel;

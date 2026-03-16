@@ -9,3 +9,12 @@
   right: 5px;
  
 }
+.plan-card{
+  display:flex;
+  flex-direction:column;
+  height:100%;
+}
+
+.plan-actions{
+  margin-top:auto;
+}
