@@ -827,16 +827,16 @@ const Plans = () => {
 						</div>
 						<div className="pt-2 border-top">
 							<div class="d-flex justify-content-between mb-1">
-								<span>Max Rooms</span>
-								<span>25</span>
+								<span>Duration</span>
+								<span>30 Days</span>
 							</div>
 							<div className="d-flex justify-content-between mb-1">
-								<span>Max Users</span>
-								<span>5</span>
+								<span>Product </span>
+								<span>PMS</span>
 							</div>
 							<div className="d-flex justify-content-between mb-1">
-								<span>Auto Renew</span>
-								<span>Yes</span>
+								<span>Description </span>
+								<span>Basic plan for small hotels</span>
 							</div>
 						</div>
 						<div className="pt-2 border-top mb-2" style={{ minHeight: "140px" }}>
