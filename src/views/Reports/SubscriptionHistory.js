@@ -86,7 +86,7 @@ const SubscriptionHistory = () => {
       status: "Active",
       startdates: "Aug 02, 2025",
       enddates: "Aug 02, 2026",
-      rooms: "500",
+      rooms: "₹30000",
       user: "50",
       action: "btns",
     },
@@ -96,7 +96,7 @@ const SubscriptionHistory = () => {
       status: "Active",
       startdates: "Nov 30, 2025",
       enddates: "May 30, 2026",
-      rooms: "100",
+      rooms: "₹2000",
       user: "15",
       action: "btns",
     },
@@ -147,35 +147,35 @@ const SubscriptionHistory = () => {
         );
       },
     },
-
-
-    // {
-    //   name: "Users",
-    //   sortable: true,
-    //   minWidth: "50px",
-    //   cell: (row) => <span>{row.user}</span>,
-    // },
-    // {
-    //   name: "Actions",
-    //   center: true,
-    //   //  minWidth: '150px',
-    //   selector: (row) => {
-    //     return (
-    //       <>
-    //         <Col>
-    //           <Edit
-    //             className="me-1 cursor-pointer"
-    //             size={15}
-    //             onClick={() => {
-    //               handleUpdateOpen();
-    //               setPromoId(row.promotionId);
-    //             }}
-    //           />
-    //         </Col>
-    //       </>
-    //     );
-    //   },
-    // },
+    {
+      name: "Actions",
+      center: true,
+      //  minWidth: '150px',
+      selector: (row) => {
+        return (
+          <>
+            <Col>
+              <Edit
+                className="me-1 cursor-pointer"
+                size={15}
+                onClick={() => {
+                  handleUpdateOpen();
+                  setPromoId(row.promotionId);
+                }}
+              />
+              <Archive
+                className="me-1 cursor-pointer"
+                size={15}
+                onClick={() => {
+                  // handleUpdateOpen();
+                  setPromoId(row.promotionId);
+                }}
+              />
+            </Col>
+          </>
+        );
+      },
+    },
   ];
 
   const options = {
@@ -287,6 +287,7 @@ const SubscriptionHistory = () => {
             </Col>
           </Row>
         </CardBody>
+        
         <div className="react-dataTable pt-2">
           <DataTable
             noHeader
@@ -305,7 +306,6 @@ const SubscriptionHistory = () => {
           <CardTitle>
             <h2>Subscription History</h2>
           </CardTitle>
-
         </CardHeader>
         <Row className="align-items-end ms-2">
           <Col className="text-start">
@@ -325,7 +325,6 @@ const SubscriptionHistory = () => {
                 dateFormat: "Y-m-d",
               }}
             />
-
           </Col>
           <Col className="text-start">
             <Label className="form-label" for="endDate">
@@ -344,7 +343,6 @@ const SubscriptionHistory = () => {
                 dateFormat: "Y-m-d",
               }}
             />
-
           </Col>
           <Col>
             <Button className="me-1" color="primary" onClick={getBookingData}>

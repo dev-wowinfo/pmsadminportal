@@ -1,76 +1,89 @@
 .rate_inventry .accordion-item {
-    transition: 0.3s ease-in-out !important;
+  transition: 0.3s ease-in-out !important;
 
-    &:hover {
-        transform: scale(1.02) !important;
-    }
+  &:hover {
+    transform: scale(1.02) !important;
+  }
 }
 .Doc__menu {
-    z-index: 11 !important;
+  z-index: 11 !important;
 }
 .select__menu {
-    z-index: 11 !important;
+  z-index: 11 !important;
 }
-.rate_inventry .accordion-button::after{
-    display: unset !important;
+.rate_inventry .accordion-button::after {
+  display: unset !important;
 }
-.rate_inventry_main .accordion-img{
-    display: flex !important;
-    align-items: center !important;
+.rate_inventry_main .accordion-img {
+  display: flex !important;
+  align-items: center !important;
 }
-.rate_inventry .accordion-img img{
-    width: 20px !important;
+
+.notification-box {
+  background-color: #ffffff;
+  color: #212529;
+  border: 1px solid #dee2e6;
+  transition: all 0.3s ease;
 }
-.rate_inventry_main .accordion-img img{
-    width: 20px !important;
+
+/* Dark Theme */
+body.dark-layout .notification-box {
+  background-color: #474f5e;
+  color: #f1f1f1;
+  border: 1px solid #444;
+}
+
+.rate_inventry .accordion-img img {
+  width: 20px !important;
+}
+.rate_inventry_main .accordion-img img {
+  width: 20px !important;
 }
 .rate_inventry .accordion-img .collapse_img {
-    transform: rotate(-180deg) !important;
+  transform: rotate(-180deg) !important;
 }
 .rate_inventry_card_header {
-    font-size: 16px !important;
-    cursor: pointer !important;
-    padding: 15px 10px !important;
+  font-size: 16px !important;
+  cursor: pointer !important;
+  padding: 15px 10px !important;
 }
 
 .table {
-
-    thead th {
+  thead th {
     position: -webkit-sticky !important;
     position: sticky !important;
     top: 0;
-    z-index: 1;    
+    z-index: 1;
     vertical-align: middle !important;
-}
+  }
 
-    thead th:first-child {
+  thead th:first-child {
     position: -webkit-sticky !important;
     position: sticky !important;
     left: 0;
     z-index: 10;
-    }
+  }
 
-    tbody th {
+  tbody th {
     position: -webkit-sticky !important;
     position: sticky !important;
     left: 0;
     z-index: 1;
-    }
+  }
 
-    tbody th:first-child {
+  tbody th:first-child {
     position: -webkit-sticky !important;
     position: sticky !important;
     left: 0;
     z-index: 1;
     background: whitesmoke;
-    }
+  }
 
-    tbody td {
-        padding: 0 5px;
-    }
+  tbody td {
+    padding: 0 5px;
+  }
 
-    tbody tr {
+  tbody tr {
     text-align: center;
-    }  
-
+  }
 }
