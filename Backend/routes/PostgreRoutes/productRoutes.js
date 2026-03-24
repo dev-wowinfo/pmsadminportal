@@ -63,7 +63,6 @@ router.post("/addProduct", async (req, res) => {
 });
 
 
-
 // GET ALL PRODUCTS
 router.get("/getProducts", async (req, res) => {
 

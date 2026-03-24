@@ -1,31 +1,37 @@
 import jwt from "jsonwebtoken";
 
 const verifyToken = (req, res, next) => {
-  console.log("VERIFY TOKEN HIT:", req.method, req.originalUrl);
-  console.log("AUTH HEADER:", req.headers.authorization);
-
+  console.log("AUTH MIDDLEWARE HIT:", req.method, req.originalUrl);
   const authHeader = req.headers.authorization;
 
+  // ❌ No token
   if (!authHeader) {
     return res.status(401).json({
       success: false,
-      message: "Access token required",
+      message: "Access token required"
     });
   }
 
-  const token = authHeader.split(" ")[1];
-  console.log("TOKEN:", token);
+  // Supports: Bearer <token>
+  const token = authHeader.startsWith("Bearer ")
+    ? authHeader.split(" ")[1]
+    : authHeader;
 
-  try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = decoded;
-    next();
-  } catch (err) {
-    return res.status(401).json({
-      success: false,
-      message: "Invalid or expired token",
-    });
-  }
+  jwt.verify(
+    token,
+    process.env.JWT_SECRET || "my_secret_key",
+    (err, decoded) => {
+      if (err) {
+        return res.status(401).json({
+          success: false,
+          message: "Invalid or expired token"
+        });
+      }
+
+      req.user = decoded; // attach user info
+      next(); // ✅ allow request
+    }
+  );
 };
 
 export default verifyToken;
