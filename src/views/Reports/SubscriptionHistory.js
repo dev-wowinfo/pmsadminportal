@@ -147,7 +147,35 @@ const SubscriptionHistory = () => {
         );
       },
     },
-
+    {
+      name: "Actions",
+      center: true,
+      //  minWidth: '150px',
+      selector: (row) => {
+        return (
+          <>
+            <Col>
+              <Edit
+                className="me-1 cursor-pointer"
+                size={15}
+                onClick={() => {
+                  handleUpdateOpen();
+                  setPromoId(row.promotionId);
+                }}
+              />
+              <Archive
+                className="me-1 cursor-pointer"
+                size={15}
+                onClick={() => {
+                  // handleUpdateOpen();
+                  setPromoId(row.promotionId);
+                }}
+              />
+            </Col>
+          </>
+        );
+      },
+    },
   ];
 
   const options = {
@@ -278,7 +306,6 @@ const SubscriptionHistory = () => {
           <CardTitle>
             <h2>Subscription History</h2>
           </CardTitle>
-
         </CardHeader>
         <Row className="align-items-end ms-2">
           <Col className="text-start">
@@ -298,7 +325,6 @@ const SubscriptionHistory = () => {
                 dateFormat: "Y-m-d",
               }}
             />
-
           </Col>
           <Col className="text-start">
             <Label className="form-label" for="endDate">
@@ -317,7 +343,6 @@ const SubscriptionHistory = () => {
                 dateFormat: "Y-m-d",
               }}
             />
-
           </Col>
           <Col>
             <Button className="me-1" color="primary" onClick={getBookingData}>

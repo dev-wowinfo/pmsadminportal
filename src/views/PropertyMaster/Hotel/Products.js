@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import DataTable from "react-data-table-component";
-import { Edit, RefreshCcw, Trash } from "react-feather";
+import { Edit, RefreshCcw, Trash, Archive } from "react-feather";
 import { AiOutlineCloudSync } from "react-icons/ai";
 import {
   Button,
@@ -176,25 +176,31 @@ const Products = () => {
       cell: (row) => <span>{row.dates}</span>,
     },
     {
-      name: "Actions",
+      name: "Action",
+      sortable: true,
       center: true,
-      minWidth: "80px",
-      selector: (row) => {
-        return (
-          <>
-            <Col>
-              <Edit
-                className="me-1 cursor-pointer"
-                size={15}
-                onClick={() => {
-                  handleShowModalUpdate();
-                  // setPromoId(row.promotionId);
-                }}
-              />
-            </Col>
-          </>
-        );
-      },
+      width: "9rem",
+
+      selector: (row) => (
+        <>
+          <Edit
+            className="me-1 cursor-pointer"
+            onClick={() => {
+              handleShowModalUpdate(true);
+              // setGuestId(row.guestID);
+            }}
+            size={15}
+          />
+          <Archive
+            className="me-1 cursor-pointer"
+            size={15}
+            onClick={() => {
+              // handleShowModal();
+              // setPromoId(row.promotionId);
+            }}
+          />
+        </>
+      ),
     },
   ];
 
@@ -224,9 +230,6 @@ const Products = () => {
           </Row>
         </CardBody>
       </Card>
-     
-
-
 
       {show && (
         <NewHotelModal
@@ -236,15 +239,15 @@ const Products = () => {
         />
       )}
       {/* {showUpdate && ( */}
-        <EditHotelModal
-          // showEdit={showEdit}
-          // handleEditModal={handleEditModal}
-          handleShowModalUpdate={handleShowModalUpdate}
-          showUpdate={showUpdate}
-          hotels={hotels}
-          id={selected_hotel}
-          // show={show}
-        />
+      <EditHotelModal
+        // showEdit={showEdit}
+        // handleEditModal={handleEditModal}
+        handleShowModalUpdate={handleShowModalUpdate}
+        showUpdate={showUpdate}
+        hotels={hotels}
+        id={selected_hotel}
+        // show={show}
+      />
       {/* )} */}
       {del && (
         <DeleteHotelModal
