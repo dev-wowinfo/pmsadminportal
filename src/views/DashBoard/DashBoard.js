@@ -542,7 +542,6 @@ const DashBoard = () => {
 									: "111"
 							}
 						/>
-
 					</div>
 				</Col>
 				<Col lg="4" xs="12" sm="4" md="6" xl="4">
@@ -664,9 +663,9 @@ const DashBoard = () => {
 			</Modal>
 
 
-			<HotelSelectModal
+			{/* <HotelSelectModal
 				open1={hotelSelectOpen}
-				handleOpen1={handleHotelSelectOpen} />
+				handleOpen1={handleHotelSelectOpen} /> */}
 			{open && <AddHotel open={open} handleOpen={handleOpen} bookingID={sel_bookingID} bookingStatus={bookingStatus} />}
 			{onHoldOpen && <OnHoldQuickBookingModal open={onHoldOpen} handleOnHoldOpen={handleOnHoldOpne} bookingID={sel_bookingID} />}
 		</div>

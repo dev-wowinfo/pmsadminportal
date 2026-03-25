@@ -91,6 +91,7 @@ import LicenseManagement from "../../views/Promotions/LicenseManagement.js";
 import SubscriptionPlan from "../../views/GuestMaster/SubscriptionPlan.js";
 import HotelManagement from "../../views/FrontDesk/Hotel Management.js";
 import Feature from "../../views/PropertyMaster/Feature.js";
+import ProductCategory from "../../views/PropertyMaster/Hotel/ProductCategory.js";
 
 // import ManageProfile from '../../../../ layouts/components/menu/vertical-menu/EditProfileModal.js'
 // import PaymentGateWay from "../../views/FrontDesk/PaymentsFolioAcc/PaymentGateWay";
@@ -555,6 +556,10 @@ const Routes = [
   {
     path: "/products",
     element: <ProductsMaster />,
+  },
+  {
+    path: "/category",
+    element: <ProductCategory />,
   },
   {
     path: "/plans",

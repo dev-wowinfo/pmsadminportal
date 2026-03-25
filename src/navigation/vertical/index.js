@@ -59,6 +59,7 @@ pageName = [
     ...dashboard,
     // ...licences, 
     ...pannelmaster,
+    ...promotions,
     ...hotelPannel,
     ...subscription,
     ...notifications,

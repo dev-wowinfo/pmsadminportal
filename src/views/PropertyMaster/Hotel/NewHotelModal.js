@@ -12,7 +12,7 @@ let currency = [
     { value: 'USD', label: 'USD' },
     { value: 'EUR', label: 'EUR' }
 ]
-const NewHotelModal = ({ setShow , show, handleShowModal, getAllHotelList }) => {
+const NewHotelModal = ({ setShow, show, handleShowModal, getAllHotelList }) => {
 
     const getUserData = useSelector(state => state.userManageSlice.userData)
     const { LoginID, Token, CompanyID } = getUserData
@@ -275,10 +275,11 @@ const NewHotelModal = ({ setShow , show, handleShowModal, getAllHotelList }) => 
                         <Form>
                             <Row>
                                 <Col lg='6' className='mb-1'>
-                                    <Label className='form-label' for='hotel'><span className='text-danger'>*</span>Product Name</Label>
+                                    <Label className='form-label' for='hotel'>Product Name <span className='text-danger'>*</span></Label>
                                     <Input
                                         type='text'
                                         name='hotel'
+                                        placeholder="Product Name"
                                         id='hotel'
                                         value={hotelName}
                                         onChange={e => setHotelName(e.target.value)}
@@ -286,24 +287,9 @@ const NewHotelModal = ({ setShow , show, handleShowModal, getAllHotelList }) => 
                                     />
                                     {display && !hotelName ? <span className='error_msg_lbl'>Enter Product Name </span> : null}
                                 </Col>
-                                <Col lg='6' className='mb-1'>
-                                    <Label className='form-label' for='address'><span className='text-danger'>*</span>Product Code </Label>
-                                    <Input
-                                        type='text'
-                                        name='address'
-                                        id='address'
-                                        value={address}
-                                        onChange={e => setAddress(e.target.value)}
-                                        invalid={display && address === ''}
 
-                                    />
-                                    {display && !address ? <span className='error_msg_lbl'>Enter Product Code </span> : null}
-                                </Col>
-                            </Row>
-                            <Row>
-                                
                                 <Col lg='6' className='mb-1'>
-                                    <Label className='form-label' for='countries'><span className='text-danger'>*</span>Product Category</Label>
+                                    <Label className='form-label' for='countries'>Product Category <span className='text-danger'>*</span></Label>
                                     <Select
                                         theme={selectThemeColors}
                                         className='react-select'
@@ -319,26 +305,47 @@ const NewHotelModal = ({ setShow , show, handleShowModal, getAllHotelList }) => 
                                     />
                                     {display && !country ? <span className='error_msg_lbl'>Enter Category </span> : null}
                                 </Col>
-                               <Col lg='6' className='mb-1'>
-                                    <Label className='form-label' for='address'><span className='text-danger'>*</span>Product Description </Label>
+                            </Row>
+                            <Row>
+
+                                <Col lg='6' className='mb-1'>
+                                    <Label className='form-label' for='countries'>Industry Category <span className='text-danger'>*</span></Label>
+                                    <Select
+                                        theme={selectThemeColors}
+                                        className='react-select'
+                                        classNamePrefix='select'
+                                        placeholder="Select Industry Category"
+                                        options={countryList}
+                                        onChange={e => {
+                                            setCountryId(e.value)
+                                            setCountryCode(e.CountryCode)
+                                            setCountry(e.label)
+                                        }}
+                                    // invalid={display && country === ''}
+                                    />
+                                    {display && !country ? <span className='error_msg_lbl'>Enter Category </span> : null}
+                                </Col>
+                                <Col lg='6' className='mb-1'>
+                                    <Label className='form-label' for='address'>Product Description </Label>
                                     <Input
                                         type='text'
                                         name='address'
+                                        placeholder="Enter Description"
                                         id='address'
                                         value={address}
                                         onChange={e => setAddress(e.target.value)}
                                         invalid={display && address === ''}
 
                                     />
-                                    {display && !address ? <span className='error_msg_lbl'>Enter Product Description </span> : null}
+                                    {/* {display && !address ? <span className='error_msg_lbl'>Enter Product Description </span> : null} */}
                                 </Col>
                             </Row>
-                           
-                           
+
+
                             <Row>
                                 <Col md='12 text-lg-end text-md-center mt-1'>
                                     <Button className='me-1' color='primary' onClick={handleSubmit}>
-                                        Submit
+                                        Add product
                                     </Button>
                                     <Button
                                         color='secondary'

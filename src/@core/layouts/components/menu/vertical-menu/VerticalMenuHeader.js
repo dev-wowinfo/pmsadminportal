@@ -7,6 +7,7 @@ import { Disc, X, Circle } from "react-feather"
 
 // ** Config
 import themeConfig from "@configs/themeConfig"
+import wowinfoLogo from "../../../../../assets/images/logo/wow-logo-whiteBG.webp"
 
 // ** Utils
 //import { getUserData, getHomeRouteForLoggedInUser } from "@utils"
@@ -61,10 +62,11 @@ const VerticalMenuHeader = (props) => {
             className="navbar-brand"
           >
             <span className="brand-logo">
-              <img src={themeConfig.app.appLogoImage} alt="logo" />
+              {/* <img src={themeConfig.app.appLogoImage} alt="logo" /> */}
+              {/* <img src={wowinfoLogo} alt="logo" /> */}
             </span>
             {/* <h2 style={{ paddingLeft: '0.5em' }} className="brand-text mb-0 ">{themeConfig.app.appName}</h2> */}
-            <h2 style={{ paddingLeft: '0.5em' }} className="brand-text mb-0 ">PMS Admin</h2>
+            <h2 style={{ paddingLeft: '0.5em' }} className="brand-text mb-0 ">License Manager</h2>
             {/* <p className="text-primary mb-0">{themeConfig.app.appName}</p> */}
           </NavLink>
         </li>

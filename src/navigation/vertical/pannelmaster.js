@@ -5,7 +5,7 @@ import { AiOutlineArrowRight } from "react-icons/ai"
 export default [
     {
         id: 'pannelmaster',
-        title: 'Master',
+        title: 'Product Master',
         icon: <BiBuildingHouse size={20} />,
         navLink: '/pannelmaster',
         children: [
@@ -16,11 +16,17 @@ export default [
                 navLink: '/products'
             },
             {
-                id: 'plansMaster',
-                title: 'Plans',
+                id: 'categoryMaster',
+                title: 'Category',
                 icon: <AiOutlineArrowRight size={20} />,
-                navLink: '/plans'
+                navLink: '/category'
             },
+            // {
+            //     id: 'plansMaster',
+            //     title: 'Plans',
+            //     icon: <AiOutlineArrowRight size={20} />,
+            //     navLink: '/plans'
+            // },
             // {
             //     id: 'priceMaster',
             //     title: 'Plan Pricing',
