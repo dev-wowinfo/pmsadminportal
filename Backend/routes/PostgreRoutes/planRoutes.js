@@ -589,7 +589,7 @@ router.put("/updatePlanRate/:id", async (req, res) => {
 router.put("/deletePlanRate/:id", async (req, res) => {
   try {
     const { id } = req.params;
-    // console.log();
+   
 
     const result = await pool.query(
       `UPDATE plan_rates 
