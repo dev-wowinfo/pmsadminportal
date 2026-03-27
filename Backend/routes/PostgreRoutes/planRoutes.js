@@ -5,6 +5,7 @@ import slugify from "slugify";
 const router = express.Router();
 
 // Plan 
+// console.log();
 
 router.post("/addPlan", async (req, res) => {
   try {
