@@ -2,7 +2,6 @@ import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
 import session from "express-session";
-
 // Middlewares
 import verifyToken from "./routes/middleware/verifyToken.js";
 
@@ -11,13 +10,22 @@ import verifyToken from "./routes/middleware/verifyToken.js";
 import productRoutes from "./routes/PostgreRoutes/productRoutes.js";
 import planRoutes from "./routes/PostgreRoutes/planRoutes.js";
 import AuthRoutes from "./routes/PostgreRoutes/AuthRoutes.js";
+import clientRoutes from "./routes/PostgreRoutes/clientRoutes.js";
 
+// Swagger
+import swaggerUi from "swagger-ui-express";
+import { readFile } from 'fs/promises';
 
 // Config
 dotenv.config();
 
 // App init
 const app = express();
+
+const swaggerDocument = JSON.parse(
+  await readFile(new URL('./swagger-output.json', import.meta.url))
+);
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use((req, res, next) => {
   console.log("HIT:", req.method, req.url);
   next();
@@ -42,7 +50,8 @@ app.use(
 // ---------------------------------------------   Postgre  SQL   ---------------------------------------------------------------------
 
 app.use("/api/products", verifyToken, productRoutes);
-app.use("/api/plans", planRoutes);
+app.use("/api/plans", verifyToken, planRoutes);
+app.use("/api/clients", verifyToken, clientRoutes);
 app.use("/api/auth", AuthRoutes);
 
 app.listen(5000, () => {

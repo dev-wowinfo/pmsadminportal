@@ -7,7 +7,8 @@ const router = express.Router();
 
 // ADD PRODUCT
 
-router.post("/addProduct", async (req, res) => {
+router.post("/products", async (req, res) => {
+  // #swagger.tags = ['Products']
   try {
     const {
       product_name,
@@ -20,22 +21,39 @@ router.post("/addProduct", async (req, res) => {
     if (!product_name) {
       return res.status(400).json({
         success: false,
+        status: "warning",
         message: "product_name is required"
       });
     }
 
     // 2️⃣ Insert
+    const normalizedProductName = product_name.trim();
+
+    const productCheck = await pool.query(
+      "SELECT id FROM products_table WHERE LOWER(product_name) = LOWER($1)",
+      [normalizedProductName]
+    );
+
+    if (productCheck.rows.length > 0) {
+      return res.status(409).json({
+        success: false,
+        status: "warning",
+        message: `${normalizedProductName} already exist`
+      });
+    }
+
     const result = await pool.query(
       `INSERT INTO products_table
       (product_name, category, industry_category, description)
       VALUES ($1, $2, $3, $4)
       RETURNING *`,
-      [product_name, category, industry_category, description]
+      [normalizedProductName, category, industry_category, description]
     );
 
     // 3️⃣ Response
     return res.status(201).json({
       success: true,
+      status: "success",
       message: "Product added successfully",
       data: result.rows[0]
     });
@@ -44,12 +62,14 @@ router.post("/addProduct", async (req, res) => {
     console.log(error);
     return res.status(500).json({
       success: false,
+      status: "error",
       message: "Internal server error"
     });
   }
 });
 
-router.get("/getProducts", async (req, res) => {
+router.get("/products", async (req, res) => {
+  // #swagger.tags = ['Products']
   try {
     const { search } = req.query;
 
@@ -95,7 +115,51 @@ router.get("/getProducts", async (req, res) => {
   }
 });
 
-router.put("/updateProduct/:id", async (req, res) => {
+router.get("/productDetailById/:id", async (req, res) => {
+  // #swagger.tags = ['Products']
+  try {
+    const { id } = req.params;
+
+    const result = await pool.query(
+      `SELECT
+        id,
+        product_name,
+        category,
+        industry_category,
+        description
+       FROM products_table
+       WHERE id = $1`,
+      [id]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({
+        success: false,
+        status: "warning",
+        message: "Product not found"
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      status: "success",
+      message: "Product details fetched successfully",
+      data: result.rows[0]
+    });
+
+  } catch (error) {
+    console.log(error);
+
+    return res.status(500).json({
+      success: false,
+      status: "error",
+      message: "Internal server error"
+    });
+  }
+});
+
+router.put("/products/:id", async (req, res) => {
+  // #swagger.tags = ['Products']
   try {
     const { id } = req.params;
     const {
@@ -120,9 +184,10 @@ router.put("/updateProduct/:id", async (req, res) => {
     );
 
     if (check.rows.length === 0) {
-      return res.status(404).json({
+      return res.status(409).json({
         success: false,
-        message: "Product not found"
+        status: "warning",
+        message: "Product already deleted"
       });
     }
 
@@ -155,8 +220,8 @@ router.put("/updateProduct/:id", async (req, res) => {
   }
 });
 
-// DELETE PRODUCT
-router.delete("/deleteProduct/:id", async (req, res) => {
+router.delete("/products/:id", async (req, res) => {
+  // #swagger.tags = ['Products']
   try {
     const { id } = req.params;
 
@@ -167,9 +232,10 @@ router.delete("/deleteProduct/:id", async (req, res) => {
     );
 
     if (check.rows.length === 0) {
-      return res.status(404).json({
+      return res.status(409).json({
         success: false,
-        message: "Product not found"
+        status: "warning",
+        message: "Product already deleted"
       });
     }
 
@@ -181,7 +247,8 @@ router.delete("/deleteProduct/:id", async (req, res) => {
 
     return res.status(200).json({
       success: true,
-      message: "Product deleted successfully"
+      status: "success",
+      message: "Deleted successfully"
     });
 
   } catch (error) {
@@ -189,6 +256,7 @@ router.delete("/deleteProduct/:id", async (req, res) => {
 
     return res.status(500).json({
       success: false,
+      status: "error",
       message: "Internal server error"
     });
   }
@@ -197,52 +265,64 @@ router.delete("/deleteProduct/:id", async (req, res) => {
 
 // Product Category
 
-router.post("/addCategory", async (req, res) => {
+router.post("/category", async (req, res) => {
+  // #swagger.tags = ['Products']
   try {
     const { category_name } = req.body;
 
     if (!category_name) {
       return res.status(400).json({
         success: false,
+        status: "warning",
         message: "category_name is required"
       });
     }
 
+    const normalizedCategoryName = category_name.trim();
+
     // duplicate check
     const check = await pool.query(
-      "SELECT * FROM product_categories WHERE category_name = $1",
-      [category_name]
+      "SELECT * FROM product_categories WHERE LOWER(category_name) = LOWER($1)",
+      [normalizedCategoryName]
     );
 
     if (check.rows.length > 0) {
       return res.status(409).json({
         success: false,
-        message: "Category already exists"
+        status: "warning",
+        message: `${normalizedCategoryName} already exist`
       });
     }
 
     const result = await pool.query(
-      `INSERT INTO product_categories (category_name)
-       VALUES ($1)
+      `INSERT INTO product_categories (category_name, status)
+       VALUES ($1, $2)
        RETURNING *`,
-      [category_name]
+      [normalizedCategoryName, true]
     );
 
     return res.status(201).json({
       success: true,
-      data: result.rows[0]
+      status: "success",
+      message: "Category created successfully",
+      data: {
+        ...result.rows[0],
+        status: "active"
+      }
     });
 
   } catch (error) {
     console.log(error);
     return res.status(500).json({
       success: false,
+      status: "error",
       message: "Internal server error"
     });
   }
 });
 
 router.get("/getAllCategories", async (req, res) => {
+  // #swagger.tags = ['Products']
   try {
     const result = await pool.query(
       `SELECT 
@@ -250,60 +330,46 @@ router.get("/getAllCategories", async (req, res) => {
         category_name,
         status
        FROM product_categories
+       WHERE status = true
        ORDER BY id DESC`
     );
 
-    return res.status(200).json({
-      success: true,
-      data: result.rows
-    });
-
-  } catch (error) {
-    console.log(error);
-
-    return res.status(500).json({
-      success: false,
-      message: "Internal server error"
-    });
-  }
-});
-
-router.get("/getActiveCategories", async (req, res) => {
-  try {
-    const result = await pool.query(
-      `SELECT id, category_name
-       FROM product_categories
-       WHERE status = true
-       ORDER BY category_name ASC`
-    );
-
-    return res.status(200).json({
-      success: true,
-      data: result.rows
-    });
-
-  } catch (error) {
-    console.log(error);
-
-    return res.status(500).json({
-      success: false,
-      message: "Internal server error"
-    });
-  }
-});
-
-router.put("/updateCategory/:id", async (req, res) => {
-  try {
-    const { id } = req.params;
-    const { category_name, status } = req.body;
-
-    // Validation
-    if (!category_name) {
-      return res.status(400).json({
-        success: false,
-        message: "category_name is required"
+    if (result.rows.length === 0) {
+      return res.status(200).json({
+        success: true,
+        status: "success",
+        message: "No categories found",
+        data: []
       });
     }
+
+    return res.status(200).json({
+      success: true,
+      status: "success",
+      message: "Categories fetched successfully",
+      data: result.rows.map((category) => ({
+        id: category.id,
+        name: category.category_name,
+        isActive: category.status
+      }))
+    });
+
+  } catch (error) {
+    console.log(error);
+
+    return res.status(500).json({
+      success: false,
+      status: "error",
+      message: "Internal server error"
+    });
+  }
+});
+
+router.put("/category/:id", async (req, res) => {
+  // #swagger.tags = ['Products']
+  try {
+    const { id } = req.params;
+    const { category_name, isActive } = req.body;
 
     // Check if category exists
     const check = await pool.query(
@@ -313,22 +379,43 @@ router.put("/updateCategory/:id", async (req, res) => {
 
     if (check.rows.length === 0) {
       return res.status(404).json({
-        success: false,
+        // success: false,
         message: "Category not found"
       });
     }
 
-    // Duplicate check
-    const duplicate = await pool.query(
-      "SELECT * FROM product_categories WHERE category_name = $1 AND id != $2",
-      [category_name, id]
-    );
+    const existingCategory = check.rows[0];
 
-    if (duplicate.rows.length > 0) {
-      return res.status(409).json({
-        success: false,
-        message: "Category already exists"
+    const normalizedCategoryName = category_name?.trim();
+    const nextCategoryName =
+      normalizedCategoryName || existingCategory.category_name;
+
+    // 👇 Boolean handling
+    const nextIsActive =
+      typeof isActive === "boolean" ? isActive : existingCategory.status;
+
+    if (!normalizedCategoryName && typeof isActive !== "boolean") {
+      return res.status(400).json({
+        // success: false,
+        status: "warning",
+        message: "Provide category_name or isActive to update"
       });
+    }
+
+    // Duplicate check
+    if (normalizedCategoryName) {
+      const duplicate = await pool.query(
+        "SELECT * FROM product_categories WHERE category_name = $1 AND id != $2",
+        [normalizedCategoryName, id]
+      );
+
+      if (duplicate.rows.length > 0) {
+        return res.status(409).json({
+          // success: false,
+          status: "warning",
+          message: "Category already exists"
+        });
+      }
     }
 
     // Update
@@ -338,26 +425,32 @@ router.put("/updateCategory/:id", async (req, res) => {
            status = $2
        WHERE id = $3
        RETURNING *`,
-      [category_name, status, id]
+      [nextCategoryName, nextIsActive, id]
     );
 
     return res.status(200).json({
       success: true,
+      // status: "success",
       message: "Category updated successfully",
-      data: result.rows[0]
+      data: {
+        id: result.rows[0].id,
+        category_name: result.rows[0].category_name,
+        isActive: result.rows[0].status
+      }
     });
 
   } catch (error) {
     console.log(error);
     return res.status(500).json({
       success: false,
+      status: "error",
       message: "Internal server error"
     });
   }
 });
 
-
-router.delete("/deleteCategory/:id", async (req, res) => {
+router.delete("/category/:id", async (req, res) => {
+  // #swagger.tags = ['Products']
   try {
     const { id } = req.params;
 
@@ -370,6 +463,16 @@ router.delete("/deleteCategory/:id", async (req, res) => {
       return res.status(404).json({
         success: false,
         message: "Category not found"
+      });
+    }
+
+    const existingCategory = check.rows[0];
+
+    if (existingCategory.status === false) {
+      return res.status(409).json({
+        success: false,
+        status: "warning",
+        message: `${existingCategory.category_name} already deleted`
       });
     }
 
@@ -381,13 +484,15 @@ router.delete("/deleteCategory/:id", async (req, res) => {
 
     return res.status(200).json({
       success: true,
-      message: "Category deactivated successfully"
+      status: "success",
+      message: "Deleted successfully"
     });
 
   } catch (error) {
     console.log(error);
     return res.status(500).json({
       success: false,
+      status: "error",
       message: "Internal server error"
     });
   }
@@ -397,37 +502,43 @@ router.delete("/deleteCategory/:id", async (req, res) => {
 
 // Industry category
 
-router.post("/addIndustryCategory", async (req, res) => {
+router.post("/industryCategory", async (req, res) => {
+  // #swagger.tags = ['Products']
   try {
     const { name, is_active } = req.body;
 
     if (!name) {
       return res.status(400).json({
         success: false,
+        status: "warning",
         message: "Name is required"
       });
     }
 
+    const normalizedIndustryName = name.trim();
+
     const check = await pool.query(
       "SELECT * FROM industry_categories WHERE LOWER(name) = LOWER($1)",
-      [name]
+      [normalizedIndustryName]
     );
 
     if (check.rows.length > 0) {
-      return res.status(400).json({
+      return res.status(409).json({
         success: false,
-        message: "Industry category already exists"
+        status: "warning",
+        message: `${normalizedIndustryName} already exist`
       });
     }
 
     const result = await pool.query(
       `INSERT INTO industry_categories (name, is_active, created_at, updated_at)
        VALUES ($1, $2, NOW(), NOW()) RETURNING *`,
-      [name, is_active ?? true]
+      [normalizedIndustryName, is_active ?? true]
     );
 
     return res.status(201).json({
       success: true,
+      status: "success",
       message: "Industry category added successfully",
       data: result.rows[0]
     });
@@ -436,36 +547,45 @@ router.post("/addIndustryCategory", async (req, res) => {
     console.log(error);
     return res.status(500).json({
       success: false,
+      status: "error",
       message: "Internal server error"
     });
   }
 });
 
-router.get("/getAllIndustryCategory", async (req, res) => {
+router.get("/industryCategory", async (req, res) => {
+  // #swagger.tags = ['Products']
   try {
     const result = await pool.query(
-      "SELECT * FROM industry_categories ORDER BY id DESC"
+      "SELECT * FROM industry_categories WHERE is_active = true ORDER BY id DESC"
     );
 
     return res.status(200).json({
       success: true,
-      data: result.rows
+      status: "success",
+      message: result.rows.length ? "Industry categories fetched successfully" : "No industry categories found",
+      data: result.rows.map((industryCategory) => ({
+        id: industryCategory.id,
+        name: industryCategory.name,
+        isActive: industryCategory.is_active
+      }))
     });
 
   } catch (error) {
     console.log(error);
     return res.status(500).json({
       success: false,
+      status: "error",
       message: "Internal server error"
     });
   }
 });
 
-
-router.put("/updateIndustryCategory/:id", async (req, res) => {
+router.put("/industryCategory/:id", async (req, res) => {
+  // #swagger.tags = ['Products']
   try {
     const { id } = req.params;
-    const { name, is_active } = req.body;
+    const { name, is_active, isActive } = req.body;
 
     const check = await pool.query(
       "SELECT * FROM industry_categories WHERE id = $1",
@@ -479,30 +599,69 @@ router.put("/updateIndustryCategory/:id", async (req, res) => {
       });
     }
 
+    const existingIndustryCategory = check.rows[0];
+    const normalizedName = name?.trim();
+    const nextName = normalizedName || existingIndustryCategory.name;
+    const nextIsActive =
+      typeof isActive === "boolean"
+        ? isActive
+        : typeof is_active === "boolean"
+          ? is_active
+          : existingIndustryCategory.is_active;
+
+    if (!normalizedName && typeof isActive !== "boolean" && typeof is_active !== "boolean") {
+      return res.status(400).json({
+        success: false,
+        status: "warning",
+        message: "Provide name or isActive to update"
+      });
+    }
+
+    if (normalizedName) {
+      const duplicate = await pool.query(
+        "SELECT * FROM industry_categories WHERE LOWER(name) = LOWER($1) AND id != $2",
+        [normalizedName, id]
+      );
+
+      if (duplicate.rows.length > 0) {
+        return res.status(409).json({
+          success: false,
+          status: "warning",
+          message: `${normalizedName} already exist`
+        });
+      }
+    }
+
     const result = await pool.query(
       `UPDATE industry_categories 
        SET name = $1, is_active = $2, updated_at = NOW()
        WHERE id = $3 RETURNING *`,
-      [name, is_active, id]
+      [nextName, nextIsActive, id]
     );
 
     return res.status(200).json({
       success: true,
+      status: "success",
       message: "Industry category updated successfully",
-      data: result.rows[0]
+      data: {
+        id: result.rows[0].id,
+        name: result.rows[0].name,
+        isActive: result.rows[0].is_active
+      }
     });
 
   } catch (error) {
     console.log(error);
     return res.status(500).json({
       success: false,
+      status: "error",
       message: "Internal server error"
     });
   }
 });
 
-
-router.delete("/deleteIndustryCategory/:id", async (req, res) => {
+router.delete("/industryCategory/:id", async (req, res) => {
+  // #swagger.tags = ['Products']
   try {
     const { id } = req.params;
 
@@ -515,6 +674,16 @@ router.delete("/deleteIndustryCategory/:id", async (req, res) => {
       return res.status(404).json({
         success: false,
         message: "Industry category not found"
+      });
+    }
+
+    const existingIndustryCategory = check.rows[0];
+
+    if (existingIndustryCategory.is_active === false) {
+      return res.status(409).json({
+        success: false,
+        status: "warning",
+        message: `${existingIndustryCategory.name} already deleted`
       });
     }
 
@@ -525,13 +694,15 @@ router.delete("/deleteIndustryCategory/:id", async (req, res) => {
 
     return res.status(200).json({
       success: true,
-      message: "Industry category deactivated successfully"
+      status: "success",
+      message: "Deleted successfully"
     });
 
   } catch (error) {
     console.log(error);
     return res.status(500).json({
       success: false,
+      status: "error",
       message: "Internal server error"
     });
   }

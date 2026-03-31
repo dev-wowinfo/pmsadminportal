@@ -13,10 +13,10 @@ const verifyToken = (req, res, next) => {
   }
 
   // Supports: Bearer <token>
-  const token = authHeader.startsWith("Bearer ")
-    ? authHeader.split(" ")[1]
-    : authHeader;
-
+  // const token = authHeader.startsWith("Bearer ")
+  //   ? authHeader.split(" ")[1]
+  //   : authHeader;
+  const token = authHeader?.split(" ")[1];
   jwt.verify(
     token,
     process.env.JWT_SECRET || "my_secret_key",

@@ -5,24 +5,66 @@ import slugify from "slugify";
 const router = express.Router();
 
 // Plan 
-// console.log();
 
-router.post("/addPlan", async (req, res) => {
+router.post("/plans", async (req, res) => {
+  // #swagger.tags = ['Plans']
+  const client = await pool.connect();
+
   try {
-    const { product_id, plan_name, title, description } = req.body;
+    const {
+      product_id,
+      plan_name,
+      title,
+      description,
+      including_ids = [],
+      excluding_ids = []
+    } = req.body;
 
-    // Validation
     if (!plan_name || !title) {
       return res.status(400).json({
         success: false,
-        message: "Plan name and title are required"
+        message: "Plan name and title required"
       });
     }
 
-    // Generate slug
-    const slug = slugify(title, { lower: true });
+    if (!product_id) {
+      return res.status(400).json({
+        success: false,
+        message: "product_id is required"
+      });
+    }
 
-    const result = await pool.query(
+    const productCheck = await client.query(
+      "SELECT id FROM products_table WHERE id = $1",
+      [product_id]
+    );
+
+    if (productCheck.rows.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "Product not found"
+      });
+    }
+
+    const existingPlan = await client.query(
+      "SELECT id, plan_name FROM plans WHERE product_id = $1 AND status = true",
+      [product_id]
+    );
+
+    if (existingPlan.rows.length > 0) {
+      return res.status(409).json({
+        success: false,
+        status: "warning",
+        message: "Plan already assigned"
+      });
+    }
+
+    const slug = slugify(title, { lower: true }) + "-" + Date.now();
+
+    await client.query("BEGIN");
+
+    // ✅ 1. create plan
+    const planResult = await client.query(
       `INSERT INTO plans
       (product_id, plan_name, title, slug, description)
       VALUES ($1,$2,$3,$4,$5)
@@ -30,34 +72,91 @@ router.post("/addPlan", async (req, res) => {
       [product_id, plan_name, title, slug, description]
     );
 
+    const plan_id = planResult.rows[0].id;
+
+    // ✅ 2. insert INCLUDING
+    if (including_ids.length > 0) {
+      const values = including_ids.map((_, i) => `($1,$${i + 2})`).join(",");
+
+      await client.query(
+        `INSERT INTO plan_point_mapping (plan_id, point_id)
+         VALUES ${values}`,
+        [plan_id, ...including_ids]
+      );
+    }
+
+    // ✅ 3. insert EXCLUDING
+    if (excluding_ids.length > 0) {
+      const values = excluding_ids.map((_, i) => `($1,$${i + 2})`).join(",");
+
+      await client.query(
+        `INSERT INTO plan_point_mapping (plan_id, point_id)
+         VALUES ${values}`,
+        [plan_id, ...excluding_ids]
+      );
+    }
+
+    await client.query("COMMIT");
+
     res.status(201).json({
       success: true,
-      message: "Plan created successfully",
-      data: result.rows[0]
+      status: "success",
+      message: "Plan created with points",
+      data: planResult.rows[0]
     });
 
   } catch (error) {
-    console.log("PLAN ERROR:", error);
+    await client.query("ROLLBACK");
+
+    console.log(error);
 
     res.status(500).json({
       success: false,
+      status: "error",
       message: error.message
     });
+
+  } finally {
+    client.release();
   }
 });
 
-router.get("/getPlansByProduct/:product_id", async (req, res) => {
+router.get("/plansByProduct/:product_id", async (req, res) => {
+  // #swagger.tags = ['Plans']
   try {
     const { product_id } = req.params;
 
-    const result = await pool.query(
-      `SELECT * FROM plans WHERE product_id = $1`,
+    const productCheck = await pool.query(
+      `SELECT id FROM products_table WHERE id = $1`,
       [product_id]
     );
 
+    if (productCheck.rows.length === 0) {
+      return res.status(404).json({
+        success: false,
+        status: "warning",
+        message: "Product not found"
+      });
+    }
+
+    const result = await pool.query(
+      `SELECT * FROM plans WHERE product_id = $1 AND status = true ORDER BY id DESC LIMIT 1`,
+      [product_id]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({
+        success: false,
+        status: "warning",
+        message: "No plan assigned to this product"
+      });
+    }
+
     res.status(200).json({
       success: true,
-      data: result.rows
+      status: "success",
+      message: "Assigned plan fetched successfully",
+      data: result.rows[0]
     });
 
   } catch (error) {
@@ -65,19 +164,64 @@ router.get("/getPlansByProduct/:product_id", async (req, res) => {
 
     res.status(500).json({
       success: false,
+      status: "error",
       message: error.message
     });
   }
 });
 
+router.get("/getAllPlans", async (req, res) => {
+  // #swagger.tags = ['Plans']
+  try {
+    const result = await pool.query(
+      `SELECT * FROM plans WHERE status = true ORDER BY id DESC`
+    );
 
-router.put("/updatePlan/:id", async (req, res) => {
+    if (result.rows.length === 0) {
+      return res.status(200).json({
+        success: true,
+        status: "success",
+        message: "No plans found",
+        data: []
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      status: "success",
+      message: "Plans fetched successfully",
+      data: result.rows
+    });
+
+  } catch (error) {
+    console.log("GET ALL PLANS ERROR:", error);
+
+    return res.status(500).json({
+      success: false,
+      status: "error",
+      message: error.message
+    });
+  }
+});
+
+router.put("/plans/:id", async (req, res) => {
+  // #swagger.tags = ['Plans']
+  const client = await pool.connect();
+
   try {
     const { id } = req.params;
-    const { product_id, plan_name, title, description } = req.body;
 
-    // Check if plan exists
-    const existingPlan = await pool.query(
+    const {
+      product_id,
+      plan_name,
+      title,
+      description,
+      including_ids = [],
+      excluding_ids = []
+    } = req.body;
+
+    // 🔍 check existing
+    const existingPlan = await client.query(
       `SELECT * FROM plans WHERE id = $1`,
       [id]
     );
@@ -89,14 +233,18 @@ router.put("/updatePlan/:id", async (req, res) => {
       });
     }
 
-    // Generate slug (if title updated)
-    let slug = existingPlan.rows[0].slug;
+    const oldPlan = existingPlan.rows[0];
 
-    if (title) {
+    // slug update only if title changed
+    let slug = oldPlan.slug;
+    if (title && title !== oldPlan.title) {
       slug = slugify(title, { lower: true }) + "-" + Date.now();
     }
 
-    const result = await pool.query(
+    await client.query("BEGIN");
+
+    // ✅ 1. update plan
+    const updatedPlan = await client.query(
       `UPDATE plans
        SET product_id = $1,
            plan_name = $2,
@@ -106,32 +254,72 @@ router.put("/updatePlan/:id", async (req, res) => {
        WHERE id = $6
        RETURNING *`,
       [
-        product_id || existingPlan.rows[0].product_id,
-        plan_name || existingPlan.rows[0].plan_name,
-        title || existingPlan.rows[0].title,
+        product_id || oldPlan.product_id,
+        plan_name || oldPlan.plan_name,
+        title || oldPlan.title,
         slug,
-        description || existingPlan.rows[0].description,
+        description || oldPlan.description,
         id
       ]
     );
 
+    // ✅ 2. delete old mappings
+    await client.query(
+      `DELETE FROM plan_point_mapping WHERE plan_id = $1`,
+      [id]
+    );
+
+    // ✅ 3. insert INCLUDING
+    if (including_ids.length > 0) {
+      const values = including_ids
+        .map((_, i) => `($1,$${i + 2})`)
+        .join(",");
+
+      await client.query(
+        `INSERT INTO plan_point_mapping (plan_id, point_id)
+         VALUES ${values}`,
+        [id, ...including_ids]
+      );
+    }
+
+    // ✅ 4. insert EXCLUDING
+    if (excluding_ids.length > 0) {
+      const values = excluding_ids
+        .map((_, i) => `($1,$${i + 2})`)
+        .join(",");
+
+      await client.query(
+        `INSERT INTO plan_point_mapping (plan_id, point_id)
+         VALUES ${values}`,
+        [id, ...excluding_ids]
+      );
+    }
+
+    await client.query("COMMIT");
+
     res.status(200).json({
       success: true,
-      message: "Plan updated successfully",
-      data: result.rows[0]
+      message: "Plan updated with points",
+      data: updatedPlan.rows[0]
     });
 
   } catch (error) {
+    await client.query("ROLLBACK");
+
     console.log("UPDATE PLAN ERROR:", error);
 
     res.status(500).json({
       success: false,
       message: error.message
     });
+
+  } finally {
+    client.release();
   }
 });
 
-router.patch("/deactivatePlan/:id", async (req, res) => {
+router.patch("/plans/:id", async (req, res) => {
+  // #swagger.tags = ['Plans']
   try {
     const { id } = req.params;
 
@@ -176,32 +364,32 @@ router.patch("/deactivatePlan/:id", async (req, res) => {
 
 // Plan points
 
-router.post("/addPlanPoints", async (req, res) => {
-  try {
-    const { point_name, icon, description } = req.body;
 
-    if (!point_name) {
+router.post("/planPoints", async (req, res) => {
+  // #swagger.tags = ['Plans']
+  try {
+    const { point_name, icon, description, type } = req.body;
+
+    if (!point_name || !type) {
       return res.status(400).json({
         success: false,
-        message: "Point name is required"
+        message: "Point name and type required"
       });
     }
 
     const result = await pool.query(
-      `INSERT INTO plan_points (point_name, icon, description)
-       VALUES ($1,$2,$3)
+      `INSERT INTO plan_points (point_name, icon, description, type)
+       VALUES ($1,$2,$3,$4)
        RETURNING *`,
-      [point_name, icon, description]
+      [point_name, icon, description, type]
     );
 
     res.status(201).json({
       success: true,
-      message: "Point created successfully",
       data: result.rows[0]
     });
 
   } catch (error) {
-    console.log("ADD POINT ERROR:", error);
     res.status(500).json({
       success: false,
       message: error.message
@@ -210,6 +398,7 @@ router.post("/addPlanPoints", async (req, res) => {
 });
 
 router.post("/assignPointsToPlan", async (req, res) => {
+  // #swagger.tags = ['Plans']
   try {
     const { plan_id, point_ids } = req.body;
 
@@ -259,7 +448,8 @@ router.post("/assignPointsToPlan", async (req, res) => {
   }
 });
 
-router.get("/getAllPoints", async (req, res) => {
+router.get("/planPoints", async (req, res) => {
+  // #swagger.tags = ['Plans']
   try {
     const result = await pool.query(
       `SELECT id, point_name FROM plan_points WHERE status = true`
@@ -279,7 +469,8 @@ router.get("/getAllPoints", async (req, res) => {
   }
 });
 
-router.get("/getPlanPoints/:plan_id", async (req, res) => {
+router.get("/planPoints/:plan_id", async (req, res) => {
+  // #swagger.tags = ['Plans']
   try {
     const { plan_id } = req.params;
 
@@ -309,7 +500,8 @@ router.get("/getPlanPoints/:plan_id", async (req, res) => {
 
 // Promo code
 
-router.post("/addPromoCode", async (req, res) => {
+router.post("/promoCode", async (req, res) => {
+  // #swagger.tags = ['Plans']
   try {
     const {
       plan_id,
@@ -352,7 +544,8 @@ router.post("/addPromoCode", async (req, res) => {
   }
 });
 
-router.put("/updatePromo/:id", async (req, res) => {
+router.put("/promoCode/:id", async (req, res) => {
+  // #swagger.tags = ['Plans']
   try {
     const { id } = req.params;
 
@@ -438,7 +631,8 @@ router.put("/updatePromo/:id", async (req, res) => {
   }
 });
 
-router.put("/togglePromo/:id", async (req, res) => {
+router.put("/promoCodeToggle/:id", async (req, res) => {
+  // #swagger.tags = ['Plans']
   try {
     const { id } = req.params;
 
@@ -470,7 +664,8 @@ router.put("/togglePromo/:id", async (req, res) => {
 
 // Plan rates
 
-router.post("/addPlanRate", async (req, res) => {
+router.post("/planRate", async (req, res) => {
+  // #swagger.tags = ['Plans']
   try {
     const {
       plan_id,
@@ -510,7 +705,8 @@ router.post("/addPlanRate", async (req, res) => {
   }
 });
 
-router.put("/updatePlanRate/:id", async (req, res) => {
+router.put("/planRate/:id", async (req, res) => {
+  // #swagger.tags = ['Plans']
   try {
     const { id } = req.params;
 
@@ -587,35 +783,42 @@ router.put("/updatePlanRate/:id", async (req, res) => {
   }
 });
 
-router.put("/deletePlanRate/:id", async (req, res) => {
+router.put("/planRateToggle/:id", async (req, res) => {
+  // #swagger.tags = ['Plans']
   try {
     const { id } = req.params;
-   
 
-    const result = await pool.query(
-      `UPDATE plan_rates 
-       SET is_active = false,
-           updated_at = CURRENT_TIMESTAMP
-       WHERE id = $1
-       RETURNING *`,
+    // 1️⃣ Check record exists
+    const check = await pool.query(
+      "SELECT * FROM plan_rates WHERE id = $1",
       [id]
     );
 
-    if (result.rows.length === 0) {
+    if (check.rows.length === 0) {
       return res.status(404).json({
         success: false,
         message: "Plan rate not found"
       });
     }
 
+    // 2️⃣ Toggle is_active
+    const result = await pool.query(
+      `UPDATE plan_rates 
+       SET is_active = NOT is_active,
+           updated_at = CURRENT_TIMESTAMP
+       WHERE id = $1
+       RETURNING *`,
+      [id]
+    );
+
     res.json({
       success: true,
-      message: "Plan rate deactivated successfully",
+      message: "Plan rate status toggled successfully",
       data: result.rows[0]
     });
 
   } catch (error) {
-    console.log("SOFT DELETE ERROR:", error);
+    console.log("TOGGLE PLAN RATE ERROR:", error);
 
     res.status(500).json({
       success: false,
@@ -624,505 +827,131 @@ router.put("/deletePlanRate/:id", async (req, res) => {
   }
 });
 
-// router.put("/deactivatePromo/:id", async (req, res) => {
+
+
+// // Promo code 
+
+// router.post("/applyPromo", async (req, res) => {
+// #swagger.tags = ['Plans']
 //   try {
-//     const { id } = req.params;
+//     const { plan_id, promo_code, price } = req.body;
 
-//     // check promo exists
-//     const check = await pool.query(
-//       "SELECT * FROM promo_codes WHERE id = $1",
-//       [id]
-//     );
-
-//     if (check.rows.length === 0) {
-//       return res.status(404).json({
+//     if (!plan_id || !promo_code || !price) {
+//       return res.status(400).json({
 //         success: false,
-//         message: "Promo code not found"
+//         message: "plan_id, promo_code, price required"
 //       });
 //     }
 
-//     // deactivate
-//     const result = await pool.query(
-//       `UPDATE promo_codes 
-//        SET is_active = false,
-//            updated_at = CURRENT_TIMESTAMP
-//        WHERE id = $1
-//        RETURNING *`,
-//       [id]
+//     // 1️⃣ Get promo
+//     const promoResult = await pool.query(
+//       `SELECT * FROM promo_codes 
+//        WHERE promo_code = $1 AND plan_id = $2`,
+//       [promo_code, plan_id]
 //     );
+
+//     if (promoResult.rows.length === 0) {
+//       return res.status(404).json({
+//         success: false,
+//         message: "Invalid promo code"
+//       });
+//     }
+
+//     const promo = promoResult.rows[0];
+
+//     // 2️⃣ Check active
+//     if (!promo.is_active) {
+//       return res.status(400).json({
+//         success: false,
+//         message: "Promo code inactive"
+//       });
+//     }
+
+//     const now = new Date();
+
+//     // 3️⃣ Check expiry
+//     if (promo.valid_from && now < promo.valid_from) {
+//       return res.status(400).json({
+//         success: false,
+//         message: "Promo not started yet"
+//       });
+//     }
+
+//     if (promo.valid_to && now > promo.valid_to) {
+//       return res.status(400).json({
+//         success: false,
+//         message: "Promo expired"
+//       });
+//     }
+
+//     // 4️⃣ Usage limit
+//     if (promo.used_count >= promo.usage_limit) {
+//       return res.status(400).json({
+//         success: false,
+//         message: "Promo usage limit exceeded"
+//       });
+//     }
+
+//     // 5️⃣ Calculate discount
+//     let discount = 0;
+
+//     if (promo.unit_type === "percentage") {
+//       discount = price * (promo.unit_value / 100);
+//     } else {
+//       discount = promo.unit_value;
+//     }
+
+//     let final_price = price - discount;
+
+//     if (final_price < 0) final_price = 0;
 
 //     res.json({
 //       success: true,
-//       message: "Promo code deactivated successfully",
-//       data: result.rows[0]
-//     });
-
-//   } catch (error) {
-//     console.log("DEACTIVATE PROMO ERROR:", error);
-
-//     res.status(500).json({
-//       success: false,
-//       message: error.message
-//     });
-//   }
-// });
-
-
-// router.put("/activatePromo/:id", async (req, res) => {
-//   try {
-//     const { id } = req.params;
-
-//     const result = await pool.query(
-//       `UPDATE promo_codes 
-//        SET is_active = true,
-//            updated_at = CURRENT_TIMESTAMP
-//        WHERE id = $1
-//        RETURNING *`,
-//       [id]
-//     );
-
-//     res.json({
-//       success: true,
-//       message: "Promo code activated successfully",
-//       data: result.rows[0]
-//     });
-
-//   } catch (error) {
-//     console.log("ACTIVATE PROMO ERROR:", error);
-
-//     res.status(500).json({
-//       success: false,
-//       message: error.message
-//     });
-//   }
-// });
-
-
-
-
-
-
-
-
-
-router.post("/applyPromo", async (req, res) => {
-  try {
-    const { plan_id, promo_code, price } = req.body;
-
-    if (!plan_id || !promo_code || !price) {
-      return res.status(400).json({
-        success: false,
-        message: "plan_id, promo_code, price required"
-      });
-    }
-
-    // 1️⃣ Get promo
-    const promoResult = await pool.query(
-      `SELECT * FROM promo_codes 
-       WHERE promo_code = $1 AND plan_id = $2`,
-      [promo_code, plan_id]
-    );
-
-    if (promoResult.rows.length === 0) {
-      return res.status(404).json({
-        success: false,
-        message: "Invalid promo code"
-      });
-    }
-
-    const promo = promoResult.rows[0];
-
-    // 2️⃣ Check active
-    if (!promo.is_active) {
-      return res.status(400).json({
-        success: false,
-        message: "Promo code inactive"
-      });
-    }
-
-    const now = new Date();
-
-    // 3️⃣ Check expiry
-    if (promo.valid_from && now < promo.valid_from) {
-      return res.status(400).json({
-        success: false,
-        message: "Promo not started yet"
-      });
-    }
-
-    if (promo.valid_to && now > promo.valid_to) {
-      return res.status(400).json({
-        success: false,
-        message: "Promo expired"
-      });
-    }
-
-    // 4️⃣ Usage limit
-    if (promo.used_count >= promo.usage_limit) {
-      return res.status(400).json({
-        success: false,
-        message: "Promo usage limit exceeded"
-      });
-    }
-
-    // 5️⃣ Calculate discount
-    let discount = 0;
-
-    if (promo.unit_type === "percentage") {
-      discount = price * (promo.unit_value / 100);
-    } else {
-      discount = promo.unit_value;
-    }
-
-    let final_price = price - discount;
-
-    if (final_price < 0) final_price = 0;
-
-    res.json({
-      success: true,
-      message: "Promo applied successfully",
-      data: {
-        original_price: price,
-        discount,
-        final_price
-      }
-    });
-
-  } catch (error) {
-    console.log("APPLY PROMO ERROR:", error);
-
-    res.status(500).json({
-      success: false,
-      message: error.message
-    });
-  }
-});
-
-router.post("/consumePromo", async (req, res) => {
-  try {
-    const { promo_code } = req.body;
-
-    await pool.query(
-      `UPDATE promo_codes
-       SET used_count = used_count + 1
-       WHERE promo_code = $1`,
-      [promo_code]
-    );
-
-    res.json({
-      success: true,
-      message: "Promo usage updated"
-    });
-
-  } catch (error) {
-    console.log("CONSUME PROMO ERROR:", error);
-
-    res.status(500).json({
-      success: false,
-      message: error.message
-    });
-  }
-});
-
-// router.post("/addPlan", async (req, res) => {
-
-//   try {
-
-//     const { product_id, plan_name, duration, price, billing_cycle, description, status } = req.body;
-
-//     // Validation
-//     if (!plan_name || !duration || !price) {
-//       return res.status(400).json({
-//         success: false,
-//         message: "Plan name, duration and price are required"
-//       });
-//     }
-
-//     const result = await pool.query(
-//       `INSERT INTO plans
-//       (product_id, plan_name, duration, price, billing_cycle, description, status)
-//       VALUES ($1,$2,$3,$4,$5,$6,$7)
-//       RETURNING *`,
-//       [product_id, plan_name, duration, price, billing_cycle, description, status]
-//     );
-
-//     res.status(201).json({
-//       success: true,
-//       message: "Plan created successfully",
-//       data: result.rows[0]
-//     });
-
-//   } catch (error) {
-
-//     console.log("PLAN ERROR:", error);
-
-//     res.status(500).json({
-//       success: false,
-//       message: error.message
-//     });
-
-//   }
-
-// });
-
-
-// router.get("/getPlans", async (req, res) => {
-
-//   try {
-
-//     // Pagination
-//     const page = parseInt(req.query.page) || 1;
-//     const limit = parseInt(req.query.limit) || 10;
-//     const offset = (page - 1) * limit;
-
-//     // Search
-//     const search = req.query.search || "";
-
-//     // Filter
-//     const product_id = req.query.product_id;
-
-//     let query = `SELECT * FROM plans WHERE 1=1`;
-//     let values = [];
-//     let index = 1;
-
-//     // Search filter
-//     if (search) {
-//       query += ` AND plan_name ILIKE $${index}`;
-//       values.push(`%${search}%`);
-//       index++;
-//     }
-
-//     // Product filter
-//     if (product_id) {
-//       query += ` AND product_id = $${index}`;
-//       values.push(product_id);
-//       index++;
-//     }
-
-//     // Pagination
-//     query += ` ORDER BY id DESC LIMIT $${index} OFFSET $${index+1}`;
-//     values.push(limit, offset);
-
-//     const result = await pool.query(query, values);
-
-//     // Total count
-//     const countResult = await pool.query(`SELECT COUNT(*) FROM plans`);
-
-//     res.status(200).json({
-//       success: true,
-//       page,
-//       limit,
-//       total: parseInt(countResult.rows[0].count),
-//       data: result.rows
-//     });
-
-//   } catch (error) {
-
-//     console.log(error);
-
-//     res.status(500).json({
-//       success: false,
-//       message: "Internal server error"
-//     });
-
-//   }
-
-// });
-
-
-// router.get("/getPlan/:id", async (req, res) => {
-
-//   try {
-
-//     const { id } = req.params;
-
-//     // Validation
-//     if (!id || isNaN(id)) {
-//       return res.status(400).json({
-//         success: false,
-//         message: "Invalid plan id"
-//       });
-//     }
-
-//     // Query with product join
-//     const result = await pool.query(
-//       `SELECT 
-//          p.id,
-//          p.plan_name,
-//          p.duration,
-//          p.price,
-//          p.billing_cycle,
-//          p.description,
-//          p.status,
-//          p.created_at,
-//          pr.product_name
-//        FROM plans p
-//        LEFT JOIN products_table pr 
-//        ON p.product_id = pr.id
-//        WHERE p.id = $1`,
-//       [id]
-//     );
-
-//     // Plan not found
-//     if (result.rows.length === 0) {
-//       return res.status(404).json({
-//         success: false,
-//         message: "Plan not found"
-//       });
-//     }
-
-//     // Success response
-//     res.status(200).json({
-//       success: true,
-//       message: "Plan fetched successfully",
-//       data: result.rows[0]
-//     });
-
-//   } catch (error) {
-
-//     console.log("GET PLAN ERROR:", error);
-
-//     res.status(500).json({
-//       success: false,
-//       message: "Internal server error"
-//     });
-
-//   }
-
-// });
-
-// router.put("/updatePlan/:id", async (req, res) => {
-
-//   try {
-
-//     const { id } = req.params;
-//     const { product_id, plan_name, duration, price, billing_cycle, description, status } = req.body;
-
-//     // 1️⃣ Validate ID
-//     if (!id || isNaN(id)) {
-//       return res.status(400).json({
-//         success: false,
-//         message: "Invalid plan id"
-//       });
-//     }
-
-//     // 2️⃣ Check if plan exists
-//     const planCheck = await pool.query(
-//       "SELECT id FROM plans WHERE id=$1",
-//       [id]
-//     );
-
-//     if (planCheck.rows.length === 0) {
-//       return res.status(404).json({
-//         success: false,
-//         message: "Plan not found"
-//       });
-//     }
-
-//     // 3️⃣ Validate product_id (foreign key)
-//     if (product_id) {
-//       const productCheck = await pool.query(
-//         "SELECT id FROM products_table WHERE id=$1",
-//         [product_id]
-//       );
-
-//       if (productCheck.rows.length === 0) {
-//         return res.status(400).json({
-//           success: false,
-//           message: "Invalid product_id"
-//         });
+//       message: "Promo applied successfully",
+//       data: {
+//         original_price: price,
+//         discount,
+//         final_price
 //       }
-//     }
-
-//     // 4️⃣ Update plan
-//     const result = await pool.query(
-//       `UPDATE plans
-//        SET product_id=$1,
-//            plan_name=$2,
-//            duration=$3,
-//            price=$4,
-//            billing_cycle=$5,
-//            description=$6,
-//            status=$7
-//        WHERE id=$8
-//        RETURNING *`,
-//       [product_id, plan_name, duration, price, billing_cycle, description, status, id]
-//     );
-
-//     res.status(200).json({
-//       success: true,
-//       message: "Plan updated successfully",
-//       data: result.rows[0]
 //     });
 
 //   } catch (error) {
-
-//     console.log("UPDATE PLAN ERROR:", error);
+//     console.log("APPLY PROMO ERROR:", error);
 
 //     res.status(500).json({
 //       success: false,
-//       message: "Internal server error"
+//       message: error.message
 //     });
-
 //   }
-
 // });
 
-
-// router.delete("/deletePlan/:id", async (req, res) => {
-
+// router.post("/consumePromo", async (req, res) => {
+// #swagger.tags = ['Plans']
 //   try {
+//     const { promo_code } = req.body;
 
-//     const { id } = req.params;
-
-//     // 1️⃣ Validate ID
-//     if (!id || isNaN(id)) {
-//       return res.status(400).json({
-//         success: false,
-//         message: "Invalid plan id"
-//       });
-//     }
-
-//     // 2️⃣ Check if plan exists
-//     const planCheck = await pool.query(
-//       "SELECT id FROM plans WHERE id=$1",
-//       [id]
+//     await pool.query(
+//       `UPDATE promo_codes
+//        SET used_count = used_count + 1
+//        WHERE promo_code = $1`,
+//       [promo_code]
 //     );
 
-//     if (planCheck.rows.length === 0) {
-//       return res.status(404).json({
-//         success: false,
-//         message: "Plan not found"
-//       });
-//     }
-
-//     // 3️⃣ Soft delete (status false)
-//     const result = await pool.query(
-//       `UPDATE plans
-//        SET status = false
-//        WHERE id=$1
-//        RETURNING *`,
-//       [id]
-//     );
-
-//     res.status(200).json({
+//     res.json({
 //       success: true,
-//       message: "Plan deleted successfully",
-//       data: result.rows[0]
+//       message: "Promo usage updated"
 //     });
 
 //   } catch (error) {
-
-//     console.log("DELETE PLAN ERROR:", error);
+//     console.log("CONSUME PROMO ERROR:", error);
 
 //     res.status(500).json({
 //       success: false,
-//       message: "Internal server error"
+//       message: error.message
 //     });
-
 //   }
-
 // });
+
 
 
 export default router;
